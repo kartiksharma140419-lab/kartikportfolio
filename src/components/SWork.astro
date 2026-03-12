@@ -1,130 +1,33 @@
 ---
 import AWork from './AWork.astro'
-import dummyVideo from '/src/assets/works/Dummy.mp4'
 
-const videos = await Astro.glob<{ default: any }>('/src/assets/works/*.mp4')
-
-// Yeah, this should probably be in a CMS or content file.
-// But it’s my site, and editing it in code is faster than setting up yet another headless something.
-// Sometimes "quick and dirty" wins. Don’t @ me.
-const info = {
-  Pen: {
-    title: 'CodePen',
-    site: 'https://codepen.io/wodniack',
+const imageProjects = [
+  {
+    caption: 'M.R. Sr. Sec. School',
+    site: '#',
+    imageSrc: '/images/works/mr-school.png',
   },
-  Dummy1: {
-    title: 'Dummy Project 1',
-    site: 'https://wodniack.dev',
+  {
+    caption: 'Rishika Bahalgarh – Real Estate',
+    site: '#',
+    imageSrc: '/images/works/rishika-realestate.png',
   },
-  Dummy2: {
-    title: 'Dummy Project 2',
-    site: 'https://wodniack.dev',
+  {
+    caption: 'Vanyra – Premium Food Brand',
+    site: '#',
+    imageSrc: '/images/works/vanyra.png',
   },
-  Dummy3: {
-    title: 'Dummy Project 3',
-    site: 'https://wodniack.dev',
+  {
+    caption: 'Garhwal Bakery',
+    site: '#',
+    imageSrc: '/images/works/garhwal-bakery.png',
   },
-  Dummy4: {
-    title: 'Dummy Project 4',
-    site: 'https://wodniack.dev',
-  },
-  Dummy5: {
-    title: 'Dummy Project 5',
-    site: 'https://wodniack.dev',
-  },
-  Dummy6: {
-    title: 'Dummy Project 6',
-    site: 'https://wodniack.dev',
-  },
-  Dummy7: {
-    title: 'Dummy Project 7',
-    site: 'https://wodniack.dev',
-  },
-  Dummy8: {
-    title: 'Dummy Project 8',
-    site: 'https://wodniack.dev',
-  },
-  Dummy9: {
-    title: 'Dummy Project 9',
-    site: 'https://wodniack.dev',
-  },
-  Dummy10: {
-    title: 'Dummy Project 10',
-    site: 'https://wodniack.dev',
-  }
-}
+]
 
-let projects = []
-let pens = []
-
-// I removed the video loops to keep the repo lightweight.
-// But this is where I normally fetch and assign the videos for each project in the portfolio.
-videos.forEach((video, index) => {
-  const src = video.default
-
-  const key = src.split('-')[0].split('/').pop()
-  const project = info[key]
-  if (!project) return
-  const caption = project.title
-  const site = project.site
-
-  if (key === 'Pen') {
-    pens.push({
-      caption,
-      site,
-      src,
-    })
-  } else {
-    projects.push({
-      caption,
-      site,
-      src,
-    })
-  }
-})
-
-// Create dummy projects with 3 videos each
-for (let i = 1; i <= 14; i++) {
-  const key = `Dummy${i}`
-  const project = info[key]
-  if (!project) continue
-
-  for (let j = 0; j < 4; j++) {
-    projects.push({
-      caption: `${project.title} - Video ${j + 1}`,
-      site: project.site,
-      src: dummyVideo
-    })
-  }
-}
-
-function shuffle(array) {
-  let currentIndex = array.length
-
-  while (currentIndex != 0) {
-    let randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex--
-    ;[array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ]
-  }
-}
-
-shuffle(projects)
-
-// Add pens in between projects regularly
+// Repeat projects in round-robin order so the same image never appears next to itself
 let works = []
-let chunkSize = Math.floor(projects.length / pens.length)
-let i = 0
-let j = 0
-while (i < projects.length) {
-  works.push(projects[i])
-  if (j < pens.length && (i + 1) % chunkSize === 0) {
-    works.push(pens[j])
-    j++
-  }
-  i++
+for (let i = 0; i < 40; i++) {
+  works.push({ ...imageProjects[i % imageProjects.length] })
 }
 ---
 
@@ -148,6 +51,7 @@ while (i < projects.length) {
               caption={work.caption}
               site={work.site}
               src={work.src}
+              imageSrc={work.imageSrc}
               index={String(index).padStart(4, '0')}
               total={String(works.length).padStart(2, '0')}
             />
