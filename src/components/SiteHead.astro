@@ -11,6 +11,7 @@ const menu = [
   {
     id: 'contact',
     text: 'Contact',
+    isModal: true,
   },
 ]
 ---
@@ -52,7 +53,7 @@ const menu = [
         {
           menu.map((item) => (
             <li class="sb__item js-menu-item">
-              <a href={'#' + item.id} class="js-menu-link">
+              <a href={item.isModal ? '#' : '#' + item.id} class={item.isModal ? 'js-hire-me' : 'js-menu-link'}>
                 <span class="sb__text">{item.text}</span>
               </a>
             </li>
@@ -100,7 +101,7 @@ const menu = [
         <span class="sb__line">
           <span class="sb__text">Available for freelance work →</span>
 
-          <a href="mailto:kartiksharma140419@gmail.com" class="sb__link">Hire me</a>
+          <a href="#" class="sb__link js-hire-me">Hire me</a>
         </span>
       </p>
     </aside><!-- .sb-availability -->

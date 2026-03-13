@@ -11,3 +11,27 @@ p {
     margin-bottom: 0;
   }
 }
+
+/* Form Input UX iOS */
+input, select, textarea {
+  font-size: max(16px, 1em) !important;
+}
+
+/* Touch Targets Optimization */
+a, button {
+  position: relative;
+
+  @media only screen and (max-width: 987px) {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      min-width: 44px;
+      min-height: 44px;
+      transform: translate(-50%, -50%);
+    }
+  }
+}

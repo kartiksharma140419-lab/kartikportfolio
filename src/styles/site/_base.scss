@@ -22,8 +22,10 @@ html {
 
   background-color: color(secondary);
   scrollbar-width: none;
+  scroll-behavior: smooth;
 
   color: color(secondary);
+  overflow-x: hidden;
 
   &.is-scroll-blocked {
     &,
@@ -40,4 +42,11 @@ body {
   overflow-y: visible;
 
   font-family: inherit;
+}
+
+/* Device-specific flows */
+@media (hover: hover) and (pointer: fine) {
+  a, button, .interactive {
+    transition-duration: 0.1s !important;
+  }
 }

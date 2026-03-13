@@ -1,0 +1,524 @@
+---
+---
+
+<div class="hire-modal js-hire-modal" aria-hidden="true" style="display: none;">
+  <div class="hire-modal__backdrop js-hire-backdrop"></div>
+  <div class="hire-modal__card">
+    <button class="hire-modal__close js-hire-close" type="button" aria-label="Close form">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <h2 class="hire-modal__title">Scale Your Brand<br/>with Pro Solutions.</h2>
+    <p class="hire-modal__subtitle">Fill out the form below to receive a custom digital strategy tailored to your business goals.</p>
+
+    <form class="hire-modal__form js-hire-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="daa4c037-78d3-4074-a324-07a29462c91f" />
+
+      <div class="hf__field">
+        <input type="text" name="business_owner_name" id="modal-owner" placeholder=" " required />
+        <label for="modal-owner">Name of Business Owner</label>
+      </div>
+
+      <div class="hf__field">
+        <input type="text" name="business_name" id="modal-biz" placeholder=" " required />
+        <label for="modal-biz">Business Name</label>
+      </div>
+
+      <div class="hf__field">
+        <input type="text" name="business_type" id="modal-type" placeholder=" " required />
+        <label for="modal-type">Type of Business</label>
+      </div>
+
+      <div class="hf__field">
+        <input type="email" name="email" id="modal-email" placeholder=" " required inputmode="email" />
+        <label for="modal-email">Business Email</label>
+      </div>
+
+      <div class="hf__field">
+        <input type="text" name="address" id="modal-addr" placeholder=" " required />
+        <label for="modal-addr">Your Address</label>
+      </div>
+
+      <div class="hf__field hf__field--select">
+        <select name="budget" id="modal-budget" required>
+          <option value="" disabled selected></option>
+          <option value="₹25,000 - ₹30,000">₹25,000 - ₹30,000</option>
+          <option value="₹30,000 - ₹35,000">₹30,000 - ₹35,000</option>
+          <option value="₹35,000 - ₹40,000">₹35,000 - ₹40,000</option>
+          <option value="₹40,000 - ₹45,000">₹40,000 - ₹45,000</option>
+          <option value="₹45,000 - ₹50,000">₹45,000 - ₹50,000</option>
+          <option value="₹50,000+">₹50,000+</option>
+        </select>
+        <label for="modal-budget">Your Budget (INR)</label>
+      </div>
+
+      <div class="hf__field hf__field--full">
+        <textarea name="more_info" id="modal-info" placeholder=" " rows="3"></textarea>
+        <label for="modal-info">More Info & Demands</label>
+      </div>
+
+      <div class="hf__field hf__field--full hf__field--submit">
+        <button type="submit" class="hire-modal__submit js-hire-submit">
+          <span>Unlock My Growth Strategy</span>
+          <svg class="h-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    <div class="hire-modal__success js-hire-success" style="display:none;">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-success-icon">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <h3 class="h-success-title">Thank You!</h3>
+      <p class="h-success-text">Our team will reach out within 24 hours.</p>
+    </div>
+  </div><!-- .hire-modal__card -->
+</div><!-- .hire-modal -->
+
+<script>
+  import { gsap } from 'gsap'
+
+  const modal = document.querySelector('.js-hire-modal') as HTMLElement
+  const backdrop = document.querySelector('.js-hire-backdrop') as HTMLElement
+  const card = modal?.querySelector('.hire-modal__card') as HTMLElement
+  const closeBtns = document.querySelectorAll('.js-hire-close')
+  const openBtns = document.querySelectorAll('.js-hire-me')
+  
+  const form = document.querySelector('.js-hire-form') as HTMLFormElement
+  const success = document.querySelector('.js-hire-success') as HTMLElement
+  const submitBtn = document.querySelector('.js-hire-submit') as HTMLButtonElement
+
+  let isOpen = false
+
+  const openModal = (e: Event) => {
+    e.preventDefault()
+    if (isOpen) return
+    isOpen = true
+
+    modal.style.display = 'flex'
+    modal.setAttribute('aria-hidden', 'false')
+    document.documentElement.style.overflow = 'hidden' // prevent body scroll
+
+    gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' })
+    gsap.fromTo(card, { y: 50, opacity: 0, scale: 0.95 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.2)' })
+  }
+
+  const closeModal = (e?: Event) => {
+    if (e) e.preventDefault()
+    if (!isOpen) return
+    isOpen = false
+
+    document.documentElement.style.overflow = '' // restore body scroll
+
+    gsap.to(backdrop, { opacity: 0, duration: 0.3, ease: 'power2.in' })
+    gsap.to(card, { y: 20, opacity: 0, scale: 0.95, duration: 0.3, ease: 'power2.in', onComplete: () => {
+      modal.setAttribute('aria-hidden', 'true')
+      modal.style.display = 'none'
+      
+      // Reset form on close if needed? Usually good to keep data unless successful submit
+    }})
+  }
+
+  if (modal) {
+    openBtns.forEach(btn => btn.addEventListener('click', openModal))
+    closeBtns.forEach(btn => btn.addEventListener('click', closeModal))
+    backdrop.addEventListener('click', closeModal)
+    
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeModal()
+      }
+    })
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        submitBtn.disabled = true
+        submitBtn.classList.add('is-loading')
+        submitBtn.querySelector('span')!.textContent = 'Sending...'
+
+        try {
+          const formData = new FormData(form)
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+          })
+
+          const data = await res.json()
+
+          if (data.success) {
+            form.style.display = 'none'
+            success.style.display = 'flex'
+            gsap.fromTo(success, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          } else {
+            submitBtn.disabled = false
+            submitBtn.classList.remove('is-loading')
+            submitBtn.querySelector('span')!.textContent = 'Unlock My Growth Strategy'
+            alert('Something went wrong. Please try again.')
+          }
+        } catch (err) {
+          submitBtn.disabled = false
+          submitBtn.classList.remove('is-loading')
+          submitBtn.querySelector('span')!.textContent = 'Unlock My Growth Strategy'
+          alert('Network error. Please check your connection and try again.')
+        }
+      })
+    }
+  }
+</script>
+
+<style lang="scss">
+
+  .hire-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    &__backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    &__card {
+      position: relative;
+      z-index: 2;
+
+      width: 90%;
+      max-width: 38rem;
+      max-height: 90vh;
+      padding: 3.5rem 3rem 3rem;
+      
+      background: rgba(22, 0, 0, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 242, 237, 0.1);
+      border-radius: 1.25rem;
+      
+      overflow-y: auto;
+      
+      // hide scrollbar completely
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .theme-contrasted & {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(22, 0, 0, 0.1);
+      }
+
+      @include mq(phone) {
+        padding: 3rem 1.5rem 2rem;
+        max-height: 95vh;
+      }
+    }
+
+    &__close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      
+      background: rgba(255, 242, 237, 0.05);
+      border: 1px solid rgba(255, 242, 237, 0.1);
+      border-radius: 50%;
+      color: rgba(255, 242, 237, 0.7);
+      cursor: pointer;
+      
+      transition: all 0.3s ease;
+
+      .theme-contrasted & {
+        background: rgba(22, 0, 0, 0.05);
+        border-color: rgba(22, 0, 0, 0.1);
+        color: rgba(22, 0, 0, 0.7);
+      }
+
+      &:hover {
+        background: rgba(255, 242, 237, 0.1);
+        color: var(--color-primary);
+
+        .theme-contrasted & {
+          background: rgba(22, 0, 0, 0.1);
+          color: color(secondary);
+        }
+      }
+    }
+
+    &__title {
+      margin: 0 0 1rem;
+      color: var(--color-primary);
+      font: 700 clamp(1.75rem, 3vw, 2.25rem) / 1.15 font-family(editorial);
+
+      .theme-contrasted & {
+        color: color(secondary);
+      }
+    }
+
+    &__subtitle {
+      margin: 0 0 2.5rem;
+      color: rgba(255, 242, 237, 0.7);
+      font: 400 clamp(0.875rem, 1.25vw, 1.1rem) / 1.6 font-family(editorial);
+
+      .theme-contrasted & {
+        color: rgba(22, 0, 0, 0.65);
+      }
+
+      @include mq(phone) {
+        margin-bottom: 2rem;
+      }
+    }
+
+    &__form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 1rem;
+
+      @include mq(phone) {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+    }
+
+    .hf__field {
+      position: relative;
+
+      &--full {
+        grid-column: 1 / -1;
+      }
+
+      &--submit {
+        margin-top: 0.5rem;
+      }
+
+      label {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+
+        color: rgba(255, 242, 237, 0.45);
+        font: 400 0.8125rem / 1 font-family(fraktion);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+
+        pointer-events: none;
+        transform-origin: 0 0;
+        transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), color 0.25s ease;
+
+        .theme-contrasted & {
+          color: rgba(22, 0, 0, 0.45);
+        }
+      }
+
+      input,
+      select,
+      textarea {
+        display: block;
+        width: 100%;
+        padding: 1.65rem 1rem 0.6rem;
+
+        background: rgba(255, 242, 237, 0.04);
+        border: 1px solid rgba(255, 242, 237, 0.12);
+        border-radius: 0.5rem;
+
+        color: rgba(255, 242, 237, 0.95);
+        font: 400 0.9375rem / 1.5 font-family(editorial);
+
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+        .theme-contrasted & {
+          background: rgba(22, 0, 0, 0.04);
+          border-color: rgba(22, 0, 0, 0.15);
+          color: rgba(22, 0, 0, 0.9);
+        }
+
+        &:focus {
+          border-color: var(--color-primary);
+          box-shadow: 0 0 0 3px rgba(244, 12, 63, 0.15);
+
+          .theme-contrasted & {
+            border-color: color(secondary);
+            box-shadow: 0 0 0 3px rgba(22, 0, 0, 0.1);
+          }
+        }
+
+        &:focus + label,
+        &:not(:placeholder-shown) + label {
+          transform: translateY(-0.55rem) scale(0.75);
+          color: var(--color-primary);
+
+          .theme-contrasted & {
+            color: color(secondary);
+          }
+        }
+      }
+
+      select {
+        appearance: none;
+        cursor: pointer;
+        padding-right: 2.5rem;
+
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23fff2ed' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+
+        .theme-contrasted & {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23160000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+      }
+
+      &--select select:focus + label,
+      &--select select:valid + label {
+        transform: translateY(-0.55rem) scale(0.75);
+        color: var(--color-primary);
+      }
+
+      option {
+        background: color(secondary);
+        color: rgba(255, 242, 237, 0.95);
+
+        .theme-contrasted & {
+          background: #fff;
+          color: color(secondary);
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 5rem;
+      }
+    }
+
+    &__submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+
+      width: 100%;
+      padding: 1.1rem 2.25rem;
+
+      background: #000;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+
+      color: #fff;
+      font: 700 0.8125rem / 1 font-family(fraktion);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      transition: box-shadow 0.35s ease, transform 0.25s ease, opacity 0.3s ease;
+
+      .theme-contrasted & {
+        background: color(secondary);
+        color: color(primary);
+      }
+
+      &:hover {
+        box-shadow: 0 0 24px 4px rgba(0, 0, 0, 0.45), 0 0 64px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+
+        .theme-contrasted & {
+          box-shadow: 0 0 24px 4px rgba(22, 0, 0, 0.25), 0 0 64px 8px rgba(22, 0, 0, 0.1);
+        }
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &.is-loading {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      .h-arrow {
+        transition: transform 0.3s ease;
+      }
+
+      &:hover .h-arrow {
+        transform: translateX(4px);
+      }
+    }
+
+    &__success {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 20rem;
+
+      .h-success-icon {
+        margin-bottom: 1.5rem;
+        color: var(--color-primary);
+        animation: success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+        .theme-contrasted & {
+          color: color(secondary);
+        }
+      }
+
+      .h-success-title {
+        margin: 0 0 0.75rem;
+        color: rgba(255, 242, 237, 0.95);
+        font: 700 clamp(1.5rem, 2.5vw, 2.25rem) / 1.2 font-family(editorial);
+
+        .theme-contrasted & {
+          color: color(secondary);
+        }
+      }
+
+      .h-success-text {
+        margin: 0;
+        color: rgba(255, 242, 237, 0.6);
+        font: 400 clamp(0.875rem, 1.15vw, 1rem) / 1.5 font-family(editorial);
+
+        .theme-contrasted & {
+          color: rgba(22, 0, 0, 0.6);
+        }
+      }
+    }
+  }
+
+  @keyframes success-pop {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
