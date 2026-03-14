@@ -44,7 +44,10 @@ const menu = [
     </div><!-- .sb-logo -->
 
     <div class="sb-console" role="presentation">
-      <div class="sb-console__inner js-console">
+      <div class="sb-console__inner">
+click on hire me and Fill the form
+for having the best website, app
+and landing page for your Buisness
       </div><!-- .sb-console__inner -->
     </div><!-- .sb-console -->
 
@@ -62,25 +65,7 @@ const menu = [
       </ul>
     </nav><!-- .sb-menu -->
 
-    <ul class="sb-socials">
 
-
-      <li class="sb__item">
-        <a
-          href="https://www.linkedin.com/in/kartik-sharma/"
-          target="_blank"
-          rel="noopener"
-        >
-          <span
-            class="sb__icon sb__icon--linkedin"
-            style="--path: path('M1.13025 14.9839H3.93671V4.6H1.13025V14.9839ZM2.53348 0.0161285C1.598 0.0161285 0.849609 0.764516 0.849609 1.7C0.849609 2.63548 1.598 3.38387 2.53348 3.38387C3.46896 3.38387 4.21735 2.63548 4.21735 1.7C4.21735 0.764516 3.46896 0.0161285 2.53348 0.0161285ZM8.70767 6.19032V4.6H5.90122V14.9839H8.70767V9.65161C8.70767 6.65806 12.5432 6.47097 12.5432 9.65161V14.9839H15.3496V8.62258C15.3496 3.57097 10.0174 3.75806 8.70767 6.19032Z');"
-          >
-          </span>
-
-          <span class="u-sr-only">Follow me on LinkedIn</span>
-        </a>
-      </li>
-    </ul><!-- .sb-socials -->
 
     <button class="sb-contrast js-contrast" type="button">
       <span
@@ -106,13 +91,9 @@ const menu = [
       </p>
     </aside><!-- .sb-availability -->
 
-    <a
-      href="mailto:kartiksharma140419@gmail.com"
-      class="sb-qr-code js-qr-code"
-      title="Contact me!"
-    >
-      <img src="/images/qr-code.svg" alt="QR Code" width="72" height="72" />
-    </a><!-- .sb-qr-code -->
+    <a href="#" class="sb-contact-mobile js-hire-me">Contact me</a>
+
+
   </div><!-- .site-head__container -->
 </header>
 
@@ -125,17 +106,9 @@ const menu = [
   class Section {
     el: HTMLElement
     contrastButton: HTMLElement
-    console: HTMLElement
     contrastMask: HTMLElement
     links: NodeListOf<HTMLElement>
 
-    messages: string[]
-    message: string
-    messageLineBreak: boolean
-    lastMessage: string
-    lastTypeTime: number
-    writeDelay: number
-    canWrite: boolean
     isPaused: boolean
 
     /**
@@ -145,85 +118,10 @@ const menu = [
       // Elements
       this.el = document.querySelector('.site-head')
       this.contrastButton = document.querySelector('.js-contrast')
-      this.console = document.querySelector('.js-console')
       this.contrastMask = document.querySelector('.js-contrast-mask')
       this.links = this.el.querySelectorAll('.js-menu-link')
 
       // Properties
-      this.messages = [
-        'Preparing for inevitable debugging',
-        'Compiling designer dreams…into developer nightmares',
-        'Please wait while I overthink this',
-        'Optimizing… but nothing’s perfect',
-        'Configuring the next minor inconvenience',
-        'Fetching assets… contemplating the futility of it all',
-        'Re-routing your expectations… expect delays',
-        'Trying to animate enthusiasm… it’s not going well',
-        'Stuck in an infinite loop',
-        'Loading… still pointless',
-        'Simulating progress… sort of',
-        'This will probably break soon',
-        'Simulating something useful',
-        'Progress bar full of lies',
-        'Finding meaning in the code',
-        'Calculating failure probabilities',
-        'Please wait… indefinitely',
-        'Loading… almost there!',
-        'Animating pixels with love',
-        'Integrating magic and code',
-        'Optimizing creativity… stand by',
-        'Design and code handshake',
-        'Fetching creativity… almost done!',
-        'Preparing awesomeness',
-        'Simulating brilliance… probably',
-        'Everything is under control',
-        'Loading coolness… almost ready',
-        'Calibrating designer dreams',
-        'Fusing design and animation',
-        'Running creativity protocols',
-        'Crafting magic… please wait',
-        'Making things pretty… hold on',
-        'Loading… this might take a bit',
-        'Animating pixels… somewhat precisely',
-        'Integrating code and reality',
-        'Halfway done… maybe',
-        'Optimizing… cautiously hopeful',
-        'Design meets code… fingers crossed',
-        'Fetching some interesting stuff',
-        'Preparing… slowly but surely',
-        'Aligning pixels… carefully',
-        'Calibrating… what exactly? Good question',
-        'Waiting… patience is key',
-        'Simulating… something, probably',
-        'Loading… feel free to blink',
-        'Running some clever algorithms',
-        'Almost there… give or take',
-        'Integrating… like a pro',
-        'Crafting… without breaking anything',
-        'Adjusting fonts… nearly invisible',
-        'Piecing it together… stay tuned',
-        'Loading… nothing to see yet',
-        'Running final checks… hopefully',
-        'Almost ready… trust me',
-        'Building… it’s getting there',
-        'Loading… but why rush?',
-        'Please wait… or don’t, whatever',
-        'Initializing… prepare for bugs',
-        'Optimizing… but who cares?',
-        'Deploying… probably not broken',
-        'Making things work… hopefully',
-        'Running… but not too fast',
-        'Testing patience… stay calm',
-        'Initializing… no promises',
-        'Loading… but who’s counting?',
-        'Loading… could be worse',
-      ]
-      this.message = ''
-      this.messageLineBreak = false
-      this.lastMessage = ''
-      this.lastTypeTime = 0
-      this.writeDelay = 0
-      this.canWrite = false
       this.isPaused = true
 
       // Init
@@ -263,12 +161,6 @@ const menu = [
      */
     onIntersect(e) {
       this.isPaused = !e.detail.isIntersecting
-
-      if (this.isPaused) {
-        Emitter.off('tick', this.updateConsole, this)
-      } else {
-        Emitter.on('tick', this.updateConsole, this)
-      }
     }
 
     /**
@@ -277,7 +169,6 @@ const menu = [
     intro() {
       const logo = this.el.querySelector('.js-logo')
       const menuItems = this.el.querySelectorAll('.js-menu-item')
-      const qrCode = this.el.querySelector('.js-qr-code')
 
       const items = [logo, ...menuItems]
 
@@ -308,26 +199,8 @@ const menu = [
         1.5
       )
 
-      tl.fromTo(
-        qrCode,
-        {
-          '--bg-p': '0%',
-        },
-        {
-          '--bg-p': '100%',
-          duration: 1.5,
-          ease: 'expo.out',
-        },
-        1.75
-      )
 
-      tl.call(
-        () => {
-          this.canWrite = true
-        },
-        null,
-        1.5
-      )
+
     }
 
     /**
@@ -390,71 +263,7 @@ const menu = [
       })
     }
 
-    /**
-     * Update console
-     */
-    updateConsole(time) {
-      if (!this.canWrite || time - this.lastTypeTime < this.writeDelay) {
-        return
-      }
 
-      if (this.message === '') {
-        this.message = this.getRandomMessage()
-        this.writeDelay = 2000
-      } else {
-        if (this.message === this.lastMessage || this.messageLineBreak) {
-          this.console.textContent += '\n'
-        }
-
-        const char = this.message.charAt(0)
-        this.message = this.message.substring(1)
-
-        if (char === ',') {
-          this.writeDelay = 100
-        } else if (char === ' ') {
-          this.writeDelay = 100
-        } else if (char === '') {
-          this.writeDelay = 200
-        } else if (char === '…') {
-          this.writeDelay = 400
-        } else if (char === '.') {
-          this.writeDelay = 400
-        } else {
-          this.writeDelay = 20
-        }
-
-        this.console.textContent += char
-
-        if (char === '…') {
-          this.messageLineBreak = true
-        } else {
-          this.messageLineBreak = false
-        }
-      }
-
-      this.console.textContent = this.console.textContent
-        .split('\n')
-        .slice(-5)
-        .join('\n')
-
-      this.lastTypeTime = time
-    }
-
-    /**
-     * Get random message
-     */
-    getRandomMessage() {
-      let message =
-        this.messages[Math.floor(Math.random() * this.messages.length)]
-
-      if (message === this.lastMessage) {
-        message = this.getRandomMessage()
-      }
-
-      this.lastMessage = message
-
-      return message
-    }
   }
 
   new Section()
@@ -515,7 +324,7 @@ const menu = [
       margin: 0 auto 0 0;
       padding: 1.5rem;
 
-      font: 400 8px / 1.4 font-family(fraktion);
+      font: 400 12px / 1.4 font-family(fraktion);
       text-transform: uppercase;
       white-space: pre-line;
 
@@ -635,125 +444,7 @@ const menu = [
       }
     }
 
-    .sb-socials {
-      margin: 0;
-      padding: 0;
 
-      background: linear-gradient(
-        0deg,
-        transparent calc(50% - 1px),
-        color(secondary) calc(50% - 1px),
-        color(secondary) 50%,
-        transparent 50%
-      );
-      border-left: 1px solid color(secondary);
-      list-style: none;
-
-      @include mq(tablet) {
-        order: 4;
-      }
-
-      @include mq(phone) {
-        @include flex(row, center, center);
-
-        order: 3;
-
-        margin-left: auto;
-
-        background: none;
-        border-left: 0;
-      }
-
-      .sb__item {
-        margin: 0;
-        padding: 0;
-
-        @include mq(phone) {
-          @include flex(column, center, center);
-
-          height: 100%;
-
-          border-left: 1px solid color(secondary);
-        }
-      }
-
-      .sb__icon {
-        background: color(secondary);
-
-        clip-path: var(--path);
-
-        &:before {
-          position: absolute;
-          top: 0;
-          left: 0;
-
-          display: block;
-          width: 100%;
-          height: 100%;
-
-          background: color(primary);
-          scale: 0 1;
-          transform-origin: 0 50%;
-
-          content: '';
-        }
-
-        &--codepen {
-          width: 20px;
-          height: 19px;
-        }
-
-        &--linkedin {
-          width: 16px;
-          height: 15px;
-        }
-      }
-
-      a {
-        @include flex(row, center, center);
-
-        position: relative;
-
-        width: 48px;
-        height: 48px;
-
-        @include mq(phone) {
-          height: 100%;
-        }
-
-        &:before {
-          position: absolute;
-          top: 0;
-          left: 0;
-
-          width: 100%;
-          height: 100%;
-
-          background: color(secondary);
-          scale: 0 1;
-          transform-origin: 0 50%;
-
-          content: '';
-        }
-
-        &:hover {
-          &:before {
-            scale: 1 1;
-          }
-
-          .sb__icon {
-            &:before {
-              scale: 1 1;
-            }
-          }
-        }
-      }
-
-      a:before,
-      .sb__icon:before {
-        transition: scale 0.3s ease(in-out-expo);
-      }
-    }
 
     .sb-contrast {
       @include flex(row, center, center);
@@ -917,38 +608,25 @@ const menu = [
       }
     }
 
-    .sb-qr-code {
-      --bg-p: 0%;
+    .sb-contact-mobile {
+      display: none;
 
-      position: relative;
+      @include mq(phone) {
+        @include flex(row, center, center);
 
-      display: block;
-      padding: 0.75rem;
+        order: 4;
 
-      border-left: 1px solid color(secondary);
+        padding: 0 1rem;
 
-      @include mq(desktop-sm) {
-        display: none;
-      }
+        border-left: 1px solid color(secondary);
 
-      &:before {
-        position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        bottom: 0.75rem;
-        left: 0.75rem;
+        color: color(secondary);
+        font: 200 1.25rem / 1 font-family(editorial);
+        text-decoration: none;
 
-        background: linear-gradient(
-            180deg,
-            transparent,
-            transparent var(--bg-p),
-            color(secondary) var(--bg-p),
-            color(secondary)
-          )
-          top / 100% 12.5% repeat;
-
-        content: '';
+        white-space: nowrap;
       }
     }
+
   }
 </style>
