@@ -25,11 +25,19 @@
       </svg>
     </button>
 
-    <h2 class="hire-modal__title">Scale Your Brand<br />with Pro Solutions.</h2>
+    <h2 class="hire-modal__title">Apply for Priority<br />Onboarding.</h2>
     <p class="hire-modal__subtitle">
-      Fill out the form below to receive a custom digital website, app and
-      landing page tailored to your business goals.
+      I only accept 10 high-impact projects per month to ensure elite quality. Secure your slot in the queue below.
     </p>
+
+    <div class="hire-modal__gauge js-gauge-container">
+      <div class="hire-modal__gauge-fill js-gauge-fill"></div>
+      <p class="hire-modal__gauge-text"><span class="js-gauge-text">0%</span> Application Strength</p>
+    </div>
+
+    <div class="hire-modal__urgency js-hire-urgency">
+      <span class="pulse"></span> Limited slots left for making your business website, app, or landing page.
+    </div>
 
     <form
       class="hire-modal__form js-hire-form"
@@ -50,29 +58,7 @@
           placeholder=" "
           required
         />
-        <label for="modal-owner">Name of Business Owner</label>
-      </div>
-
-      <div class="hf__field">
-        <input
-          type="text"
-          name="business_name"
-          id="modal-biz"
-          placeholder=" "
-          required
-        />
-        <label for="modal-biz">Business Name</label>
-      </div>
-
-      <div class="hf__field">
-        <input
-          type="text"
-          name="business_type"
-          id="modal-type"
-          placeholder=" "
-          required
-        />
-        <label for="modal-type">Type of Business</label>
+        <label for="modal-owner">Who is the lead visionary?</label>
       </div>
 
       <div class="hf__field">
@@ -84,42 +70,63 @@
           required
           inputmode="email"
         />
-        <label for="modal-email">Business Email</label>
+        <label for="modal-email">Professional Email</label>
+      </div>
+
+      <div class="hf__field hf__field--full">
+        <input
+          type="text"
+          name="business_name"
+          id="modal-biz"
+          placeholder=" "
+          required
+        />
+        <label for="modal-biz">Company / Project Name</label>
       </div>
 
       <div class="hf__field">
         <input
           type="text"
-          name="address"
-          id="modal-addr"
+          name="business_type"
+          id="modal-type"
           placeholder=" "
           required
         />
-        <label for="modal-addr">Your Address</label>
+        <label for="modal-type">Industry (e.g. SaaS, E-com)</label>
       </div>
 
-      <div class="hf__field hf__field--select">
-        <select name="budget" id="modal-budget" required>
+      <div class="hf__field">
+        <input
+          type="text"
+          name="partner_code"
+          id="modal-code"
+          placeholder=" "
+          class="js-hire-code"
+        />
+        <label for="modal-code">Exclusive Partner Code (Optional)</label>
+        <p class="hf__field-timer">Coupon code valid for: <span class="js-countdown-timer">23:59:59</span></p>
+      </div>
+
+      <div class="hf__field hf__field--select hf__field--full">
+        <select name="budget" id="modal-budget" class="js-hire-budget" required>
           <option value="" disabled selected></option>
-          <option value="₹25,000 - ₹30,000">₹25,000 - ₹30,000</option>
-          <option value="₹30,000 - ₹35,000">₹30,000 - ₹35,000</option>
-          <option value="₹35,000 - ₹40,000">₹35,000 - ₹40,000</option>
-          <option value="₹40,000 - ₹45,000">₹40,000 - ₹45,000</option>
-          <option value="₹45,000 - ₹50,000">₹45,000 - ₹50,000</option>
-          <option value="₹50,000+">₹50,000+</option>
+          <option value="₹20,000">Starter (₹20,000)</option>
+          <option value="₹35,000" data-original="₹35,000">Pro / Bestseller (₹35,000)</option>
+          <option value="₹50,000">Scale (₹50,000)</option>
+          <option value="₹80,000">Enterprise (₹80,000+)</option>
         </select>
-        <label for="modal-budget">Your Budget (INR)</label>
+        <label for="modal-budget">Estimated Investment</label>
       </div>
 
       <div class="hf__field hf__field--full">
-        <textarea name="more_info" id="modal-info" placeholder=" " rows="3">
+        <textarea name="more_info" id="modal-info" placeholder=" " rows="3" required>
         </textarea>
-        <label for="modal-info">More Info & Demands</label>
+        <label for="modal-info">Describe your growth goals & timelines</label>
       </div>
 
       <div class="hf__field hf__field--full hf__field--submit">
         <button type="submit" class="hire-modal__submit js-hire-submit">
-          <span>Unlock My Growth Strategy</span>
+          <span>Apply for Consultation</span>
           <svg
             class="h-arrow"
             width="18"
@@ -135,6 +142,7 @@
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </button>
+        <p class="hire-modal__trust">🔒 100% Secure. We never share your data.</p>
       </div>
     </form>
 
@@ -161,6 +169,7 @@
 
 <script>
   import { gsap } from 'gsap'
+  import confetti from 'canvas-confetti'
 
   const modal = document.querySelector('.js-hire-modal') as HTMLElement
   const backdrop = document.querySelector('.js-hire-backdrop') as HTMLElement
@@ -170,9 +179,141 @@
 
   const form = document.querySelector('.js-hire-form') as HTMLFormElement
   const success = document.querySelector('.js-hire-success') as HTMLElement
-  const submitBtn = document.querySelector(
-    '.js-hire-submit',
-  ) as HTMLButtonElement
+  const submitBtn = document.querySelector('.js-hire-submit') as HTMLButtonElement
+
+  // Gauge Logic
+  const inputs = form?.querySelectorAll('input[required], select[required], textarea[required]') as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  const gaugeFill = document.querySelector('.js-gauge-fill') as HTMLElement
+  const gaugeText = document.querySelector('.js-gauge-text') as HTMLElement
+
+  const updateGauge = () => {
+    if (!inputs.length) return
+    let filled = 0
+    inputs.forEach(input => {
+      if (input.value.trim() !== '') {
+        filled++
+      }
+    })
+    const percentage = Math.round((filled / inputs.length) * 100)
+    if (gaugeFill) gaugeFill.style.width = `${percentage}%`
+    if (gaugeText) gaugeText.textContent = `${percentage}%`
+    
+    // Change color as it gets closer to 100
+    if (percentage === 100) {
+      gaugeFill.style.background = '#10b981' // Success green
+    } else {
+      gaugeFill.style.background = 'var(--color-primary, #f40c3f)'
+    }
+  }
+
+  if (inputs) {
+    inputs.forEach(input => {
+      input.addEventListener('input', updateGauge)
+      input.addEventListener('change', updateGauge)
+    })
+  }
+
+  // 24 Hour Countdown Timer Logic
+  const timerDisplay = document.querySelector('.js-countdown-timer') as HTMLElement
+  
+  if (timerDisplay) {
+    // 24 hours in seconds
+    let timeRemaining = 24 * 60 * 60 - 1
+
+    const updateTimer = () => {
+      const hours = Math.floor(timeRemaining / 3600)
+      const minutes = Math.floor((timeRemaining % 3600) / 60)
+      const seconds = timeRemaining % 60
+
+      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      if (timerDisplay) {
+        timerDisplay.textContent = formattedTime
+      }
+      
+      if (timeRemaining > 0) {
+        timeRemaining--
+      }
+    }
+    
+    // Initial call
+    updateTimer()
+    setInterval(updateTimer, 1000)
+  }
+
+  // Gated Pricing Logic
+  const codeInput = document.querySelector('.js-hire-code') as HTMLInputElement
+  const budgetSelect = document.querySelector('.js-hire-budget') as HTMLSelectElement
+  
+  if (codeInput && budgetSelect) {
+    const validCodes = ['BHAVYA5', 'BHAVYA24', 'GROW20']
+    const originalText = '₹35,000'
+    const targetValuePrefix = '₹35,000'
+    
+    // Helper to generate unicode strikethrough for standard <option> tags
+    const strike = (str: string) => str.split('').map(char => char + '\u0336').join('')
+    const strikethroughText = strike(originalText)
+    const discountText = ` ${strikethroughText} → ₹27,999 (Partner Exclusive)`
+
+    // Find the option initially (when value is exactly ₹35,000 or starts with it)
+    const getTargetOption = () => Array.from(budgetSelect.options).find(opt => opt.value.startsWith(targetValuePrefix))
+
+    let isUnlockedState = false
+
+    codeInput.addEventListener('input', (e) => {
+      const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
+      const targetOption = getTargetOption()
+      
+      if (targetOption) {
+        if (validCodes.includes(val)) {
+          if (!isUnlockedState) {
+            isUnlockedState = true
+            // Trigger Confetti
+            confetti({
+              particleCount: 150,
+              spread: 100,
+              origin: { y: 0.5 },
+              colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
+              disableForReducedMotion: true
+            })
+            // Add Level Up UI
+            card.classList.add('is-unlocked')
+            submitBtn.querySelector('span')!.textContent = 'Claim My Exclusive Slot'
+            submitBtn.classList.add('is-unlocked-btn')
+          }
+
+          // Add discount visual styles
+          targetOption.innerHTML = discountText
+          targetOption.value = '₹35,000 (Partner Exclusive: ₹27,999)'
+          
+          // Apply green success color to the options
+          budgetSelect.classList.add('has-discount')
+        } else {
+          if (isUnlockedState) {
+            isUnlockedState = false
+            // Revert Level Up UI
+            card.classList.remove('is-unlocked')
+            submitBtn.querySelector('span')!.textContent = 'Apply for Consultation'
+            submitBtn.classList.remove('is-unlocked-btn')
+          }
+          // Revert discount
+          targetOption.innerHTML = originalText
+          targetOption.value = originalText
+          
+          budgetSelect.classList.remove('has-discount')
+        }
+      }
+    })
+    
+    // Ensure select color resets if option changes away from discount
+    budgetSelect.addEventListener('change', (e) => {
+      const val = (e.target as HTMLSelectElement).value
+      if (val.includes('Exclusive')) {
+        budgetSelect.classList.add('has-discount-selected')
+      } else {
+        budgetSelect.classList.remove('has-discount-selected')
+      }
+    })
+  }
 
   let isOpen = false
 
@@ -318,12 +459,22 @@
       border-radius: 1.25rem;
 
       overflow-y: auto;
+      transition: box-shadow 0.5s ease, border-color 0.5s ease;
 
       // hide scrollbar completely
       -ms-overflow-style: none;
       scrollbar-width: none;
       &::-webkit-scrollbar {
         display: none;
+      }
+
+      &.is-unlocked {
+        border-color: rgba(251, 191, 36, 0.4); // Gold tint
+        animation: premium-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, pulse-glow 3s infinite 0.6s;
+
+        .theme-contrasted & {
+          border-color: rgba(251, 191, 36, 0.5);
+        }
       }
 
       .theme-contrasted & {
@@ -384,7 +535,7 @@
     }
 
     &__subtitle {
-      margin: 0 0 2.5rem;
+      margin: 0 0 1.5rem;
       color: rgba(255, 242, 237, 0.7);
       font: 400 clamp(0.875rem, 1.25vw, 1.1rem) / 1.6 font-family(editorial);
 
@@ -393,7 +544,93 @@
       }
 
       @include mq(phone) {
-        margin-bottom: 2rem;
+        margin-bottom: 1.25rem;
+      }
+    }
+
+    &__urgency {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding: 0.75rem 1rem;
+      background: rgba(244, 12, 63, 0.08); // Primary color tint
+      border: 1px solid rgba(244, 12, 63, 0.15);
+      border-radius: 0.5rem;
+      color: rgba(255, 242, 237, 0.85);
+      font: 400 0.875rem / 1.4 font-family(editorial);
+
+      .theme-contrasted & {
+        background: rgba(22, 0, 0, 0.04);
+        border-color: rgba(22, 0, 0, 0.1);
+        color: rgba(22, 0, 0, 0.85);
+      }
+
+      .pulse {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--color-primary);
+        border-radius: 50%;
+        box-shadow: 0 0 0 rgba(244, 12, 63, 0.4);
+        animation: pulse-dot 2s infinite;
+
+        .theme-contrasted & {
+          background: color(secondary);
+          box-shadow: 0 0 0 rgba(22, 0, 0, 0.4);
+        }
+      }
+    }
+
+    &__gauge {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 242, 237, 0.1);
+      border-radius: 3px;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+
+      .theme-contrasted & {
+        background: rgba(22, 0, 0, 0.1);
+      }
+
+      &-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        background: var(--color-primary);
+        border-radius: 3px;
+        transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
+
+        .theme-contrasted & {
+          background: color(secondary);
+        }
+      }
+
+      &-text {
+        position: absolute;
+        top: -24px; // moved up to prevent overlapping the progress bar
+        right: 0;
+        font: 400 0.75rem / 1 font-family(fraktion);
+        color: rgba(255, 242, 237, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        .theme-contrasted & {
+          color: rgba(22, 0, 0, 0.6);
+        }
+
+        span {
+          font-weight: 700;
+          color: rgba(255, 242, 237, 0.9);
+
+          .theme-contrasted & {
+            color: rgba(22, 0, 0, 0.9);
+          }
+        }
       }
     }
 
@@ -516,9 +753,32 @@
         }
       }
 
-      textarea {
+        textarea {
         resize: vertical;
         min-height: 5rem;
+      }
+
+      &-timer {
+        position: absolute;
+        bottom: -1.4rem;
+        right: 0.25rem;
+        margin: 0;
+        font: 400 0.75rem / 1 font-family(fraktion);
+        color: rgba(255, 242, 237, 0.5);
+        
+        .theme-contrasted & {
+          color: rgba(22, 0, 0, 0.55);
+        }
+
+        span {
+          color: var(--color-primary);
+          font-weight: 700;
+          letter-spacing: 0.05em;
+
+          .theme-contrasted & {
+            color: color(secondary);
+          }
+        }
       }
     }
 
@@ -568,6 +828,21 @@
         transform: translateY(0);
       }
 
+      &.is-unlocked-btn {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); // Gold premium gradient
+        box-shadow: 0 4px 20px 0 rgba(251, 191, 36, 0.4);
+        color: #000;
+
+        &:hover {
+          box-shadow: 0 6px 25px rgba(251, 191, 36, 0.35);
+          transform: translateY(-3px) scale(1.02);
+        }
+
+        .theme-contrasted & {
+          color: #000;
+        }
+      }
+
       &.is-loading {
         opacity: 0.6;
         pointer-events: none;
@@ -579,6 +854,18 @@
 
       &:hover .h-arrow {
         transform: translateX(4px);
+      }
+    }
+
+    &__trust {
+      margin-top: 1rem;
+      text-align: center;
+      font: 400 0.8125rem / 1.5 font-family(fraktion);
+      letter-spacing: 0.02em;
+      color: rgba(255, 242, 237, 0.4);
+
+      .theme-contrasted & {
+        color: rgba(22, 0, 0, 0.45);
       }
     }
 
@@ -629,6 +916,65 @@
     to {
       transform: scale(1);
       opacity: 1;
+    }
+  }
+
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(244, 12, 63, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(244, 12, 63, 0);
+    }
+  }
+
+  @keyframes premium-unlock {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+      box-shadow: 0 0 60px rgba(16, 185, 129, 0.4), inset 0 0 30px rgba(16, 185, 129, 0.2);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.1);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0% {
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(16, 185, 129, 0.05);
+    }
+    50% {
+      box-shadow: 0 0 50px rgba(16, 185, 129, 0.35), inset 0 0 25px rgba(16, 185, 129, 0.15);
+    }
+    100% {
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(16, 185, 129, 0.05);
+    }
+  }
+
+  // Gated Pricing Styles
+  .js-hire-budget {
+    &.has-discount option[value*="Exclusive"] {
+      color: #fbbf24; // Gold highlighting
+      
+      .theme-contrasted & {
+        color: #d97706;
+      }
+    }
+
+    &.has-discount-selected {
+      color: #fbbf24 !important;
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+      
+      .theme-contrasted & {
+        color: #d97706 !important;
+        text-shadow: none;
+      }
     }
   }
 </style>
