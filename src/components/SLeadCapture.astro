@@ -12,15 +12,38 @@ const budgetOptions = [
 <section id="lead-capture" class="s-lead" data-intersect="fade-up">
   <div class="s__card">
     <div class="s__info">
-      <h2 class="s__heading">Scale Your Brand<br/>with Pro Solutions.</h2>
-      <p class="s__subtitle">Fill out the form below to receive a custom digital website, app and landing page tailored to your business goals.</p>
+      <h2 class="s__heading">Scale Your Brand<br />with Pro Solutions.</h2>
+      <p class="s__subtitle">
+        Fill out the form below to receive a custom digital website, app and
+        landing page tailored to your business goals.
+      </p>
 
       <div class="s__decor">
-        <svg class="s__star" width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="m24.5 0 3.3 21.2L49 24.5l-21.2 3.3L24.5 49l-3.3-21.2L0 24.5l21.2-3.3L24.5 0z"></path>
+        <svg
+          class="s__star"
+          width="49"
+          height="49"
+          viewBox="0 0 49 49"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m24.5 0 3.3 21.2L49 24.5l-21.2 3.3L24.5 49l-3.3-21.2L0 24.5l21.2-3.3L24.5 0z"
+          >
+          </path>
         </svg>
-        <svg class="s__star s__star--sm" width="24" height="24" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="m24.5 0 3.3 21.2L49 24.5l-21.2 3.3L24.5 49l-3.3-21.2L0 24.5l21.2-3.3L24.5 0z"></path>
+        <svg
+          class="s__star s__star--sm"
+          width="24"
+          height="24"
+          viewBox="0 0 49 49"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m24.5 0 3.3 21.2L49 24.5l-21.2 3.3L24.5 49l-3.3-21.2L0 24.5l21.2-3.3L24.5 0z"
+          >
+          </path>
         </svg>
       </div>
     </div><!-- .s__info -->
@@ -31,33 +54,70 @@ const budgetOptions = [
         action="https://api.web3forms.com/submit"
         method="POST"
       >
-        <input type="hidden" name="access_key" value="daa4c037-78d3-4074-a324-07a29462c91f" />
+        <input
+          type="hidden"
+          name="access_key"
+          value="daa4c037-78d3-4074-a324-07a29462c91f"
+        />
 
         <div class="s__field">
-          <input type="text" name="business_owner_name" id="lead-owner" placeholder=" " required />
+          <input
+            type="text"
+            name="business_owner_name"
+            id="lead-owner"
+            placeholder=" "
+            required
+          />
           <label for="lead-owner">Name of Business Owner</label>
           <span class="s__field__hint">e.g., Kartik</span>
         </div>
 
         <div class="s__field">
-          <input type="text" name="business_name" id="lead-biz" placeholder=" " required />
+          <input
+            type="text"
+            name="business_name"
+            id="lead-biz"
+            placeholder=" "
+            required
+          />
           <label for="lead-biz">Business Name</label>
           <span class="s__field__hint">Your Company Name</span>
         </div>
 
         <div class="s__field">
-          <input type="text" name="business_type" id="lead-type" placeholder=" " required />
+          <input
+            type="text"
+            name="business_type"
+            id="lead-type"
+            placeholder=" "
+            required
+          />
           <label for="lead-type">Type of Business</label>
-          <span class="s__field__hint">e.g., E-commerce, Bakery, Real Estate</span>
+          <span class="s__field__hint">
+            e.g., E-commerce, Bakery, Real Estate
+          </span>
         </div>
 
         <div class="s__field">
-          <input type="email" name="email" id="lead-email" placeholder=" " required inputmode="email" />
+          <input
+            type="email"
+            name="email"
+            id="lead-email"
+            placeholder=" "
+            required
+            inputmode="email"
+          />
           <label for="lead-email">Working Business Email ID</label>
         </div>
 
         <div class="s__field">
-          <input type="text" name="address" id="lead-address" placeholder=" " required />
+          <input
+            type="text"
+            name="address"
+            id="lead-address"
+            placeholder=" "
+            required
+          />
           <label for="lead-address">Your Address</label>
           <span class="s__field__hint">City, State</span>
         </div>
@@ -65,23 +125,34 @@ const budgetOptions = [
         <div class="s__field s__field--select">
           <select name="budget" id="lead-budget" required>
             <option value="" disabled selected></option>
-            {budgetOptions.map((opt) => (
-              <option value={opt}>{opt}</option>
-            ))}
+            {budgetOptions.map((opt) => <option value={opt}>{opt}</option>)}
           </select>
           <label for="lead-budget">Your Budget (INR)</label>
         </div>
 
         <div class="s__field s__field--full">
-          <textarea name="more_info" id="lead-info" placeholder=" " rows="4"></textarea>
+          <textarea name="more_info" id="lead-info" placeholder=" " rows="4">
+          </textarea>
           <label for="lead-info">More Info & Demands</label>
-          <span class="s__field__hint">Tell us about your project goals...</span>
+          <span class="s__field__hint">
+            Tell us about your project goals...
+          </span>
         </div>
 
         <div class="s__field s__field--full s__field--submit">
           <button type="submit" class="s__submit">
             <span class="s__submit__text">Unlock My Growth Strategy</span>
-            <svg class="s__submit__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              class="s__submit__arrow"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
@@ -90,7 +161,17 @@ const budgetOptions = [
       </form>
 
       <div class="s__success js-lead-success" style="display: none;">
-        <svg class="s__success__icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          class="s__success__icon"
+          width="56"
+          height="56"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
           <polyline points="22 4 12 14.01 9 11.01"></polyline>
         </svg>
@@ -260,8 +341,12 @@ const budgetOptions = [
   }
 
   @keyframes star-rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   /* ── Right column: Form ── */
@@ -318,7 +403,9 @@ const budgetOptions = [
 
       pointer-events: none;
       transform-origin: 0 0;
-      transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), color 0.25s ease;
+      transition:
+        transform 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+        color 0.25s ease;
 
       .theme-contrasted & {
         color: rgba(22, 0, 0, 0.45);
@@ -340,7 +427,9 @@ const budgetOptions = [
       font: 400 0.9375rem / 1.5 font-family(editorial);
 
       outline: none;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 
       .theme-contrasted & {
         background: rgba(22, 0, 0, 0.04);
@@ -439,7 +528,10 @@ const budgetOptions = [
     text-transform: uppercase;
     white-space: nowrap;
 
-    transition: box-shadow 0.35s ease, transform 0.25s ease, opacity 0.3s ease;
+    transition:
+      box-shadow 0.35s ease,
+      transform 0.25s ease,
+      opacity 0.3s ease;
 
     .theme-contrasted & {
       background: color(secondary);
@@ -447,11 +539,15 @@ const budgetOptions = [
     }
 
     &:hover {
-      box-shadow: 0 0 24px 4px rgba(244, 12, 63, 0.45), 0 0 64px 8px rgba(244, 12, 63, 0.2);
+      box-shadow:
+        0 0 24px 4px rgba(244, 12, 63, 0.45),
+        0 0 64px 8px rgba(244, 12, 63, 0.2);
       transform: translateY(-2px);
 
       .theme-contrasted & {
-        box-shadow: 0 0 24px 4px rgba(22, 0, 0, 0.25), 0 0 64px 8px rgba(22, 0, 0, 0.1);
+        box-shadow:
+          0 0 24px 4px rgba(22, 0, 0, 0.25),
+          0 0 64px 8px rgba(22, 0, 0, 0.1);
       }
     }
 

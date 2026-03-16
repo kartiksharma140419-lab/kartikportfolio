@@ -22,7 +22,8 @@ import '../styles/global.scss'
 
     <meta
       name="description"
-      content="Take a peek behind the scenes of a senior dev’s awarded portfolio. Clone it, learn from it, build your own. But don’t just steal it—the community will call you out, and you’ll doom yourself to eternal mediocrity." />
+      content="Take a peek behind the scenes of a senior dev’s awarded portfolio. Clone it, learn from it, build your own. But don’t just steal it—the community will call you out, and you’ll doom yourself to eternal mediocrity."
+    />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
 
@@ -51,7 +52,10 @@ import '../styles/global.scss'
     <meta property="og:locale" content="en_GB" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Kartik Sharma - Full Stack Developer" />
-    <meta property="og:description" content="Take a peek behind the scenes of a senior dev’s awarded portfolio. Clone it, learn from it, build your own. But don’t just steal it—the community will call you out, and you’ll doom yourself to eternal mediocrity." />
+    <meta
+      property="og:description"
+      content="Take a peek behind the scenes of a senior dev’s awarded portfolio. Clone it, learn from it, build your own. But don’t just steal it—the community will call you out, and you’ll doom yourself to eternal mediocrity."
+    />
     <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Kartik Portfolio" />
     <meta property="og:image" content="/images/aw-creative-developer.png" />
@@ -146,7 +150,9 @@ import '../styles/global.scss'
             font-size="160"
             fill="currentColor"
             class="js-logo-line-v"
-          >KS</text>
+          >
+            KS
+          </text>
         </svg>
       </div><!-- .sb-logo -->
 
@@ -261,7 +267,7 @@ import '../styles/global.scss'
               entry.target.dispatchEvent(
                 new CustomEvent('intersect', {
                   detail: { isIntersecting: entry.isIntersecting },
-                })
+                }),
               )
 
               if (entry.isIntersecting) {
@@ -269,7 +275,7 @@ import '../styles/global.scss'
                 entry.target.classList.remove(
                   'is-out-of-view',
                   'is-out-of-view-top',
-                  'is-out-of-view-bottom'
+                  'is-out-of-view-bottom',
                 )
               } else {
                 entry.target.classList.remove('is-in-view')
@@ -277,18 +283,18 @@ import '../styles/global.scss'
 
                 entry.target.classList.toggle(
                   'is-out-of-view-top',
-                  entry.boundingClientRect.top < 0
+                  entry.boundingClientRect.top < 0,
                 )
                 entry.target.classList.toggle(
                   'is-out-of-view-bottom',
-                  entry.boundingClientRect.top > 0
+                  entry.boundingClientRect.top > 0,
                 )
               }
             })
           },
           {
             threshold: 0,
-          }
+          },
         )
 
         document.querySelectorAll('[data-intersect]').forEach((el) => {
@@ -440,7 +446,7 @@ import '../styles/global.scss'
             ease: 'power4.inOut',
             stagger: 0.15,
           },
-          0
+          0,
         )
 
         tl.fromTo(
@@ -454,7 +460,7 @@ import '../styles/global.scss'
             ease: 'power4.inOut',
             stagger: 0,
           },
-          1
+          1,
         )
 
         tl.set(logoLinesV, {
@@ -473,7 +479,7 @@ import '../styles/global.scss'
             immediateRender: false,
             stagger: 0.1,
           },
-          2
+          2,
         )
 
         tl.fromTo(
@@ -488,7 +494,7 @@ import '../styles/global.scss'
             immediateRender: false,
             stagger: 0.1,
           },
-          2.1
+          2.1,
         )
 
         tl.from(
@@ -498,7 +504,7 @@ import '../styles/global.scss'
             duration: 3,
             ease: 'power3.inOut',
           },
-          1
+          1,
         )
 
         tl.from(
@@ -508,7 +514,7 @@ import '../styles/global.scss'
             duration: 3,
             ease: 'power3.inOut',
           },
-          1
+          1,
         )
 
         tl.call(
@@ -516,7 +522,7 @@ import '../styles/global.scss'
             document.dispatchEvent(new CustomEvent('intro'))
           },
           null,
-          '-=1.85'
+          '-=1.85',
           // 0.5
         )
 
@@ -532,7 +538,7 @@ import '../styles/global.scss'
             })
           },
           null,
-          5
+          5,
           // 0
         )
       }

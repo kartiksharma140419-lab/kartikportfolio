@@ -21,6 +21,7 @@ No additional restrictions — You may not apply legal terms or technological me
 This project is shared to support learning, experimentation, and growth in the developer community. You are welcome to explore, study, and adapt it for your own personal or educational purposes.
 
 **Do not**:
+
 - Copy/paste it to create your own portfolio without significant modification.
 - Sell, repackage, or commercially exploit it.
 

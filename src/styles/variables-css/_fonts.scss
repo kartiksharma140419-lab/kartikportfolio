@@ -1,10 +1,10 @@
 /**
  * Fonts variables
  */
-@use "sass:list";
-@use "sass:map";
-@use "../variables-scss/fonts" as *;
-@use "../helpers/responsive" as *;
+@use 'sass:list';
+@use 'sass:map';
+@use '../variables-scss/fonts' as *;
+@use '../helpers/responsive' as *;
 
 /* CSS properties */
 :root {

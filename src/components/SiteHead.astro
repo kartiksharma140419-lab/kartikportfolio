@@ -36,7 +36,9 @@ const menu = [
             font-weight="900"
             font-size="160"
             fill="#160000"
-          >KS</text>
+          >
+            KS
+          </text>
         </svg>
 
         <span class="u-sr-only">Kartik S</span>
@@ -45,9 +47,8 @@ const menu = [
 
     <div class="sb-console" role="presentation">
       <div class="sb-console__inner">
-click on hire me and Fill the form
-for having the best website, app
-and landing page for your Buisness
+        click on hire me and Fill the form for having the best website, app and
+        landing page for your Buisness
       </div><!-- .sb-console__inner -->
     </div><!-- .sb-console -->
 
@@ -56,7 +57,10 @@ and landing page for your Buisness
         {
           menu.map((item) => (
             <li class="sb__item js-menu-item">
-              <a href={item.isModal ? '#' : '#' + item.id} class={item.isModal ? 'js-hire-me' : 'js-menu-link'}>
+              <a
+                href={item.isModal ? '#' : '#' + item.id}
+                class={item.isModal ? 'js-hire-me' : 'js-menu-link'}
+              >
                 <span class="sb__text">{item.text}</span>
               </a>
             </li>
@@ -64,8 +68,6 @@ and landing page for your Buisness
         }
       </ul>
     </nav><!-- .sb-menu -->
-
-
 
     <button class="sb-contrast js-contrast" type="button">
       <span
@@ -92,8 +94,6 @@ and landing page for your Buisness
     </aside><!-- .sb-availability -->
 
     <a href="#" class="sb-contact-mobile js-hire-me">Contact me</a>
-
-
   </div><!-- .site-head__container -->
 </header>
 
@@ -142,7 +142,7 @@ and landing page for your Buisness
       this.contrastButton.addEventListener(
         'click',
         this.toggleContrast.bind(this),
-        { passive: true }
+        { passive: true },
       )
 
       this.links.forEach((link) => {
@@ -185,7 +185,7 @@ and landing page for your Buisness
           duration: 1.5,
           ease: 'expo.inOut',
         },
-        1
+        1,
       )
 
       tl.from(
@@ -196,11 +196,8 @@ and landing page for your Buisness
           ease: 'expo.out',
           stagger: 0.1,
         },
-        1.5
+        1.5,
       )
-
-
-
     }
 
     /**
@@ -237,10 +234,10 @@ and landing page for your Buisness
               'contrastchange',
               document.documentElement.classList.contains('theme-contrasted')
                 ? 'contrasted'
-                : 'default'
+                : 'default',
             )
           },
-        }
+        },
       )
 
       if (toX !== '0') {
@@ -262,8 +259,6 @@ and landing page for your Buisness
           t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
       })
     }
-
-
   }
 
   new Section()
@@ -443,8 +438,6 @@ and landing page for your Buisness
         }
       }
     }
-
-
 
     .sb-contrast {
       @include flex(row, center, center);
@@ -627,6 +620,5 @@ and landing page for your Buisness
         white-space: nowrap;
       }
     }
-
   }
 </style>

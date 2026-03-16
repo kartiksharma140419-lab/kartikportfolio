@@ -13,17 +13,20 @@ p {
 }
 
 /* Form Input UX iOS */
-input, select, textarea {
+input,
+select,
+textarea {
   font-size: max(16px, 1em) !important;
 }
 
 /* Touch Targets Optimization */
-a, button {
+a,
+button {
   position: relative;
 
   @media only screen and (max-width: 987px) {
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;

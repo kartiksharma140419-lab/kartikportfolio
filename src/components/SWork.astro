@@ -3,22 +3,22 @@ import AWork from './AWork.astro'
 
 const imageProjects = [
   {
-    caption: 'M.R. Sr. Sec. School',
+    caption: 'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
     site: '#',
     imageSrc: '/images/works/mr-school.png',
   },
   {
-    caption: 'Rishika Bahalgarh – Real Estate',
+    caption: 'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
     site: '#',
     imageSrc: '/images/works/rishika-realestate.png',
   },
   {
-    caption: 'Vanyra – Premium Food Brand',
+    caption: 'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
     site: '#',
     imageSrc: '/images/works/vanyra.png',
   },
   {
-    caption: 'Garhwal Bakery',
+    caption: 'Garhwal Bakery — Interactive digital menu system that drove 20% more foot traffic via Instagram integration.',
     site: '#',
     imageSrc: '/images/works/garhwal-bakery.png',
   },
@@ -262,7 +262,7 @@ for (let i = 0; i < 40; i++) {
      */
     setCtxStyle() {
       const color = getComputedStyle(this.el).getPropertyValue(
-        '--color-primary'
+        '--color-primary',
       )
 
       Ticker.nextTick(() => {
@@ -442,12 +442,14 @@ for (let i = 0; i < 40; i++) {
           el.style.top = ghost.y + 'px'
           el.style.left = ghost.x + 'px'
 
-          el.style.zIndex = String(j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1)
+          el.style.zIndex = String(
+            j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1,
+          )
 
           el.style.setProperty('--ix', String(ghost.i))
           el.style.setProperty(
             '--iy',
-            String(((j + 1) / (letters.length + 1) - 0.5) * 2)
+            String(((j + 1) / (letters.length + 1) - 0.5) * 2),
           )
 
           el.style.setProperty('--ap', String(ghost.ap))
@@ -470,7 +472,7 @@ for (let i = 0; i < 40; i++) {
         el.style.setProperty('--size', String(0.5 + Math.random() * 0.5))
         el.style.setProperty(
           '--y',
-          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1))
+          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1)),
         )
       })
     }
@@ -511,7 +513,7 @@ for (let i = 0; i < 40; i++) {
           duration: 0.75,
           ease: 'power4.in',
         },
-        0
+        0,
       )
 
       tl.fromTo(
@@ -524,7 +526,7 @@ for (let i = 0; i < 40; i++) {
           duration: 0.75,
           ease: 'power3.in',
         },
-        0
+        0,
       )
 
       tl.fromTo(
@@ -537,7 +539,7 @@ for (let i = 0; i < 40; i++) {
           duration: 0.75,
           ease: 'power3.in',
         },
-        0
+        0,
       )
 
       tl.fromTo(
@@ -550,7 +552,7 @@ for (let i = 0; i < 40; i++) {
           duration: 1,
           ease: 'power4.inOut',
         },
-        0
+        0,
       )
 
       tl.fromTo(
@@ -563,7 +565,7 @@ for (let i = 0; i < 40; i++) {
           duration: 0.75,
           ease: 'power4.in',
         },
-        0
+        0,
       )
 
       tl.fromTo(
@@ -580,7 +582,7 @@ for (let i = 0; i < 40; i++) {
           ease: 'slow(0.15, 0.6)',
           stagger: 0.25,
         },
-        0.75
+        0.75,
       )
 
       tl.fromTo(
@@ -593,7 +595,7 @@ for (let i = 0; i < 40; i++) {
           duration: tl.totalDuration(),
           ease: 'power1.out',
         },
-        0.75
+        0.75,
       )
 
       tl.fromTo(
@@ -607,7 +609,7 @@ for (let i = 0; i < 40; i++) {
           ease: 'power4.inOut',
           immediateRender: false,
         },
-        '-=1'
+        '-=1',
       )
 
       tl.fromTo(
@@ -621,7 +623,7 @@ for (let i = 0; i < 40; i++) {
           ease: 'power4.inOut',
           immediateRender: false,
         },
-        '-=1'
+        '-=1',
       )
 
       tl.fromTo(
@@ -635,7 +637,7 @@ for (let i = 0; i < 40; i++) {
           ease: 'power3.inOut',
           immediateRender: false,
         },
-        '-=1'
+        '-=1',
       )
 
       tl.fromTo(
@@ -649,7 +651,7 @@ for (let i = 0; i < 40; i++) {
           ease: 'power3.inOut',
           immediateRender: false,
         },
-        '-=1'
+        '-=1',
       )
 
       tl.fromTo(
@@ -662,7 +664,7 @@ for (let i = 0; i < 40; i++) {
           duration: 1,
           ease: 'power4.inOut',
         },
-        '-=1'
+        '-=1',
       )
     }
 
@@ -671,7 +673,7 @@ for (let i = 0; i < 40; i++) {
      */
     loadNextVideo() {
       const video = Array.from(this.videos).find(
-        (video) => !video.classList.contains('is-loaded')
+        (video) => !video.classList.contains('is-loaded'),
       )
 
       if (video) {
@@ -683,7 +685,7 @@ for (let i = 0; i < 40; i++) {
             () => {
               this.videoLoaded(video)
             },
-            { once: true }
+            { once: true },
           )
 
           video.setAttribute('src', video.getAttribute('data-src'))
@@ -812,20 +814,20 @@ for (let i = 0; i < 40; i++) {
       this.scrollProgress =
         Math.max(
           Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')),
-          0
+          0,
         ) *
           -1 +
         (1 -
           Math.max(
             Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')),
-            0
+            0,
           ))
       this.smoothScrollProgress +=
         (this.scrollProgress - this.smoothScrollProgress) * 0.1
 
       this.el.style.setProperty(
         '--scroll-progress',
-        String(this.scrollProgress)
+        String(this.scrollProgress),
       )
 
       // Movement
@@ -1044,10 +1046,8 @@ for (let i = 0; i < 40; i++) {
 
           color: color(shadow);
 
-          opacity: min(calc( var(--state) * 2 ), 1);
-          transform: scale(
-              1.05, 1.02
-            )
+          opacity: min(calc(var(--state) * 2), 1);
+          transform: scale(1.05, 1.02)
             translate3d(
               calc(var(--head) * 0.1rem * var(--state) * var(--state)),
               0,

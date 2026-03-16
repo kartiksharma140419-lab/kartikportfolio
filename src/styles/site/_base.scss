@@ -2,8 +2,8 @@
  * Global selectors and body/html rules
  */
 
-@use "../helpers/colors" as *;
-@use "../helpers/fonts" as *;
+@use '../helpers/colors' as *;
+@use '../helpers/fonts' as *;
 
 ::selection {
   background: color(secondary);
@@ -46,7 +46,9 @@ body {
 
 /* Device-specific flows */
 @media (hover: hover) and (pointer: fine) {
-  a, button, .interactive {
+  a,
+  button,
+  .interactive {
     transition-duration: 0.1s !important;
   }
 }

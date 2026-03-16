@@ -33,6 +33,7 @@ npm run dev
 ---
 
 ## 🧠 Why This Is Open
+
 Curiosity and learning are everything in creative development.
 I learned the most by studying real code—Codrops demos, CodePen experiments, random GitHub repos.
 This portfolio gave me way more visibility than I expected. Now it’s time to return the love.
@@ -40,6 +41,7 @@ This portfolio gave me way more visibility than I expected. Now it’s time to r
 ---
 
 ## 📄 License
+
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
 
 That means:

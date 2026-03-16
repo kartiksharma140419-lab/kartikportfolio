@@ -2,7 +2,7 @@
  * Colors helpers
  */
 @use 'sass:map';
-@use "../variables-scss/colors" as *;
+@use '../variables-scss/colors' as *;
 
 /* Get a color value */
 @function color($key, $alpha: 1) {

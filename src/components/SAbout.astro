@@ -14,7 +14,7 @@ const awards = {
     commArt2017: 'Greater Profits By Expanding Online Workflows',
     netMag2016: 'Animated Website For <br/>Food Industries',
     CSSDA2016: 'Best Landing Pages For<br/> Real Estate Clients',
-    CSSDA2015: 'Let\'s Work Together On <br/> Your Next Projects',
+    CSSDA2015: "Let's Work Together On <br/> Your Next Projects",
   },
 }
 ---
@@ -26,21 +26,33 @@ const awards = {
 
       <div class="s__content">
         <p data-intersect="fade-up">
-         Curiosity and the drive to learn are the most valuable skills for any creative developer. That hunger to understand how things work, to find clever workarounds, and to constantly push boundaries—that’s what makes this craft so rewarding.
+          Curiosity and the drive to learn are the most valuable skills for any
+          creative developer. That hunger to understand how things work, to find
+          clever workarounds, and to constantly push boundaries—that’s what
+          makes this craft so rewarding.
         </p>
 
         <p data-intersect="fade-up">
-          Over the years, I’ve learned more from studying other people’s code than from any course or tutorial. Digging through Codrops experiments, exploring CodePen creations, and analyzing real-world projects—that’s how I leveled up. And it’s still part of my daily routine.
+          Over the years, I’ve learned more from studying other people’s code
+          than from any course or tutorial. Digging through Codrops experiments,
+          exploring CodePen creations, and analyzing real-world projects—that’s
+          how I leveled up. And it’s still part of my daily routine.
         </p>
 
         <p data-intersect="fade-up">
-          This portfolio brought me more recognition than I ever expected. What started as a quiet relaunch of my digital presence ended up having real world clients.
+          This portfolio brought me more recognition than I ever expected. What
+          started as a quiet relaunch of my digital presence ended up having
+          real world clients.
         </p>
 
         <p data-intersect="fade-up">
-          I’m showcasing this site to share the knowledge behind it. If you’re willing to work with me , that's a pleasure for me.
+          I’m showcasing this site to share the knowledge behind it. If you’re
+          willing to work with me , that's a pleasure for me.
         </p>
 
+        <p data-intersect="fade-up">
+          <strong>Specialist in Workflow Automation (n8n) and Voice AI Agents to replace manual business teams.</strong>
+        </p>
       </div><!-- .s__content -->
     </div><!-- .s__block -->
 
@@ -76,8 +88,6 @@ const awards = {
             </li>
           ))
         }
-
-
       </ul><!-- .s__content -->
     </div><!-- .s__block -->
   </div><!-- .s__inner -->
@@ -139,8 +149,8 @@ const awards = {
       this.inner = this.el.querySelector('.js-inner')
       this.svg = this.el.querySelector('.js-grid')
       this.path = this.el.querySelector('.js-path')
-      ;(this.canvas = document.querySelector('.js-canvas')),
-        (this.ctx = this.canvas.getContext('2d'))
+      ;((this.canvas = document.querySelector('.js-canvas')),
+        (this.ctx = this.canvas.getContext('2d')))
       this.awards = this.el.querySelectorAll('.js-award')
 
       // Properties
@@ -194,7 +204,7 @@ const awards = {
         },
         {
           threshold: 0.5,
-        }
+        },
       )
 
       this.awards.forEach((award) => {
@@ -525,7 +535,7 @@ const awards = {
       const { el, ctx, smileyImages, smileys } = this
 
       const image = document.documentElement.classList.contains(
-        'theme-contrasted'
+        'theme-contrasted',
       )
         ? smileyImages.contrasted
         : smileyImages.main
@@ -663,14 +673,14 @@ const awards = {
 
       ctx.translate(
         this.x + this.width * 0.5 * this.a,
-        this.y + this.height * 0.5 * this.a
+        this.y + this.height * 0.5 * this.a,
       )
 
       ctx.rotate((this.r * Math.PI) / 180)
 
       ctx.translate(
         -this.x - this.width * 0.5 * this.a,
-        -this.y - this.height * 0.5 * this.a
+        -this.y - this.height * 0.5 * this.a,
       )
 
       ctx.drawImage(
@@ -678,7 +688,7 @@ const awards = {
         this.x,
         this.y,
         this.width * this.a,
-        this.height * this.a
+        this.height * this.a,
       )
 
       ctx.restore()
@@ -1006,15 +1016,15 @@ const awards = {
           }
         }
 
-      &--netMag2016 {
-        grid-column: 3 / 5;
-        grid-row: 2 / 3;
-
-        @include mq(tablet-sm) {
+        &--netMag2016 {
           grid-column: 3 / 5;
           grid-row: 2 / 3;
+
+          @include mq(tablet-sm) {
+            grid-column: 3 / 5;
+            grid-row: 2 / 3;
+          }
         }
-      }
 
         &--commArt2017 {
           grid-column: 1 / 5;
@@ -1035,8 +1045,6 @@ const awards = {
             grid-row: 4 / 6;
           }
         }
-
-
 
         &--BACKEND-DEVELOPER {
           grid-column: 2 / 4;

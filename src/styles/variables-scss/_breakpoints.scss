@@ -1,7 +1,7 @@
 /**
  * Breakpoints variables
  */
-@use "sass:map";
+@use 'sass:map';
 
 $theme-breakpoints: (
   desktop-xl: 'only screen and (min-width: 2000px)',
@@ -10,12 +10,16 @@ $theme-breakpoints: (
   desktop-sm: 'only screen and (max-width: 1280px)',
   desktop-xs: 'only screen and (max-width: 1080px)',
   tablet: 'only screen and (max-width: 987px)',
-  tablet-portrait: 'only screen and (max-width: 987px) and (orientation: portrait)',
-  tablet-landscape: 'only screen and (max-width: 987px) and (orientation: landscape)',
+  tablet-portrait:
+    'only screen and (max-width: 987px) and (orientation: portrait)',
+  tablet-landscape:
+    'only screen and (max-width: 987px) and (orientation: landscape)',
   tablet-sm: 'only screen and (max-width: 767px)',
-  phone: 'only screen and (max-width: 767px) and (orientation: landscape), only screen and (max-width: 576px)',
-  phone-landscape: 'only screen and (max-width: 767px) and (orientation: landscape)',
+  phone:
+    'only screen and (max-width: 767px) and (orientation: landscape), only screen and (max-width: 576px)',
+  phone-landscape:
+    'only screen and (max-width: 767px) and (orientation: landscape)',
   sm-height: 'only screen and (max-height:480px)',
   phone-sm: 'only screen and (max-width:400px)',
-  phone-xs: 'only screen and (max-width:360px)'
+  phone-xs: 'only screen and (max-width:360px)',
 );
