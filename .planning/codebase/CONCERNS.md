@@ -6,26 +6,28 @@
 
 Several components are very large single files, mixing template, script, and styles:
 
-| Component          | Size     | Lines (est.) |
-|--------------------|----------|-------------|
-| `SMyWay.astro`     | 31,169 B | ~800+       |
-| `SAbout.astro`     | 27,431 B | ~700+       |
-| `SWork.astro`      | 25,315 B | ~650+       |
-| `SCTA.astro`       | 24,469 B | ~630+       |
-| `SHireModal.astro` | 16,440 B | ~420+       |
-| `SLeadCapture.astro` | 14,856 B | ~380+    |
+| Component            | Size     | Lines (est.) |
+| -------------------- | -------- | ------------ |
+| `SMyWay.astro`       | 31,169 B | ~800+        |
+| `SAbout.astro`       | 27,431 B | ~700+        |
+| `SWork.astro`        | 25,315 B | ~650+        |
+| `SCTA.astro`         | 24,469 B | ~630+        |
+| `SHireModal.astro`   | 16,440 B | ~420+        |
+| `SLeadCapture.astro` | 14,856 B | ~380+        |
 
 These files could become difficult to maintain as the project grows.
 
 ### GSAP Club GreenSock Plugins
 
 The project uses premium GSAP plugins (`DrawSVGPlugin`, `SplitText`) which require a Club GreenSock membership. If the license expires:
+
 - SVG line drawing animations will break
 - Character-level text animations will break
 
 ### Global `window` Mutations
 
 The `Site` class in `index.astro` attaches several properties to `window`:
+
 - `window.safeWidth`, `window.safeHeight`
 - `window.maxScrollTop`, `window.scrollProgress`
 - `window.lenis`
@@ -35,6 +37,7 @@ This creates implicit global state coupling.
 ### Singleton Pattern in Utilities
 
 `Emitter.js` and `Ticker.js` export singleton instances (`export default new Emitter()`). This works for a single-page site but could cause issues with:
+
 - Server-side rendering (if ever migrated)
 - Testing isolation
 - Multiple page navigation
@@ -79,6 +82,7 @@ The intro animation in `index.astro` uses hardcoded time offsets (`'-=1.85'`, `5
 ### IntersectionObserver + GSAP Interplay
 
 The `intersect` event system relies on precise coordination between:
+
 - IntersectionObserver thresholds
 - Emitter events
 - GSAP ScrollTrigger

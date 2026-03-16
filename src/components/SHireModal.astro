@@ -27,16 +27,20 @@
 
     <h2 class="hire-modal__title">Apply for Priority<br />Onboarding.</h2>
     <p class="hire-modal__subtitle">
-      I only accept 10 high-impact projects per month to ensure elite quality. Secure your slot in the queue below.
+      I only accept 10 high-impact projects per month to ensure elite quality.
+      Secure your slot in the queue below.
     </p>
 
     <div class="hire-modal__gauge js-gauge-container">
       <div class="hire-modal__gauge-fill js-gauge-fill"></div>
-      <p class="hire-modal__gauge-text"><span class="js-gauge-text">0%</span> Application Strength</p>
+      <p class="hire-modal__gauge-text">
+        <span class="js-gauge-text">0%</span> Application Strength
+      </p>
     </div>
 
     <div class="hire-modal__urgency js-hire-urgency">
-      <span class="pulse"></span> Limited slots left for making your business website, app, or landing page.
+      <span class="pulse"></span> Limited slots left for making your business website,
+      app, or landing page.
     </div>
 
     <form
@@ -104,14 +108,20 @@
           class="js-hire-code"
         />
         <label for="modal-code">Exclusive Partner Code (Optional)</label>
-        <p class="hf__field-timer">Coupon code valid for: <span class="js-countdown-timer">23:59:59</span></p>
+        <p class="hf__field-timer">
+          Coupon code valid for: <span class="js-countdown-timer">
+            23:59:59
+          </span>
+        </p>
       </div>
 
       <div class="hf__field hf__field--select hf__field--full">
         <select name="budget" id="modal-budget" class="js-hire-budget" required>
           <option value="" disabled selected></option>
           <option value="₹20,000">Starter (₹20,000)</option>
-          <option value="₹35,000" data-original="₹35,000">Pro / Bestseller (₹35,000)</option>
+          <option value="₹35,000" data-original="₹35,000">
+            Pro / Bestseller (₹35,000)
+          </option>
           <option value="₹50,000">Scale (₹50,000)</option>
           <option value="₹80,000">Enterprise (₹80,000+)</option>
         </select>
@@ -119,7 +129,13 @@
       </div>
 
       <div class="hf__field hf__field--full">
-        <textarea name="more_info" id="modal-info" placeholder=" " rows="3" required>
+        <textarea
+          name="more_info"
+          id="modal-info"
+          placeholder=" "
+          rows="3"
+          required
+        >
         </textarea>
         <label for="modal-info">Describe your growth goals & timelines</label>
       </div>
@@ -142,7 +158,9 @@
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </button>
-        <p class="hire-modal__trust">🔒 100% Secure. We never share your data.</p>
+        <p class="hire-modal__trust">
+          🔒 100% Secure. We never share your data.
+        </p>
       </div>
     </form>
 
@@ -179,17 +197,21 @@
 
   const form = document.querySelector('.js-hire-form') as HTMLFormElement
   const success = document.querySelector('.js-hire-success') as HTMLElement
-  const submitBtn = document.querySelector('.js-hire-submit') as HTMLButtonElement
+  const submitBtn = document.querySelector(
+    '.js-hire-submit',
+  ) as HTMLButtonElement
 
   // Gauge Logic
-  const inputs = form?.querySelectorAll('input[required], select[required], textarea[required]') as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  const inputs = form?.querySelectorAll(
+    'input[required], select[required], textarea[required]',
+  ) as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   const gaugeFill = document.querySelector('.js-gauge-fill') as HTMLElement
   const gaugeText = document.querySelector('.js-gauge-text') as HTMLElement
 
   const updateGauge = () => {
     if (!inputs.length) return
     let filled = 0
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       if (input.value.trim() !== '') {
         filled++
       }
@@ -197,7 +219,7 @@
     const percentage = Math.round((filled / inputs.length) * 100)
     if (gaugeFill) gaugeFill.style.width = `${percentage}%`
     if (gaugeText) gaugeText.textContent = `${percentage}%`
-    
+
     // Change color as it gets closer to 100
     if (percentage === 100) {
       gaugeFill.style.background = '#10b981' // Success green
@@ -207,15 +229,17 @@
   }
 
   if (inputs) {
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       input.addEventListener('input', updateGauge)
       input.addEventListener('change', updateGauge)
     })
   }
 
   // 24 Hour Countdown Timer Logic
-  const timerDisplay = document.querySelector('.js-countdown-timer') as HTMLElement
-  
+  const timerDisplay = document.querySelector(
+    '.js-countdown-timer',
+  ) as HTMLElement
+
   if (timerDisplay) {
     // 24 hours in seconds
     let timeRemaining = 24 * 60 * 60 - 1
@@ -229,12 +253,12 @@
       if (timerDisplay) {
         timerDisplay.textContent = formattedTime
       }
-      
+
       if (timeRemaining > 0) {
         timeRemaining--
       }
     }
-    
+
     // Initial call
     updateTimer()
     setInterval(updateTimer, 1000)
@@ -242,27 +266,36 @@
 
   // Gated Pricing Logic
   const codeInput = document.querySelector('.js-hire-code') as HTMLInputElement
-  const budgetSelect = document.querySelector('.js-hire-budget') as HTMLSelectElement
-  
+  const budgetSelect = document.querySelector(
+    '.js-hire-budget',
+  ) as HTMLSelectElement
+
   if (codeInput && budgetSelect) {
     const validCodes = ['BHAVYA5', 'BHAVYA24', 'GROW20']
     const originalText = '₹35,000'
     const targetValuePrefix = '₹35,000'
-    
+
     // Helper to generate unicode strikethrough for standard <option> tags
-    const strike = (str: string) => str.split('').map(char => char + '\u0336').join('')
+    const strike = (str: string) =>
+      str
+        .split('')
+        .map((char) => char + '\u0336')
+        .join('')
     const strikethroughText = strike(originalText)
     const discountText = ` ${strikethroughText} → ₹27,999 (Partner Exclusive)`
 
     // Find the option initially (when value is exactly ₹35,000 or starts with it)
-    const getTargetOption = () => Array.from(budgetSelect.options).find(opt => opt.value.startsWith(targetValuePrefix))
+    const getTargetOption = () =>
+      Array.from(budgetSelect.options).find((opt) =>
+        opt.value.startsWith(targetValuePrefix),
+      )
 
     let isUnlockedState = false
 
     codeInput.addEventListener('input', (e) => {
       const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
       const targetOption = getTargetOption()
-      
+
       if (targetOption) {
         if (validCodes.includes(val)) {
           if (!isUnlockedState) {
@@ -273,18 +306,19 @@
               spread: 100,
               origin: { y: 0.5 },
               colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
-              disableForReducedMotion: true
+              disableForReducedMotion: true,
             })
             // Add Level Up UI
             card.classList.add('is-unlocked')
-            submitBtn.querySelector('span')!.textContent = 'Claim My Exclusive Slot'
+            submitBtn.querySelector('span')!.textContent =
+              'Claim My Exclusive Slot'
             submitBtn.classList.add('is-unlocked-btn')
           }
 
           // Add discount visual styles
           targetOption.innerHTML = discountText
           targetOption.value = '₹35,000 (Partner Exclusive: ₹27,999)'
-          
+
           // Apply green success color to the options
           budgetSelect.classList.add('has-discount')
         } else {
@@ -292,18 +326,19 @@
             isUnlockedState = false
             // Revert Level Up UI
             card.classList.remove('is-unlocked')
-            submitBtn.querySelector('span')!.textContent = 'Apply for Consultation'
+            submitBtn.querySelector('span')!.textContent =
+              'Apply for Consultation'
             submitBtn.classList.remove('is-unlocked-btn')
           }
           // Revert discount
           targetOption.innerHTML = originalText
           targetOption.value = originalText
-          
+
           budgetSelect.classList.remove('has-discount')
         }
       }
     })
-    
+
     // Ensure select color resets if option changes away from discount
     budgetSelect.addEventListener('change', (e) => {
       const val = (e.target as HTMLSelectElement).value
@@ -459,7 +494,9 @@
       border-radius: 1.25rem;
 
       overflow-y: auto;
-      transition: box-shadow 0.5s ease, border-color 0.5s ease;
+      transition:
+        box-shadow 0.5s ease,
+        border-color 0.5s ease;
 
       // hide scrollbar completely
       -ms-overflow-style: none;
@@ -470,7 +507,9 @@
 
       &.is-unlocked {
         border-color: rgba(251, 191, 36, 0.4); // Gold tint
-        animation: premium-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, pulse-glow 3s infinite 0.6s;
+        animation:
+          premium-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+          pulse-glow 3s infinite 0.6s;
 
         .theme-contrasted & {
           border-color: rgba(251, 191, 36, 0.5);
@@ -485,6 +524,9 @@
       @include mq(phone) {
         padding: 3rem 1.5rem 2rem;
         max-height: 95vh;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(22, 0, 0, 0.98);
       }
     }
 
@@ -603,7 +645,9 @@
         width: 0%;
         background: var(--color-primary);
         border-radius: 3px;
-        transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
+        transition:
+          width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+          background-color 0.4s ease;
 
         .theme-contrasted & {
           background: color(secondary);
@@ -753,7 +797,7 @@
         }
       }
 
-        textarea {
+      textarea {
         resize: vertical;
         min-height: 5rem;
       }
@@ -765,7 +809,7 @@
         margin: 0;
         font: 400 0.75rem / 1 font-family(fraktion);
         color: rgba(255, 242, 237, 0.5);
-        
+
         .theme-contrasted & {
           color: rgba(22, 0, 0, 0.55);
         }
@@ -829,7 +873,11 @@
       }
 
       &.is-unlocked-btn {
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); // Gold premium gradient
+        background: linear-gradient(
+          135deg,
+          #fbbf24 0%,
+          #f59e0b 100%
+        ); // Gold premium gradient
         box-shadow: 0 4px 20px 0 rgba(251, 191, 36, 0.4);
         color: #000;
 
@@ -937,31 +985,41 @@
     }
     50% {
       transform: scale(1.03);
-      box-shadow: 0 0 60px rgba(16, 185, 129, 0.4), inset 0 0 30px rgba(16, 185, 129, 0.2);
+      box-shadow:
+        0 0 60px rgba(16, 185, 129, 0.4),
+        inset 0 0 30px rgba(16, 185, 129, 0.2);
     }
     100% {
       transform: scale(1);
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.1);
+      box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.2),
+        inset 0 0 15px rgba(16, 185, 129, 0.1);
     }
   }
 
   @keyframes pulse-glow {
     0% {
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(16, 185, 129, 0.05);
+      box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.15),
+        inset 0 0 15px rgba(16, 185, 129, 0.05);
     }
     50% {
-      box-shadow: 0 0 50px rgba(16, 185, 129, 0.35), inset 0 0 25px rgba(16, 185, 129, 0.15);
+      box-shadow:
+        0 0 50px rgba(16, 185, 129, 0.35),
+        inset 0 0 25px rgba(16, 185, 129, 0.15);
     }
     100% {
-      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15), inset 0 0 15px rgba(16, 185, 129, 0.05);
+      box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.15),
+        inset 0 0 15px rgba(16, 185, 129, 0.05);
     }
   }
 
   // Gated Pricing Styles
   .js-hire-budget {
-    &.has-discount option[value*="Exclusive"] {
+    &.has-discount option[value*='Exclusive'] {
       color: #fbbf24; // Gold highlighting
-      
+
       .theme-contrasted & {
         color: #d97706;
       }
@@ -970,7 +1028,7 @@
     &.has-discount-selected {
       color: #fbbf24 !important;
       text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
-      
+
       .theme-contrasted & {
         color: #d97706 !important;
         text-shadow: none;

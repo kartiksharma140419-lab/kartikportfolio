@@ -85,26 +85,26 @@ AW-2025-Portfolio/
 
 ### Components
 
-| Prefix | Meaning         | Examples                           |
-|--------|-----------------|------------------------------------|
-| `S`    | Section         | `SHero`, `SAbout`, `SWork`, `SCTA` |
-| `A`    | Atom (reusable) | `ASeparator`, `AWaves`, `AWork`    |
+| Prefix | Meaning         | Examples                                |
+| ------ | --------------- | --------------------------------------- |
+| `S`    | Section         | `SHero`, `SAbout`, `SWork`, `SCTA`      |
+| `A`    | Atom (reusable) | `ASeparator`, `AWaves`, `AWork`         |
 | `Site` | Site-level      | `SiteHead`, `SiteFoot`, `SiteScrollbar` |
 
 ### CSS Classes
 
-| Pattern            | Usage                    | Example              |
-|--------------------|--------------------------|----------------------|
-| `s-section-name`   | Section root             | `.s-hero`            |
-| `s__element`       | Section child (BEM-ish)  | `.s__title`          |
-| `sb-block`         | Sub-block within section | `.sb-logo`, `.sb-menu` |
-| `sb__element`      | Sub-block child          | `.sb__text`          |
-| `site-*`           | Site-level elements      | `.site-head`, `.site-wrapper` |
-| `js-*`             | JS hooks (no styling)    | `.js-content`, `.js-word` |
-| `is-*`             | State classes            | `.is-in-view`, `.is-scroll-blocked` |
-| `u-*`              | Utility classes          | `.u-sr-only`         |
-| `theme-*`          | Theme classes            | `.theme-contrasted`  |
-| `data-intersect`   | IntersectionObserver target | `data-intersect="fade-up"` |
+| Pattern          | Usage                       | Example                             |
+| ---------------- | --------------------------- | ----------------------------------- |
+| `s-section-name` | Section root                | `.s-hero`                           |
+| `s__element`     | Section child (BEM-ish)     | `.s__title`                         |
+| `sb-block`       | Sub-block within section    | `.sb-logo`, `.sb-menu`              |
+| `sb__element`    | Sub-block child             | `.sb__text`                         |
+| `site-*`         | Site-level elements         | `.site-head`, `.site-wrapper`       |
+| `js-*`           | JS hooks (no styling)       | `.js-content`, `.js-word`           |
+| `is-*`           | State classes               | `.is-in-view`, `.is-scroll-blocked` |
+| `u-*`            | Utility classes             | `.u-sr-only`                        |
+| `theme-*`        | Theme classes               | `.theme-contrasted`                 |
+| `data-intersect` | IntersectionObserver target | `data-intersect="fade-up"`          |
 
 ### SCSS Files
 
@@ -113,15 +113,15 @@ AW-2025-Portfolio/
 
 ## Key Locations
 
-| Purpose              | Path                              |
-|----------------------|-----------------------------------|
-| Add a new page       | `src/pages/`                      |
-| Add a new component  | `src/components/`                 |
-| Modify colors        | `src/styles/variables-scss/_colors.scss` |
+| Purpose              | Path                                          |
+| -------------------- | --------------------------------------------- |
+| Add a new page       | `src/pages/`                                  |
+| Add a new component  | `src/components/`                             |
+| Modify colors        | `src/styles/variables-scss/_colors.scss`      |
 | Modify breakpoints   | `src/styles/variables-scss/_breakpoints.scss` |
-| Modify fonts         | `src/styles/variables-scss/_fonts.scss` |
-| Add CSS variables    | `src/styles/variables-css/`       |
-| Add utility classes  | `src/styles/utilities/`           |
-| Add SCSS helpers     | `src/styles/helpers/`             |
-| Add static assets    | `public/`                         |
-| Add processed assets | `src/assets/`                     |
+| Modify fonts         | `src/styles/variables-scss/_fonts.scss`       |
+| Add CSS variables    | `src/styles/variables-css/`                   |
+| Add utility classes  | `src/styles/utilities/`                       |
+| Add SCSS helpers     | `src/styles/helpers/`                         |
+| Add static assets    | `public/`                                     |
+| Add processed assets | `src/assets/`                                 |
