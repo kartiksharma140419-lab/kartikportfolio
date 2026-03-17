@@ -113,18 +113,61 @@ import '../styles/global.scss'
 
       <SWork />
 
-      <!-- Worth Every Penny Review Block -->
-      <section class="s-review" data-intersect>
-        <div class="s-review__inner">
-          <blockquote class="s-review__quote">
-            <p class="s-review__text">
-              &ldquo;Worth every penny. Kartik didn&rsquo;t just build a site;
-              he built a system that doubled our leads in 30 days.&rdquo;
-            </p>
-            <footer class="s-review__source">
-              &mdash; Verified Client Review
-            </footer>
-          </blockquote>
+      <!-- Testimonial Marquee Carousel -->
+      <section class="s-review-marquee" data-intersect>
+        <div class="s-review-marquee__track js-marquee-track">
+          <!-- Set 1 (original) -->
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;Worth every penny. Kartik didn&rsquo;t just build a site; he built a system that doubled our leads in 30 days.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;Our online revenue jumped 3x within 60 days of launch. Kartik&rsquo;s system isn&rsquo;t a website&mdash;it&rsquo;s a revenue engine.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;We replaced our entire manual follow-up team with Kartik&rsquo;s automation. ROI was visible in the first week.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;From concept to deployment in 14 days. The site now converts at 8.5%&mdash;triple our industry average.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;Kartik built us a complete digital ecosystem&mdash;website, CRM integration, and AI chatbot. Our customer acquisition cost dropped by 40%.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <!-- Set 2 (clone for seamless loop) -->
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;Worth every penny. Kartik didn&rsquo;t just build a site; he built a system that doubled our leads in 30 days.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;Our online revenue jumped 3x within 60 days of launch. Kartik&rsquo;s system isn&rsquo;t a website&mdash;it&rsquo;s a revenue engine.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;We replaced our entire manual follow-up team with Kartik&rsquo;s automation. ROI was visible in the first week.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;From concept to deployment in 14 days. The site now converts at 8.5%&mdash;triple our industry average.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
+          <div class="s-review-marquee__card">
+            <div class="s-review-marquee__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="s-review-marquee__text">&ldquo;Kartik built us a complete digital ecosystem&mdash;website, CRM integration, and AI chatbot. Our customer acquisition cost dropped by 40%.&rdquo;</p>
+            <footer class="s-review-marquee__source"><span class="s-review-marquee__badge">&#10003; Verified Client</span></footer>
+          </div>
         </div>
       </section>
 
@@ -764,49 +807,91 @@ import '../styles/global.scss'
 
       pointer-events: none;
     }
-    .s-review {
+    .s-review-marquee {
       position: relative;
       z-index: 3;
-
-      padding: 6rem 1rem;
+      overflow: hidden;
+      padding: 5rem 0;
 
       @include mq(phone) {
-        padding: 4rem 0.5rem;
+        padding: 3rem 0;
       }
 
-      &__inner {
-        max-width: 52rem;
-        margin: 0 auto;
-        padding: 4rem;
-
-        border: 1px solid color(secondary);
+      &__track {
+        display: flex;
+        gap: 2rem;
+        width: max-content;
+        animation: marquee-scroll 50s linear infinite;
+        will-change: transform;
+        pointer-events: none;
 
         @include mq(phone) {
-          padding: 2.5rem 1.5rem;
+          gap: 1.25rem;
+          animation-duration: 35s;
         }
       }
 
-      &__quote {
-        margin: 0;
-        padding: 0;
+      &__card {
+        flex-shrink: 0;
+        width: 26rem;
+        padding: 2.5rem 2rem;
+
+        border: 1px solid color(secondary);
+        background: color(primary);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+        @include mq(phone) {
+          width: 20rem;
+          padding: 2rem 1.5rem;
+        }
+
+        &:hover {
+          border-color: color(secondary);
+          box-shadow: 0 0 0 1px color(secondary);
+        }
+      }
+
+      &__stars {
+        font-size: 1.25rem;
+        letter-spacing: 0.15em;
+        color: #d4a017;
+        margin-bottom: 1.25rem;
       }
 
       &__text {
-        margin: 0 0 1.5rem;
-
-        font: 200 clamp(1.25rem, 2.5vw, 2rem) / 1.6 font-family(editorial);
+        margin: 0 0 1.25rem;
+        font: 200 clamp(0.95rem, 1.5vw, 1.15rem) / 1.7 font-family(editorial);
         color: color(secondary);
-        text-align: center;
       }
 
       &__source {
-        font: 700 12px / 24px font-family(fraktion);
-        letter-spacing: 0.1em;
+        font: 700 11px / 1 font-family(fraktion);
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        text-align: center;
-
         color: color(secondary);
-        opacity: 0.6;
+        opacity: 0.55;
+      }
+
+      &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+      }
+    }
+
+    @keyframes marquee-scroll {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
       }
     }
   </style>
