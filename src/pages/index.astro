@@ -113,6 +113,21 @@ import '../styles/global.scss'
 
       <SWork />
 
+      <!-- Worth Every Penny Review Block -->
+      <section class="s-review" data-intersect>
+        <div class="s-review__inner">
+          <blockquote class="s-review__quote">
+            <p class="s-review__text">
+              &ldquo;Worth every penny. Kartik didn&rsquo;t just build a site;
+              he built a system that doubled our leads in 30 days.&rdquo;
+            </p>
+            <footer class="s-review__source">
+              &mdash; Verified Client Review
+            </footer>
+          </blockquote>
+        </div>
+      </section>
+
       <ASeparator style="secondary" />
 
       <SMyWay />
@@ -748,6 +763,51 @@ import '../styles/global.scss'
       will-change: border-width;
 
       pointer-events: none;
+    }
+    .s-review {
+      position: relative;
+      z-index: 3;
+
+      padding: 6rem 1rem;
+
+      @include mq(phone) {
+        padding: 4rem 0.5rem;
+      }
+
+      &__inner {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 4rem;
+
+        border: 1px solid color(secondary);
+
+        @include mq(phone) {
+          padding: 2.5rem 1.5rem;
+        }
+      }
+
+      &__quote {
+        margin: 0;
+        padding: 0;
+      }
+
+      &__text {
+        margin: 0 0 1.5rem;
+
+        font: 200 clamp(1.25rem, 2.5vw, 2rem) / 1.6 font-family(editorial);
+        color: color(secondary);
+        text-align: center;
+      }
+
+      &__source {
+        font: 700 12px / 24px font-family(fraktion);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-align: center;
+
+        color: color(secondary);
+        opacity: 0.6;
+      }
     }
   </style>
 </html>

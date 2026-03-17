@@ -1,0 +1,336 @@
+﻿01:38:00 [content] Syncing content
+01:38:00 [content] Synced content
+01:38:00 [types] Generated 342ms
+01:38:00 [check] Getting diagnostics for Astro files in C:\kartik portfolio 2\AW-2025-Portfolio...
+[96msrc/components/ASeparator.astro[0m:[93m24[0m:[93m36[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'char' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m24[0m             {binary.split('').map((char) => (
+[7m  [0m [93m                                   ~~~~[0m
+[96msrc/components/ASeparator.astro[0m:[93m21[0m:[93m21[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'binary' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m21[0m       binaries.map((binary) => (
+[7m  [0m [93m                    ~~~~~~[0m
+[96msrc/components/ASeparator.astro[0m:[93m11[0m:[93m11[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'char' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m11[0m     .map((char) => char.charCodeAt(0).toString(2))
+[7m  [0m [93m          ~~~~[0m
+[96msrc/components/ASeparator.astro[0m:[93m8[0m:[93m31[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'string' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m8[0m const binaries = strings.map((string) => {
+[7m [0m [93m                              ~~~~~~[0m
+[96msrc/components/ASeparator.astro[0m:[93m81[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m81[0m     onIntersect(e) {
+[7m  [0m [93m                ~[0m
+
+[96msrc/components/AWaves.astro[0m:[93m333[0m:[93m10[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'time' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m333[0m     tick(time) {
+[7m   [0m [93m         ~~~~[0m
+[96msrc/components/AWaves.astro[0m:[93m317[0m:[93m17[0m - [93mwarning[0m[90m ts(6133): [0m'p2' is declared but its value is never read.
+
+[7m317[0m           const p2 = moved(
+[7m   [0m [93m                ~~[0m
+[96msrc/components/AWaves.astro[0m:[93m312[0m:[93m29[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'pIndex' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m312[0m         points.forEach((p1, pIndex) => {
+[7m   [0m [93m                            ~~~~~~[0m
+[96msrc/components/AWaves.astro[0m:[93m312[0m:[93m25[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'p1' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m312[0m         points.forEach((p1, pIndex) => {
+[7m   [0m [93m                        ~~[0m
+[96msrc/components/AWaves.astro[0m:[93m288[0m:[93m11[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'point' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m288[0m     moved(point, withCursorForce = true) {
+[7m   [0m [93m          ~~~~~[0m
+[96msrc/components/AWaves.astro[0m:[93m244[0m:[93m25[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'p' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m244[0m         points.forEach((p) => {
+[7m   [0m [93m                        ~[0m
+[96msrc/components/AWaves.astro[0m:[93m240[0m:[93m16[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'time' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m240[0m     movePoints(time) {
+[7m   [0m [93m               ~~~~[0m
+[96msrc/components/AWaves.astro[0m:[93m141[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m141[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+[96msrc/components/AWaves.astro[0m:[93m122[0m:[93m28[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'y' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m122[0m     updateMousePosition(x, y) {
+[7m   [0m [93m                           ~[0m
+[96msrc/components/AWaves.astro[0m:[93m122[0m:[93m25[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'x' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m122[0m     updateMousePosition(x, y) {
+[7m   [0m [93m                        ~[0m
+[96msrc/components/AWaves.astro[0m:[93m112[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m112[0m     onTouchMove(e) {
+[7m   [0m [93m                ~[0m
+[96msrc/components/AWaves.astro[0m:[93m105[0m:[93m20[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'y' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m105[0m     onMouseMove(x, y) {
+[7m   [0m [93m                   ~[0m
+[96msrc/components/AWaves.astro[0m:[93m105[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'x' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m105[0m     onMouseMove(x, y) {
+[7m   [0m [93m                ~[0m
+
+[96msrc/components/AWork.astro[0m:[93m74[0m:[93m46[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'newValue' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m74[0m     attributeChangedCallback(name, oldValue, newValue) {
+[7m  [0m [93m                                             ~~~~~~~~[0m
+[96msrc/components/AWork.astro[0m:[93m74[0m:[93m36[0m - [93mwarning[0m[90m ts(6133): [0m'oldValue' is declared but its value is never read.
+
+[7m74[0m     attributeChangedCallback(name, oldValue, newValue) {
+[7m  [0m [93m                                   ~~~~~~~~[0m
+[96msrc/components/AWork.astro[0m:[93m74[0m:[93m36[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'oldValue' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m74[0m     attributeChangedCallback(name, oldValue, newValue) {
+[7m  [0m [93m                                   ~~~~~~~~[0m
+[96msrc/components/AWork.astro[0m:[93m74[0m:[93m30[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'name' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m74[0m     attributeChangedCallback(name, oldValue, newValue) {
+[7m  [0m [93m                             ~~~~[0m
+
+[96msrc/components/SAbout.astro[0m:[93m639[0m:[93m32[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'y' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m639[0m     constructor(ctx, image, x, y) {
+[7m   [0m [93m                               ~[0m
+[96msrc/components/SAbout.astro[0m:[93m639[0m:[93m29[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'x' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m639[0m     constructor(ctx, image, x, y) {
+[7m   [0m [93m                            ~[0m
+[96msrc/components/SAbout.astro[0m:[93m639[0m:[93m22[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'image' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m639[0m     constructor(ctx, image, x, y) {
+[7m   [0m [93m                     ~~~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m639[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'ctx' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m639[0m     constructor(ctx, image, x, y) {
+[7m   [0m [93m                ~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m537[0m:[93m18[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'award' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m537[0m     throwSmileys(award) {
+[7m   [0m [93m                 ~~~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m275[0m:[93m24[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'award' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m275[0m     onAwardInteraction(award) {
+[7m   [0m [93m                       ~~~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m262[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m262[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+[96msrc/components/SAbout.astro[0m:[93m245[0m:[93m14[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'scrollY' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m245[0m     onScroll(scrollY) {
+[7m   [0m [93m             ~~~~~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m233[0m:[93m28[0m - [93mwarning[0m[90m ts(6133): [0m'heightChanged' is declared but its value is never read.
+
+[7m233[0m     onResize(widthChanged, heightChanged) {
+[7m   [0m [93m                           ~~~~~~~~~~~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m233[0m:[93m28[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'heightChanged' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m233[0m     onResize(widthChanged, heightChanged) {
+[7m   [0m [93m                           ~~~~~~~~~~~~~[0m
+[96msrc/components/SAbout.astro[0m:[93m233[0m:[93m14[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'widthChanged' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m233[0m     onResize(widthChanged, heightChanged) {
+[7m   [0m [93m             ~~~~~~~~~~~~[0m
+
+[96msrc/components/SCTA.astro[0m:[93m31[0m:[93m47[0m - [93mwarning[0m[90m ts(6133): [0m'k' is declared but its value is never read.
+
+[7m31[0m                     {['', '', '', ''].map((_, k) => (
+[7m  [0m [93m                                              ~[0m
+[96msrc/components/SCTA.astro[0m:[93m29[0m:[93m34[0m - [93mwarning[0m[90m ts(6133): [0m'j' is declared but its value is never read.
+
+[7m29[0m                 {line.map((char, j) => (
+[7m  [0m [93m                                 ~[0m
+[96msrc/components/SCTA.astro[0m:[93m271[0m:[93m7[0m - [91merror[0m[90m ts(2322): [0mType 'Timeout' is not assignable to type 'number'.
+
+[7m271[0m       this.wave.timeout = setTimeout(() => {
+[7m   [0m [91m      ~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m570[0m:[93m10[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'time' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m570[0m     tick(time) {
+[7m   [0m [93m         ~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m532[0m:[93m16[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'point' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m532[0m     movedPoint(point) {
+[7m   [0m [93m               ~~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m501[0m:[93m29[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'i' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m501[0m         col.forEach((point, i) => {
+[7m   [0m [93m                            ~[0m
+[96msrc/components/SCTA.astro[0m:[93m501[0m:[93m22[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'point' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m501[0m         col.forEach((point, i) => {
+[7m   [0m [93m                     ~~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m487[0m:[93m13[0m - [93mwarning[0m[90m ts(7044): [0mParameter 't' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m487[0m     easeOut(t) {
+[7m   [0m [93m            ~[0m
+[96msrc/components/SCTA.astro[0m:[93m442[0m:[93m29[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'y' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m442[0m         col.forEach((point, y) => {
+[7m   [0m [93m                            ~[0m
+[96msrc/components/SCTA.astro[0m:[93m442[0m:[93m22[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'point' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m442[0m         col.forEach((point, y) => {
+[7m   [0m [93m                     ~~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m441[0m:[93m33[0m - [93mwarning[0m[90m ts(6133): [0m'x' is declared but its value is never read.
+
+[7m441[0m       grid.points.forEach((col, x) => {
+[7m   [0m [93m                                ~[0m
+[96msrc/components/SCTA.astro[0m:[93m438[0m:[93m16[0m - [93mwarning[0m[90m ts(6133): [0m'time' is declared but its value is never read.
+
+[7m438[0m     movePoints(time) {
+[7m   [0m [93m               ~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m438[0m:[93m16[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'time' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m438[0m     movePoints(time) {
+[7m   [0m [93m               ~~~~[0m
+[96msrc/components/SCTA.astro[0m:[93m289[0m:[93m11[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m289[0m     onOut(e) {
+[7m   [0m [93m          ~[0m
+[96msrc/components/SCTA.astro[0m:[93m262[0m:[93m13[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m262[0m     onHover(e) {
+[7m   [0m [93m            ~[0m
+[96msrc/components/SCTA.astro[0m:[93m249[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m249[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+
+[96msrc/components/SHero.astro[0m:[93m268[0m:[93m49[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m268[0m       this.st.chars.forEach((char: HTMLElement, index) => {
+[7m   [0m [93m                                                ~~~~~[0m
+[96msrc/components/SHero.astro[0m:[93m105[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m105[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+
+[96msrc/components/SMyWay.astro[0m:[93m104[0m:[93m15[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m104[0m         .map((index) => (
+[7m   [0m [93m              ~~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m81[0m:[93m26[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m81[0m       frames.map((frame, index) => (
+[7m  [0m [93m                         ~~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m725[0m:[93m10[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'time' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m725[0m     move(time) {
+[7m   [0m [93m         ~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m663[0m:[93m21[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'parent' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m663[0m     constructor(el, parent) {
+[7m   [0m [93m                    ~~~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m663[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'el' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m663[0m     constructor(el, parent) {
+[7m   [0m [93m                ~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m601[0m:[93m10[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'time' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m601[0m     tick(time) {
+[7m   [0m [93m         ~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m582[0m:[93m19[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m582[0m     objectDragEnd(e) {
+[7m   [0m [93m                  ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m558[0m:[93m21[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m558[0m     objectDragStart(e) {
+[7m   [0m [93m                    ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m550[0m:[93m19[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'object' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m550[0m     objectMoveEnd(object) {
+[7m   [0m [93m                  ~~~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m368[0m:[93m14[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'scrollY' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m368[0m     onScroll(scrollY) {
+[7m   [0m [93m             ~~~~~~~[0m
+[96msrc/components/SMyWay.astro[0m:[93m342[0m:[93m28[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'y' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m342[0m     updateMousePosition(x, y) {
+[7m   [0m [93m                           ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m342[0m:[93m25[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'x' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m342[0m     updateMousePosition(x, y) {
+[7m   [0m [93m                        ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m327[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m327[0m     onTouchMove(e) {
+[7m   [0m [93m                ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m320[0m:[93m20[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'y' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m320[0m     onMouseMove(x, y) {
+[7m   [0m [93m                   ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m320[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'x' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m320[0m     onMouseMove(x, y) {
+[7m   [0m [93m                ~[0m
+[96msrc/components/SMyWay.astro[0m:[93m306[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m306[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+
+[96msrc/components/SWork.astro[0m:[93m717[0m:[93m39[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'index' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m717[0m         letter.ghosts.forEach((ghost, index) => {
+[7m   [0m [93m                                      ~~~~~[0m
+[96msrc/components/SWork.astro[0m:[93m717[0m:[93m32[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'ghost' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m717[0m         letter.ghosts.forEach((ghost, index) => {
+[7m   [0m [93m                               ~~~~~[0m
+[96msrc/components/SWork.astro[0m:[93m715[0m:[93m32[0m - [93mwarning[0m[90m ts(6133): [0m'i' is declared but its value is never read.
+
+[7m715[0m       letters.forEach((letter, i) => {
+[7m   [0m [93m                               ~[0m
+[96msrc/components/SWork.astro[0m:[93m704[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'video' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m704[0m     videoLoaded(video) {
+[7m   [0m [93m                ~~~~~[0m
+[96msrc/components/SWork.astro[0m:[93m403[0m:[93m32[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'ghost' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m403[0m         letter.ghosts.forEach((ghost) => {
+[7m   [0m [93m                               ~~~~~[0m
+[96msrc/components/SWork.astro[0m:[93m249[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m249[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+[96msrc/components/SWork.astro[0m:[93m234[0m:[93m14[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'widthChanged' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m234[0m     onResize(widthChanged) {
+[7m   [0m [93m             ~~~~~~~~~~~~[0m
+
+[96msrc/components/SiteHead.astro[0m:[93m258[0m:[93m18[0m - [93mwarning[0m[90m ts(7044): [0mParameter 't' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m258[0m         easing: (t) =>
+[7m   [0m [93m                 ~[0m
+[96msrc/components/SiteHead.astro[0m:[93m251[0m:[93m19[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m251[0m     moveToSection(e) {
+[7m   [0m [93m                  ~[0m
+[96msrc/components/SiteHead.astro[0m:[93m162[0m:[93m17[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m162[0m     onIntersect(e) {
+[7m   [0m [93m                ~[0m
+
+[96msrc/components/SiteScrollbar.astro[0m:[93m134[0m:[93m15[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m134[0m     onDragEnd(e) {
+[7m   [0m [93m              ~[0m
+
+[96msrc/pages/index.astro[0m:[93m424[0m:[93m19[0m - [93mwarning[0m[90m ts(7044): [0mParameter 'e' implicitly has an 'any' type, but a better type may be inferred from usage.
+
+[7m424[0m       onMouseMove(e) {
+[7m   [0m [93m                  ~[0m
+
+Result (21 files): 
+- 1 error
+- 0 warnings
+- 78 hints
+

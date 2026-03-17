@@ -268,7 +268,7 @@ const lines = [
       this.tl.pause()
 
       clearTimeout(this.wave.timeout)
-      this.wave.timeout = setTimeout(() => {
+      this.wave.timeout = window.setTimeout(() => {
         this.waveShock()
       }, 600)
 

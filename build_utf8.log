@@ -1,0 +1,78 @@
+﻿
+> public.wodniack.dev@0.0.1 build
+> astro build
+
+00:56:28 [content] Syncing content
+00:56:28 [content] Synced content
+00:56:28 [types] Generated 229ms
+00:56:28 [build] output: "static"
+00:56:28 [build] mode: "static"
+00:56:28 [build] directory: C:\kartik portfolio 2\AW-2025-Portfolio\dist\
+00:56:28 [build] Collecting build info...
+00:56:28 [build] Γ£ô Completed in 242ms.
+00:56:28 [build] Building static entrypoints...
+node.exe : 
+Browserslist: browsers 
+data (caniuse-lite) is 
+10 months old. Please 
+run:
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Browserslist:   
+  b...ld. Please ru    
+n::String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  npx update-browsersli
+st-db@latest
+  Why you should do it 
+regularly: https://gith
+ub.com/browserslist/upd
+ate-db#readme
+00:56:29 [ERROR] 
+[vite] [31mΓ£ù[39m 
+Build failed in 1.22s
+Unexpected "&"
+  Location:
+    C:/kartik 
+portfolio 2/AW-2025-Por
+tfolio/src/components/S
+Hero.astro:28:532
+  Stack trace:
+    at 
+failureErrorWithLog 
+(C:\kartik portfolio 2\
+AW-2025-Portfolio\node_
+modules\esbuild\lib\mai
+n.js:1463:15)
+    at responseCallback
+s.<computed> 
+(C:\kartik portfolio 2\
+AW-2025-Portfolio\node_
+modules\esbuild\lib\mai
+n.js:601:9)
+    at 
+Socket.readFromStdout 
+(C:\kartik portfolio 2\
+AW-2025-Portfolio\node_
+modules\esbuild\lib\mai
+n.js:579:7)
+    at addChunk (node:i
+nternal/streams/readabl
+e:559:12)
+    at Readable.push (n
+ode:internal/streams/re
+adable:390:5)

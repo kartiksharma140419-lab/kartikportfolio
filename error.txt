@@ -1,0 +1,10 @@
+﻿00:55:34 [vite] Re-optimizing dependencies because vite config has changed
+00:55:34 [content] Syncing content
+00:55:34 [content] Synced content
+00:55:34 [types] Generated 508ms
+00:55:34 [build] output: "static"
+00:55:34 [build] mode: "static"
+00:55:34 [build] directory: C:\kartik portfolio 2\AW-2025-Portfolio\dist\
+00:55:34 [build] Collecting build info...
+00:55:34 [build] Γ£ô Completed in 523ms.
+00:55:34 [build] Building static entrypoints...

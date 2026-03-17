@@ -1,0 +1,96 @@
+﻿
+> public.wodniack.dev@0.0.1 build
+> astro build
+
+01:02:15 [content] Syncing content
+01:02:15 [content] Synced content
+01:02:15 [types] Generated 239ms
+01:02:15 [build] output: "static"
+01:02:15 [build] mode: "static"
+01:02:15 [build] directory: C:\kartik portfolio 2\AW-2025-Portfolio\dist\
+01:02:15 [build] Collecting build info...
+01:02:15 [build] Γ£ô Completed in 253ms.
+01:02:15 [build] Building static entrypoints...
+node.exe : 
+Browserslist: browsers 
+data (caniuse-lite) is 
+10 months old. Please 
+run:
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Browserslist:   
+  b...ld. Please ru    
+n::String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  npx update-browsersli
+st-db@latest
+  Why you should do it 
+regularly: https://gith
+ub.com/browserslist/upd
+ate-db#readme
+01:02:17 [vite] [32mΓ£ô built in 2.28s[39m
+01:02:17 [build] Γ£ô Completed in 2.31s.
+
+ building client (vite) 
+01:02:17 [vite] transforming...
+01:02:18 [vite] [32mΓ£ô[39m 26 modules transformed.
+01:02:18 [vite] rendering chunks...
+01:02:18 [vite] computing gzip size...
+01:02:18 [vite] [2mdist/[22m[36m_astro/Ticker.CH9Nrgxt.js                                              [39m[1m[2m 0.41 kB[22m[1m[22m[2m Γöé gzip:  0.28 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/Emitter.C33kwsam.js                                             [39m[1m[2m 0.55 kB[22m[1m[22m[2m Γöé gzip:  0.29 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SLeadCapture.astro_astro_type_script_index_0_lang.BKbxyt8b.js   [39m[1m[2m 0.60 kB[22m[1m[22m[2m Γöé gzip:  0.35 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/ASeparator.astro_astro_type_script_index_0_lang.DnmvhTbd.js     [39m[1m[2m 0.71 kB[22m[1m[22m[2m Γöé gzip:  0.39 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/AWork.astro_astro_type_script_index_0_lang.Dv_rURHU.js          [39m[1m[2m 0.78 kB[22m[1m[22m[2m Γöé gzip:  0.41 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SiteScrollbar.astro_astro_type_script_index_0_lang.CBlEFqxA.js  [39m[1m[2m 1.80 kB[22m[1m[22m[2m Γöé gzip:  0.64 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SiteHead.astro_astro_type_script_index_0_lang.AJvl97Ut.js       [39m[1m[2m 1.90 kB[22m[1m[22m[2m Γöé gzip:  0.79 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SCTA.astro_astro_type_script_index_0_lang.CaoQLyWb.js           [39m[1m[2m 5.13 kB[22m[1m[22m[2m Γöé gzip:  1.98 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/AWaves.astro_astro_type_script_index_0_lang.C98DUEwh.js         [39m[1m[2m 5.40 kB[22m[1m[22m[2m Γöé gzip:  2.47 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SAbout.astro_astro_type_script_index_0_lang.B5b9KSdB.js         [39m[1m[2m 5.90 kB[22m[1m[22m[2m Γöé gzip:  2.09 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SMyWay.astro_astro_type_script_index_0_lang.58p2t63h.js         [39m[1m[2m 7.64 kB[22m[1m[22m[2m Γöé gzip:  2.52 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SWork.astro_astro_type_script_index_0_lang.rqO6zY8E.js          [39m[1m[2m10.32 kB[22m[1m[22m[2m Γöé gzip:  4.05 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SHero.astro_astro_type_script_index_0_lang.DTPnhkzV.js          [39m[1m[2m13.71 kB[22m[1m[22m[2m Γöé gzip:  6.11 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/SHireModal.astro_astro_type_script_index_0_lang.C6XDlZ5z.js     [39m[1m[2m14.67 kB[22m[1m[22m[2m Γöé gzip:  5.83 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/index.Bm4WlgXm.js                                               [39m[1m[2m18.85 kB[22m[1m[22m[2m Γöé gzip:  8.11 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/index.astro_astro_type_script_index_0_lang.D3cdk63c.js          [39m[1m[2m20.56 kB[22m[1m[22m[2m Γöé gzip:  5.97 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/ScrollTrigger.C4gmGO9R.js                                       [39m[1m[2m43.55 kB[22m[1m[22m[2m Γöé gzip: 18.11 kB[22m
+01:02:18 [vite] [2mdist/[22m[36m_astro/gsap-core.D_vzKdIM.js                                           [39m[1m[2m51.40 kB[22m[1m[22m[2m Γöé gzip: 20.19 kB[22m
+01:02:18 [vite] [32mΓ£ô built in 577ms[39m
+
+ generating static routes 
+01:02:18 Γû╢ src/pages/index.astro
+01:02:18   ΓööΓöÇ /index.html (+26ms) 
+01:02:18 Γ£ô Completed in 42ms.
+
+ generating optimized images 
+01:02:18   Γû╢ /_astro/art-dtyw.BwdKK6hB_Z1yDQCz.webp (reused cache entry) (+9ms) (1/14)
+01:02:18   Γû╢ /_astro/art-lines.BXTmZZe3_27as7c.webp (reused cache entry) (+11ms) (2/14)
+01:02:18   Γû╢ /_astro/first-fwa.LsgJSoFn_PVtp7.webp (reused cache entry) (+11ms) (3/14)
+01:02:18   Γû╢ /_astro/art-1987.DuGYX_YQ_1oAmBj.webp (reused cache entry) (+12ms) (4/14)
+01:02:18   Γû╢ /_astro/roar.BvXyAVaL_Z22Jyau.webp (reused cache entry) (+12ms) (5/14)
+01:02:18   Γû╢ /_astro/setup-2006.Op2RjVqP_Zlgol8.webp (reused cache entry) (+13ms) (6/14)
+01:02:18   Γû╢ /_astro/waaark.C5QpwSMH_Z2rA2L3.webp (reused cache entry) (+14ms) (7/14)
+01:02:18   Γû╢ /_astro/setup-2016.DZszJSwz_Z29A0Gr.webp (reused cache entry) (+14ms) (8/14)
+01:02:18   Γû╢ /_astro/setup-2020.DjuS52Ke_Z2gKcCP.webp (reused cache entry) (+15ms) (9/14)
+01:02:18   Γû╢ /_astro/portfolio-2011.DpFoQfUQ_ZJ7PNf.webp (reused cache entry) (+16ms) (10/14)
+01:02:18   Γû╢ /_astro/portfolio-2014.ClRt5L9z_hjYvu.webp (reused cache entry) (+17ms) (11/14)
+01:02:18   Γû╢ /_astro/portfolio-2017.N-r3CKDK_xHcNR.webp (reused cache entry) (+17ms) (12/14)
+01:02:18   Γû╢ /_astro/portfolio-2021.D5EtPDWp_yMmjO.webp (reused cache entry) (+18ms) (13/14)
+01:02:18   Γû╢ /_astro/legos.Bdikeciy_297Sks.webp (reused cache entry) (+19ms) (14/14)
+01:02:18 Γ£ô Completed in 21ms.
+
+01:02:18 [build] 1 page(s) built in 3.23s
+01:02:18 [build] Complete!
