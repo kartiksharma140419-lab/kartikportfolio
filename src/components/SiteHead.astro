@@ -39,8 +39,8 @@ const menu = [
 
     <div class="sb-console" role="presentation">
       <div class="sb-console__inner">
-        Click on Get Your Website and fill the form for having the best website, app and
-        landing page for your Buisness
+        Click on Get Your Website and fill the form for having the best website,
+        app and landing page for your Buisness
       </div><!-- .sb-console__inner -->
     </div><!-- .sb-console -->
 
@@ -90,7 +90,9 @@ const menu = [
     <div class="sb-tour js-tour" aria-hidden="true">
       <div class="sb-tour__pointer js-tour-pointer"></div>
       <div class="sb-tour__content">
-        <span class="js-tour-text">The 'Get Your Website' button opens the project form.</span>
+        <span class="js-tour-text">
+          The 'Get Your Website' button opens the project form.
+        </span>
         <button class="sb-tour__next js-tour-next">Next</button>
       </div>
     </div>
@@ -265,40 +267,59 @@ const menu = [
      * Onboarding Tour
      */
     initTour() {
-      if (localStorage.getItem('ks_tour_seen')) return;
+      if (localStorage.getItem('ks_tour_seen')) return
 
-      const tourEl = this.el.querySelector('.js-tour');
-      if (!tourEl) return;
-      
-      const tourText = tourEl.querySelector('.js-tour-text');
-      const tourNext = tourEl.querySelector('.js-tour-next');
-      const tourPointer = tourEl.querySelector('.js-tour-pointer');
-      let step = 1;
-      
-      const isMobile = window.innerWidth <= 768;
+      const tourEl = this.el.querySelector('.js-tour') as HTMLElement | null
+      if (!tourEl) return
+
+      const tourText = tourEl.querySelector('.js-tour-text') as HTMLElement
+      const tourNext = tourEl.querySelector('.js-tour-next') as HTMLElement
+      const tourPointer = tourEl.querySelector(
+        '.js-tour-pointer',
+      ) as HTMLElement
+      let step = 1
+
+      const isMobile = window.innerWidth <= 768
 
       setTimeout(() => {
-        tourEl.classList.add('is-active');
-        tourPointer.style.right = isMobile ? '50%' : '5rem';
-        gsap.fromTo(tourEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
-      }, 2800);
+        tourEl.classList.add('is-active')
+        tourPointer.style.right = isMobile ? '50%' : '5rem'
+        gsap.fromTo(
+          tourEl,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5 },
+        )
+      }, 2800)
 
       tourNext.addEventListener('click', () => {
         if (step === 1) {
-          step = 2;
-          gsap.to(tourEl, { opacity: 0, y: 10, duration: 0.2, onComplete: () => {
-            tourText.textContent = "This is a colour changing button, try it!";
-            tourNext.textContent = "Got it!";
-            tourPointer.style.right = '1.25rem'; // Point to contrast button
-            gsap.fromTo(tourEl, { opacity: 0, y: -5 }, { opacity: 1, y: 0, duration: 0.3 });
-          }});
+          step = 2
+          gsap.to(tourEl, {
+            opacity: 0,
+            y: 10,
+            duration: 0.2,
+            onComplete: () => {
+              tourText.textContent = 'This is a colour changing button, try it!'
+              tourNext.textContent = 'Got it!'
+              tourPointer.style.right = '1.25rem' // Point to contrast button
+              gsap.fromTo(
+                tourEl,
+                { opacity: 0, y: -5 },
+                { opacity: 1, y: 0, duration: 0.3 },
+              )
+            },
+          })
         } else {
-          gsap.to(tourEl, { opacity: 0, duration: 0.3, onComplete: () => {
-            tourEl.style.display = 'none';
-            localStorage.setItem('ks_tour_seen', 'true');
-          }});
+          gsap.to(tourEl, {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => {
+              tourEl.style.display = 'none'
+              localStorage.setItem('ks_tour_seen', 'true')
+            },
+          })
         }
-      });
+      })
     }
   }
 
@@ -682,7 +703,7 @@ const menu = [
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       max-width: 300px;
 
       @include mq(phone) {

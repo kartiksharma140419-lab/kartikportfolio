@@ -119,7 +119,9 @@
           class="js-hire-code"
         />
         <label for="modal-code">Exclusive Partner Code (Optional)</label>
-        <p class="hf__field-error js-hire-code-error" style="display: none;">Not a valid coupon code</p>
+        <p class="hf__field-error js-hire-code-error" style="display: none;">
+          Not a valid coupon code
+        </p>
         <p class="hf__field-timer">
           Coupon code valid for: <span class="js-countdown-timer">
             23:59:59
@@ -304,7 +306,9 @@
 
     let isUnlockedState = false
 
-    const hireCodeError = document.querySelector('.js-hire-code-error') as HTMLElement
+    const hireCodeError = document.querySelector(
+      '.js-hire-code-error',
+    ) as HTMLElement
 
     codeInput.addEventListener('input', (e) => {
       const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
@@ -377,12 +381,12 @@
     gsap.fromTo(
       backdrop,
       { opacity: 0 },
-      { opacity: 1, duration: 0.4, ease: 'power2.out' },
+      { opacity: 1, duration: 0.5, ease: 'power3.inOut' },
     )
     gsap.fromTo(
       card,
       { y: 50, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.2)' },
+      { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'power3.inOut' },
     )
   }
 
@@ -393,13 +397,13 @@
 
     document.documentElement.style.overflow = '' // restore body scroll
 
-    gsap.to(backdrop, { opacity: 0, duration: 0.3, ease: 'power2.in' })
+    gsap.to(backdrop, { opacity: 0, duration: 0.5, ease: 'power3.inOut' })
     gsap.to(card, {
       y: 20,
       opacity: 0,
       scale: 0.95,
-      duration: 0.3,
-      ease: 'power2.in',
+      duration: 0.5,
+      ease: 'power3.inOut',
       onComplete: () => {
         modal.setAttribute('aria-hidden', 'true')
         modal.style.display = 'none'
@@ -444,7 +448,7 @@
             gsap.fromTo(
               success,
               { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+              { opacity: 1, y: 0, duration: 0.5, ease: 'power3.inOut' },
             )
           } else {
             submitBtn.disabled = false
