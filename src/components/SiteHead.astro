@@ -86,6 +86,14 @@ const menu = [
     </aside><!-- .sb-availability -->
 
     <a href="#" class="sb-contact-mobile js-hire-me">Get Your Website</a>
+
+    <div class="sb-tour js-tour" aria-hidden="true">
+      <div class="sb-tour__pointer js-tour-pointer"></div>
+      <div class="sb-tour__content">
+        <span class="js-tour-text">The 'Get Your Website' button opens the project form.</span>
+        <button class="sb-tour__next js-tour-next">Next</button>
+      </div>
+    </div>
   </div><!-- .site-head__container -->
 </header>
 
@@ -125,6 +133,7 @@ const menu = [
      */
     init() {
       this.bindEvents()
+      this.initTour()
     }
 
     /**
@@ -250,6 +259,46 @@ const menu = [
         easing: (t) =>
           t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
       })
+    }
+
+    /**
+     * Onboarding Tour
+     */
+    initTour() {
+      if (localStorage.getItem('ks_tour_seen')) return;
+
+      const tourEl = this.el.querySelector('.js-tour');
+      if (!tourEl) return;
+      
+      const tourText = tourEl.querySelector('.js-tour-text');
+      const tourNext = tourEl.querySelector('.js-tour-next');
+      const tourPointer = tourEl.querySelector('.js-tour-pointer');
+      let step = 1;
+      
+      const isMobile = window.innerWidth <= 768;
+
+      setTimeout(() => {
+        tourEl.classList.add('is-active');
+        tourPointer.style.right = isMobile ? '50%' : '5rem';
+        gsap.fromTo(tourEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
+      }, 2800);
+
+      tourNext.addEventListener('click', () => {
+        if (step === 1) {
+          step = 2;
+          gsap.to(tourEl, { opacity: 0, y: 10, duration: 0.2, onComplete: () => {
+            tourText.textContent = "This is a colour changing button, try it!";
+            tourNext.textContent = "Got it!";
+            tourPointer.style.right = '1.25rem'; // Point to contrast button
+            gsap.fromTo(tourEl, { opacity: 0, y: -5 }, { opacity: 1, y: 0, duration: 0.3 });
+          }});
+        } else {
+          gsap.to(tourEl, { opacity: 0, duration: 0.3, onComplete: () => {
+            tourEl.style.display = 'none';
+            localStorage.setItem('ks_tour_seen', 'true');
+          }});
+        }
+      });
     }
   }
 
@@ -616,6 +665,67 @@ const menu = [
         text-align: center;
 
         white-space: normal;
+      }
+    }
+
+    .sb-tour {
+      position: absolute;
+      top: 100%;
+      right: 1rem;
+      margin-top: 10px;
+      background: #160000;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      font: 700 0.8125rem/1.3 font-family(fraktion);
+      letter-spacing: 0.04em;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 300px;
+
+      @include mq(phone) {
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+      }
+
+      &.is-active {
+        pointer-events: auto;
+      }
+
+      &__pointer {
+        position: absolute;
+        bottom: 100%;
+        right: 50%;
+        border-width: 8px;
+        border-style: solid;
+        border-color: transparent transparent #160000 transparent;
+        transform: translateX(50%);
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      &__content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      &__next {
+        background: var(--color-primary);
+        color: #fff;
+        border: none;
+        border-radius: 99rem;
+        padding: 0.4rem 0.8rem;
+        font: 700 0.75rem/1 font-family(fraktion);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: scale(1.05);
+        }
       }
     }
   }
