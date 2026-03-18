@@ -108,6 +108,7 @@
           class="js-hire-code"
         />
         <label for="modal-code">Exclusive Partner Code (Optional)</label>
+        <p class="hf__field-error js-hire-code-error" style="display: none;">Not a valid coupon code</p>
         <p class="hf__field-timer">
           Coupon code valid for: <span class="js-countdown-timer">
             23:59:59
@@ -142,7 +143,7 @@
 
       <div class="hf__field hf__field--full hf__field--submit">
         <button type="submit" class="hire-modal__submit js-hire-submit">
-          <span>Apply for Consultation</span>
+          <span>Apply for Business Growth</span>
           <svg
             class="h-arrow"
             width="18"
@@ -292,15 +293,17 @@
 
     let isUnlockedState = false
 
+    const hireCodeError = document.querySelector('.js-hire-code-error') as HTMLElement
+
     codeInput.addEventListener('input', (e) => {
       const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
       const targetOption = getTargetOption()
 
       if (targetOption) {
         if (validCodes.includes(val)) {
+          if (hireCodeError) hireCodeError.style.display = 'none'
           if (!isUnlockedState) {
             isUnlockedState = true
-            // Trigger Confetti
             confetti({
               particleCount: 150,
               spread: 100,
@@ -308,29 +311,28 @@
               colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
               disableForReducedMotion: true,
             })
-            // Add Level Up UI
             card.classList.add('is-unlocked')
             submitBtn.querySelector('span')!.textContent =
               'Claim My Exclusive Slot'
             submitBtn.classList.add('is-unlocked-btn')
           }
 
-          // Add discount visual styles
           targetOption.innerHTML = discountText
           targetOption.value = '₹35,000 (Partner Exclusive: ₹27,999)'
 
-          // Apply green success color to the options
           budgetSelect.classList.add('has-discount')
         } else {
+          // Show error if user typed something but it's not valid
+          if (hireCodeError) {
+            hireCodeError.style.display = val.length > 0 ? 'block' : 'none'
+          }
           if (isUnlockedState) {
             isUnlockedState = false
-            // Revert Level Up UI
             card.classList.remove('is-unlocked')
             submitBtn.querySelector('span')!.textContent =
-              'Apply for Consultation'
+              'Apply for Business Growth'
             submitBtn.classList.remove('is-unlocked-btn')
           }
-          // Revert discount
           targetOption.innerHTML = originalText
           targetOption.value = originalText
 
@@ -800,6 +802,20 @@
       textarea {
         resize: vertical;
         min-height: 5rem;
+      }
+
+      &-error {
+        position: absolute;
+        top: -1.2rem;
+        left: 0.25rem;
+        margin: 0;
+        font: 700 0.75rem / 1 font-family(fraktion);
+        color: #ef4444;
+        letter-spacing: 0.03em;
+
+        .theme-contrasted & {
+          color: #dc2626;
+        }
       }
 
       &-timer {

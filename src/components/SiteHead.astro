@@ -1,16 +1,8 @@
 ---
 const menu = [
   {
-    id: 'about',
-    text: 'About',
-  },
-  {
-    id: 'work',
-    text: 'Work',
-  },
-  {
     id: 'contact',
-    text: 'Contact',
+    text: 'Get Your Website',
     isModal: true,
   },
 ]
@@ -47,7 +39,7 @@ const menu = [
 
     <div class="sb-console" role="presentation">
       <div class="sb-console__inner">
-        click on hire me and Fill the form for having the best website, app and
+        Click on Get Your Website and fill the form for having the best website, app and
         landing page for your Buisness
       </div><!-- .sb-console__inner -->
     </div><!-- .sb-console -->
@@ -61,7 +53,7 @@ const menu = [
                 href={item.isModal ? '#' : '#' + item.id}
                 class={item.isModal ? 'js-hire-me' : 'js-menu-link'}
               >
-                <span class="sb__text">{item.text}</span>
+                <span class="sb__text sb__text--bold">{item.text}</span>
               </a>
             </li>
           ))
@@ -88,12 +80,12 @@ const menu = [
         <span class="sb__line">
           <span class="sb__text">Available for freelance work →</span>
 
-          <a href="#" class="sb__link js-hire-me">Hire me</a>
+          <a href="#" class="sb__link js-hire-me">Get Your Website</a>
         </span>
       </p>
     </aside><!-- .sb-availability -->
 
-    <a href="#" class="sb-contact-mobile js-hire-me">Contact me</a>
+    <a href="#" class="sb-contact-mobile js-hire-me">Get Your Website</a>
   </div><!-- .site-head__container -->
 </header>
 
@@ -394,6 +386,11 @@ const menu = [
 
           content: '';
         }
+
+        &--bold {
+          font-weight: 900;
+          letter-spacing: 0.08em;
+        }
       }
 
       a {
@@ -460,6 +457,9 @@ const menu = [
 
       @include mq(phone) {
         height: 100%;
+        flex-shrink: 0;
+        min-width: 48px;
+        order: 5;
       }
 
       &:before {
@@ -536,19 +536,11 @@ const menu = [
       }
 
       @include mq(tablet-sm) {
-        flex-grow: 1;
-
-        border-left: 0;
+        display: none;
       }
 
       @include mq(phone) {
-        @include flex(column, center, center);
-
-        flex-grow: 0;
-
-        background: none;
-        border-left: 1px solid color(secondary);
-        order: 3;
+        display: none;
       }
 
       p {
@@ -607,17 +599,23 @@ const menu = [
       @include mq(phone) {
         @include flex(row, center, center);
 
-        order: 4;
+        order: 3;
+        flex-grow: 1;
+        flex-shrink: 1;
+        min-width: 0;
 
-        padding: 0 1rem;
+        padding: 0 0.5rem;
 
         border-left: 1px solid color(secondary);
 
         color: color(secondary);
-        font: 200 1.25rem / 1 font-family(editorial);
+        font: 900 clamp(0.85rem, 4vw, 1.125rem) / 1.1 font-family(fraktion);
         text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        text-align: center;
 
-        white-space: nowrap;
+        white-space: normal;
       }
     }
   }

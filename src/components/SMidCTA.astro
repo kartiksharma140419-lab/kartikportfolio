@@ -1,0 +1,100 @@
+---
+---
+<section class="s-mid-cta" data-intersect="fade-up">
+  <div class="s-mid-cta__inner">
+    <a href="#lead-capture" class="s-mid-cta__btn js-menu-link">
+      <span class="s-mid-cta__dot"></span>
+      SECURE YOUR PRIORITY SLOT NOW
+    </a>
+  </div>
+</section>
+
+<style lang="scss">
+  .s-mid-cta {
+    padding: 6rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid color(secondary);
+    
+    @include mq(phone) {
+      padding: 4rem 1rem;
+    }
+
+    &__inner {
+      display: flex;
+      justify-content: center;
+    }
+
+    &__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+
+      padding: 1.25rem 3rem;
+
+      background: rgba(244, 12, 63, 0.08);
+      border: 1px solid rgba(244, 12, 63, 0.2);
+      border-radius: 999rem;
+
+      color: color(secondary);
+      font: 700 1.125rem / 1.2 font-family(fraktion);
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      text-transform: uppercase;
+      text-align: center;
+      
+      @include mq(phone) {
+        font-size: clamp(0.85rem, 4vw, 1.125rem);
+        padding: 1.125rem 2rem;
+        white-space: normal;
+      }
+
+      animation: mid-cta-pulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+
+      .theme-contrasted & {
+        background: rgba(22, 0, 0, 0.06);
+        border-color: rgba(22, 0, 0, 0.15);
+      }
+
+      &:hover {
+        background: rgba(244, 12, 63, 0.15);
+        border-color: rgba(244, 12, 63, 0.4);
+        transform: translateY(-2px);
+        animation-play-state: paused;
+
+        .theme-contrasted & {
+          background: rgba(22, 0, 0, 0.1);
+          border-color: rgba(22, 0, 0, 0.3);
+        }
+      }
+    }
+
+    &__dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      background: var(--color-primary, #f40c3f);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.4);
+      animation: mid-cta-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+      .theme-contrasted & {
+        background: color(secondary);
+        box-shadow: 0 0 0 0 rgba(22, 0, 0, 0.3);
+      }
+    }
+  }
+
+  @keyframes mid-cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(244, 12, 63, 0); }
+    50% { box-shadow: 0 0 25px 5px rgba(244, 12, 63, 0.15); }
+  }
+
+  @keyframes mid-cta-dot {
+    0% { box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(244, 12, 63, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 12, 63, 0); }
+  }
+</style>

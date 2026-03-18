@@ -1,21 +1,13 @@
 ---
-const budgetOptions = [
-  '₹25,000 - ₹30,000',
-  '₹30,000 - ₹35,000',
-  '₹35,000 - ₹40,000',
-  '₹40,000 - ₹45,000',
-  '₹45,000 - ₹50,000',
-  '₹50,000+',
-]
 ---
 
 <section id="lead-capture" class="s-lead" data-intersect="fade-up">
-  <div class="s__card">
+  <div class="s__card js-lead-card">
     <div class="s__info">
-      <h2 class="s__heading">Scale Your Brand<br />with Pro Solutions.</h2>
+      <h2 class="s__heading">Start Your Digital<br />Transformation.</h2>
       <p class="s__subtitle">
-        Fill out the form below to receive a custom digital website, app and
-        landing page tailored to your business goals.
+        I only accept 10 high-impact projects per month to ensure elite quality.
+        Secure your slot in the queue below.
       </p>
 
       <div class="s__decor">
@@ -49,6 +41,18 @@ const budgetOptions = [
     </div><!-- .s__info -->
 
     <div class="s__form-wrap">
+      <div class="s__gauge js-lead-gauge-container">
+        <div class="s__gauge-fill js-lead-gauge-fill"></div>
+        <p class="s__gauge-text">
+          <span class="js-lead-gauge-text">0%</span> Application Strength
+        </p>
+      </div>
+
+      <div class="s__urgency js-lead-urgency">
+        <span class="pulse"></span> Limited slots left for making your business website,
+        app, or landing page.
+      </div>
+
       <form
         class="s__form js-lead-form"
         action="https://api.web3forms.com/submit"
@@ -60,7 +64,7 @@ const budgetOptions = [
           value="daa4c037-78d3-4074-a324-07a29462c91f"
         />
 
-        <div class="s__field">
+        <div class="hf__field">
           <input
             type="text"
             name="business_owner_name"
@@ -68,37 +72,10 @@ const budgetOptions = [
             placeholder=" "
             required
           />
-          <label for="lead-owner">Name of Business Owner</label>
-          <span class="s__field__hint">e.g., Kartik</span>
+          <label for="lead-owner">Who is the lead visionary?</label>
         </div>
 
-        <div class="s__field">
-          <input
-            type="text"
-            name="business_name"
-            id="lead-biz"
-            placeholder=" "
-            required
-          />
-          <label for="lead-biz">Business Name</label>
-          <span class="s__field__hint">Your Company Name</span>
-        </div>
-
-        <div class="s__field">
-          <input
-            type="text"
-            name="business_type"
-            id="lead-type"
-            placeholder=" "
-            required
-          />
-          <label for="lead-type">Type of Business</label>
-          <span class="s__field__hint">
-            e.g., E-commerce, Bakery, Real Estate
-          </span>
-        </div>
-
-        <div class="s__field">
+        <div class="hf__field">
           <input
             type="email"
             name="email"
@@ -107,45 +84,80 @@ const budgetOptions = [
             required
             inputmode="email"
           />
-          <label for="lead-email">Working Business Email ID</label>
+          <label for="lead-email">Professional Email</label>
         </div>
 
-        <div class="s__field">
+        <div class="hf__field hf__field--full">
           <input
             type="text"
-            name="address"
-            id="lead-address"
+            name="business_name"
+            id="lead-biz"
             placeholder=" "
             required
           />
-          <label for="lead-address">Your Address</label>
-          <span class="s__field__hint">City, State</span>
+          <label for="lead-biz">Company / Project Name</label>
         </div>
 
-        <div class="s__field s__field--select">
-          <select name="budget" id="lead-budget" required>
+        <div class="hf__field">
+          <input
+            type="text"
+            name="business_type"
+            id="lead-type"
+            placeholder=" "
+            required
+          />
+          <label for="lead-type">Industry (e.g. SaaS, E-com)</label>
+        </div>
+
+        <div class="hf__field">
+          <input
+            type="text"
+            name="partner_code"
+            id="lead-code"
+            placeholder=" "
+            class="js-lead-code"
+          />
+          <label for="lead-code">Exclusive Partner Code (Optional)</label>
+          <p class="hf__field-error js-lead-code-error" style="display: none;">Not a valid coupon code</p>
+          <p class="hf__field-timer">
+            Coupon code valid for: <span class="js-lead-countdown-timer">
+              23:59:59
+            </span>
+          </p>
+        </div>
+
+        <div class="hf__field hf__field--select hf__field--full">
+          <select name="budget" id="lead-budget" class="js-lead-budget" required>
             <option value="" disabled selected></option>
-            {budgetOptions.map((opt) => <option value={opt}>{opt}</option>)}
+            <option value="₹20,000">Starter (₹20,000)</option>
+            <option value="₹35,000" data-original="₹35,000">
+              Pro / Bestseller (₹35,000)
+            </option>
+            <option value="₹50,000">Scale (₹50,000)</option>
+            <option value="₹80,000">Enterprise (₹80,000+)</option>
           </select>
-          <label for="lead-budget">Your Budget (INR)</label>
+          <label for="lead-budget">Estimated Investment</label>
         </div>
 
-        <div class="s__field s__field--full">
-          <textarea name="more_info" id="lead-info" placeholder=" " rows="4">
+        <div class="hf__field hf__field--full">
+          <textarea
+            name="more_info"
+            id="lead-info"
+            placeholder=" "
+            rows="3"
+            required
+          >
           </textarea>
-          <label for="lead-info">More Info & Demands</label>
-          <span class="s__field__hint">
-            Tell us about your project goals...
-          </span>
+          <label for="lead-info">Describe your growth goals & timelines</label>
         </div>
 
-        <div class="s__field s__field--full s__field--submit">
-          <button type="submit" class="s__submit">
-            <span class="s__submit__text">Unlock My Growth Strategy</span>
+        <div class="hf__field hf__field--full hf__field--submit">
+          <button type="submit" class="s__submit js-lead-submit">
+            <span>Apply for Your Growth</span>
             <svg
               class="s__submit__arrow"
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -157,6 +169,9 @@ const budgetOptions = [
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
+          <p class="s__trust">
+            🔒 100% Secure. We never share your data.
+          </p>
         </div>
       </form>
 
@@ -183,16 +198,165 @@ const budgetOptions = [
 </section>
 
 <script>
+  import confetti from 'canvas-confetti'
+
+  const leadCard = document.querySelector('.js-lead-card') as HTMLElement
   const form = document.querySelector('.js-lead-form') as HTMLFormElement
   const success = document.querySelector('.js-lead-success') as HTMLElement
+  const submitBtn = document.querySelector('.js-lead-submit') as HTMLButtonElement
 
+  // Gauge Logic
+  const inputs = form?.querySelectorAll(
+    'input[required], select[required], textarea[required]',
+  ) as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  const gaugeFill = document.querySelector('.js-lead-gauge-fill') as HTMLElement
+  const gaugeText = document.querySelector('.js-lead-gauge-text') as HTMLElement
+
+  const updateGauge = () => {
+    if (!inputs.length) return
+    let filled = 0
+    inputs.forEach((input) => {
+      if (input.value.trim() !== '') {
+        filled++
+      }
+    })
+    const percentage = Math.round((filled / inputs.length) * 100)
+    if (gaugeFill) gaugeFill.style.width = `${percentage}%`
+    if (gaugeText) gaugeText.textContent = `${percentage}%`
+
+    if (percentage === 100) {
+      gaugeFill.style.background = '#10b981'
+    } else {
+      gaugeFill.style.background = 'var(--color-primary, #f40c3f)'
+    }
+  }
+
+  if (inputs) {
+    inputs.forEach((input) => {
+      input.addEventListener('input', updateGauge)
+      input.addEventListener('change', updateGauge)
+    })
+  }
+
+  // 24 Hour Countdown Timer Logic
+  const timerDisplay = document.querySelector(
+    '.js-lead-countdown-timer',
+  ) as HTMLElement
+
+  if (timerDisplay) {
+    let timeRemaining = 24 * 60 * 60 - 1
+
+    const updateTimer = () => {
+      const hours = Math.floor(timeRemaining / 3600)
+      const minutes = Math.floor((timeRemaining % 3600) / 60)
+      const seconds = timeRemaining % 60
+
+      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      if (timerDisplay) {
+        timerDisplay.textContent = formattedTime
+      }
+
+      if (timeRemaining > 0) {
+        timeRemaining--
+      }
+    }
+
+    updateTimer()
+    setInterval(updateTimer, 1000)
+  }
+
+  // Gated Pricing Logic
+  const codeInput = document.querySelector('.js-lead-code') as HTMLInputElement
+  const budgetSelect = document.querySelector(
+    '.js-lead-budget',
+  ) as HTMLSelectElement
+
+  if (codeInput && budgetSelect) {
+    const validCodes = ['BHAVYA5', 'BHAVYA24', 'GROW20']
+    const originalText = '₹35,000'
+    const targetValuePrefix = '₹35,000'
+
+    const strike = (str: string) =>
+      str
+        .split('')
+        .map((char) => char + '\u0336')
+        .join('')
+    const strikethroughText = strike(originalText)
+    const discountText = ` ${strikethroughText} → ₹27,999 (Partner Exclusive)`
+
+    const getTargetOption = () =>
+      Array.from(budgetSelect.options).find((opt) =>
+        opt.value.startsWith(targetValuePrefix),
+      )
+
+    let isUnlockedState = false
+
+    const leadCodeError = document.querySelector('.js-lead-code-error') as HTMLElement
+
+    codeInput.addEventListener('input', (e) => {
+      const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
+      const targetOption = getTargetOption()
+
+      if (targetOption) {
+        if (validCodes.includes(val)) {
+          if (leadCodeError) leadCodeError.style.display = 'none'
+          if (!isUnlockedState) {
+            isUnlockedState = true
+            confetti({
+              particleCount: 150,
+              spread: 100,
+              origin: { y: 0.5 },
+              colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
+              disableForReducedMotion: true,
+            })
+            leadCard.classList.add('is-unlocked')
+            submitBtn.querySelector('span')!.textContent =
+              'Claim My Exclusive Slot'
+            submitBtn.classList.add('is-unlocked-btn')
+          }
+
+          targetOption.innerHTML = discountText
+          targetOption.value = '₹35,000 (Partner Exclusive: ₹27,999)'
+
+          budgetSelect.classList.add('has-discount')
+        } else {
+          // Show error if user typed something but it's not valid
+          if (leadCodeError) {
+            leadCodeError.style.display = val.length > 0 ? 'block' : 'none'
+          }
+          if (isUnlockedState) {
+            isUnlockedState = false
+            leadCard.classList.remove('is-unlocked')
+            submitBtn.querySelector('span')!.textContent =
+              'Apply for Business Growth'
+            submitBtn.classList.remove('is-unlocked-btn')
+          }
+          targetOption.innerHTML = originalText
+          targetOption.value = originalText
+
+          budgetSelect.classList.remove('has-discount')
+        }
+      }
+    })
+
+    budgetSelect.addEventListener('change', (e) => {
+      const val = (e.target as HTMLSelectElement).value
+      if (val.includes('Exclusive')) {
+        budgetSelect.classList.add('has-discount-selected')
+      } else {
+        budgetSelect.classList.remove('has-discount-selected')
+      }
+    })
+  }
+
+  // Form Submit
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
 
-      const btn = form.querySelector('.s__submit') as HTMLButtonElement
-      btn.disabled = true
-      btn.classList.add('is-loading')
+      submitBtn.disabled = true
+      submitBtn.classList.add('is-loading')
+      submitBtn.querySelector('span')!.textContent = 'Sending...'
 
       try {
         const formData = new FormData(form)
@@ -207,13 +371,17 @@ const budgetOptions = [
           form.style.display = 'none'
           success.style.display = 'flex'
         } else {
-          btn.disabled = false
-          btn.classList.remove('is-loading')
+          submitBtn.disabled = false
+          submitBtn.classList.remove('is-loading')
+          submitBtn.querySelector('span')!.textContent =
+            'Apply for Business Growth'
           alert('Something went wrong. Please try again.')
         }
       } catch (err) {
-        btn.disabled = false
-        btn.classList.remove('is-loading')
+        submitBtn.disabled = false
+        submitBtn.classList.remove('is-loading')
+        submitBtn.querySelector('span')!.textContent =
+          'Apply for Business Growth '
         alert('Network error. Please check your connection and try again.')
       }
     })
@@ -255,6 +423,21 @@ const budgetOptions = [
     border-radius: 1.5rem;
 
     overflow: hidden;
+
+    transition:
+      box-shadow 0.5s ease,
+      border-color 0.5s ease;
+
+    &.is-unlocked {
+      border-color: rgba(251, 191, 36, 0.4);
+      animation:
+        premium-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+        pulse-glow 3s infinite 0.6s;
+
+      .theme-contrasted & {
+        border-color: rgba(251, 191, 36, 0.5);
+      }
+    }
 
     @include mq(tablet) {
       grid-template-columns: 1fr;
@@ -365,10 +548,100 @@ const budgetOptions = [
     }
   }
 
+  /* ── Gauge ── */
+  .s__gauge {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 242, 237, 0.1);
+    border-radius: 3px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+
+    .theme-contrasted & {
+      background: rgba(22, 0, 0, 0.1);
+    }
+
+    &-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--color-primary);
+      border-radius: 3px;
+      transition:
+        width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        background-color 0.4s ease;
+
+      .theme-contrasted & {
+        background: color(secondary);
+      }
+    }
+
+    &-text {
+      position: absolute;
+      top: -24px;
+      right: 0;
+      font: 400 0.75rem / 1 font-family(fraktion);
+      color: rgba(255, 242, 237, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+
+      .theme-contrasted & {
+        color: rgba(22, 0, 0, 0.6);
+      }
+
+      span {
+        font-weight: 700;
+        color: rgba(255, 242, 237, 0.9);
+
+        .theme-contrasted & {
+          color: rgba(22, 0, 0, 0.9);
+        }
+      }
+    }
+  }
+
+  /* ── Urgency ── */
+  .s__urgency {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.75rem 1rem;
+    background: rgba(244, 12, 63, 0.08);
+    border: 1px solid rgba(244, 12, 63, 0.15);
+    border-radius: 0.5rem;
+    color: rgba(255, 242, 237, 0.85);
+    font: 400 0.875rem / 1.4 font-family(editorial);
+
+    .theme-contrasted & {
+      background: rgba(22, 0, 0, 0.04);
+      border-color: rgba(22, 0, 0, 0.1);
+      color: rgba(22, 0, 0, 0.85);
+    }
+
+    .pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 0 rgba(244, 12, 63, 0.4);
+      animation: pulse-dot 2s infinite;
+
+      .theme-contrasted & {
+        background: color(secondary);
+        box-shadow: 0 0 0 rgba(22, 0, 0, 0.4);
+      }
+    }
+  }
+
   .s__form {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.75rem 1.25rem;
+    gap: 1.5rem 1rem;
 
     @include mq(phone) {
       grid-template-columns: 1fr;
@@ -377,7 +650,7 @@ const budgetOptions = [
   }
 
   /* ── Field container ── */
-  .s__field {
+  .hf__field {
     position: relative;
 
     &--full {
@@ -385,12 +658,7 @@ const budgetOptions = [
     }
 
     &--submit {
-      display: flex;
-      justify-content: flex-start;
-
-      @include mq(tablet) {
-        justify-content: center;
-      }
+      margin-top: 0.5rem;
     }
 
     /* floating label */
@@ -497,18 +765,42 @@ const budgetOptions = [
       resize: vertical;
       min-height: 5rem;
     }
-  }
 
-  .s__field__hint {
-    display: block;
-    margin-top: 0.25rem;
-    padding-left: 1rem;
+    &-error {
+      position: absolute;
+      top: -1.2rem;
+      left: 0.25rem;
+      margin: 0;
+      font: 700 0.75rem / 1 font-family(fraktion);
+      color: #ef4444;
+      letter-spacing: 0.03em;
 
-    color: rgba(255, 242, 237, 0.3);
-    font: 400 0.6875rem / 1.4 font-family(fraktion);
+      .theme-contrasted & {
+        color: #dc2626;
+      }
+    }
 
-    .theme-contrasted & {
-      color: rgba(22, 0, 0, 0.35);
+    &-timer {
+      position: absolute;
+      bottom: -1.4rem;
+      right: 0.25rem;
+      margin: 0;
+      font: 400 0.75rem / 1 font-family(fraktion);
+      color: rgba(255, 242, 237, 0.5);
+
+      .theme-contrasted & {
+        color: rgba(22, 0, 0, 0.55);
+      }
+
+      span {
+        color: var(--color-primary);
+        font-weight: 700;
+        letter-spacing: 0.05em;
+
+        .theme-contrasted & {
+          color: color(secondary);
+        }
+      }
     }
   }
 
@@ -516,13 +808,15 @@ const budgetOptions = [
   .s__submit {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem;
 
+    width: 100%;
     padding: 1.1rem 2.25rem;
 
-    background: var(--color-primary);
+    background: #000;
     border: none;
-    border-radius: 999rem;
+    border-radius: 0.5rem;
     cursor: pointer;
 
     color: #fff;
@@ -543,8 +837,8 @@ const budgetOptions = [
 
     &:hover {
       box-shadow:
-        0 0 24px 4px rgba(244, 12, 63, 0.45),
-        0 0 64px 8px rgba(244, 12, 63, 0.2);
+        0 0 24px 4px rgba(0, 0, 0, 0.45),
+        0 0 64px 8px rgba(0, 0, 0, 0.2);
       transform: translateY(-2px);
 
       .theme-contrasted & {
@@ -558,6 +852,25 @@ const budgetOptions = [
       transform: translateY(0);
     }
 
+    &.is-unlocked-btn {
+      background: linear-gradient(
+        135deg,
+        #fbbf24 0%,
+        #f59e0b 100%
+      );
+      box-shadow: 0 4px 20px 0 rgba(251, 191, 36, 0.4);
+      color: #000;
+
+      &:hover {
+        box-shadow: 0 6px 25px rgba(251, 191, 36, 0.35);
+        transform: translateY(-3px) scale(1.02);
+      }
+
+      .theme-contrasted & {
+        color: #000;
+      }
+    }
+
     &.is-loading {
       opacity: 0.6;
       pointer-events: none;
@@ -569,6 +882,18 @@ const budgetOptions = [
 
     &:hover &__arrow {
       transform: translateX(4px);
+    }
+  }
+
+  .s__trust {
+    margin-top: 1rem;
+    text-align: center;
+    font: 400 0.8125rem / 1.5 font-family(fraktion);
+    letter-spacing: 0.02em;
+    color: rgba(255, 242, 237, 0.4);
+
+    .theme-contrasted & {
+      color: rgba(22, 0, 0, 0.45);
     }
   }
 
@@ -626,6 +951,75 @@ const budgetOptions = [
     to {
       transform: scale(1);
       opacity: 1;
+    }
+  }
+
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(244, 12, 63, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(244, 12, 63, 0);
+    }
+  }
+
+  @keyframes premium-unlock {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+      box-shadow:
+        0 0 60px rgba(16, 185, 129, 0.4),
+        inset 0 0 30px rgba(16, 185, 129, 0.2);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.2),
+        inset 0 0 15px rgba(16, 185, 129, 0.1);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0% {
+      box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.15),
+        inset 0 0 15px rgba(16, 185, 129, 0.05);
+    }
+    50% {
+      box-shadow:
+        0 0 50px rgba(16, 185, 129, 0.35),
+        inset 0 0 25px rgba(16, 185, 129, 0.15);
+    }
+    100% {
+      box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.15),
+        inset 0 0 15px rgba(16, 185, 129, 0.05);
+    }
+  }
+
+  // Gated Pricing Styles
+  .js-lead-budget {
+    &.has-discount option[value*='Exclusive'] {
+      color: #fbbf24;
+
+      .theme-contrasted & {
+        color: #d97706;
+      }
+    }
+
+    &.has-discount-selected {
+      color: #fbbf24 !important;
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+
+      .theme-contrasted & {
+        color: #d97706 !important;
+        text-shadow: none;
+      }
     }
   }
 </style>

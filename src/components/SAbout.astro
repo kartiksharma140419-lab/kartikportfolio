@@ -57,10 +57,17 @@ const awards = {
           </strong>
         </p>
       </div><!-- .s__content -->
+
+      <div class="s__availability" data-intersect="fade-up">
+        <a href="#lead-capture" class="s__availability-btn js-menu-link">
+          <span class="s__availability-dot"></span>
+          Only 3 Slots Remaining This Month
+        </a>
+      </div>
     </div><!-- .s__block -->
 
     <div class="s__block s__block--awards">
-      <h2 class="s__title">Awards</h2>
+      <h2 class="s__title">My Work</h2>
 
       <ul class="s__awards">
         {
@@ -803,6 +810,103 @@ const awards = {
             transform-origin: 0 50%;
           }
         }
+      }
+    }
+
+    .s__availability {
+      position: relative;
+      z-index: 2;
+      padding: 2rem 4.5rem;
+      text-align: center;
+
+      @include mq(phone) {
+        padding: 1.5rem 5vw;
+      }
+
+      &-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+
+        padding: 0.875rem 1.75rem;
+
+        background: rgba(244, 12, 63, 0.08);
+        border: 1px solid rgba(244, 12, 63, 0.2);
+        border-radius: 999rem;
+
+        color: color(secondary);
+        font: 700 0.8125rem / 1.2 font-family(fraktion);
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align: center;
+        white-space: normal;
+        
+        @include mq(phone) {
+          font-size: clamp(0.7rem, 3.5vw, 0.8125rem);
+          padding: 0.75rem 1.25rem;
+        }
+
+        animation: availability-pulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+        transition:
+          background 0.3s ease,
+          border-color 0.3s ease,
+          transform 0.3s ease;
+
+        .theme-contrasted & {
+          background: rgba(22, 0, 0, 0.06);
+          border-color: rgba(22, 0, 0, 0.15);
+        }
+
+        &:hover {
+          background: rgba(244, 12, 63, 0.15);
+          border-color: rgba(244, 12, 63, 0.4);
+          transform: translateY(-2px);
+          animation-play-state: paused;
+
+          .theme-contrasted & {
+            background: rgba(22, 0, 0, 0.1);
+            border-color: rgba(22, 0, 0, 0.3);
+          }
+        }
+      }
+
+      &-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--color-primary, #f40c3f);
+        border-radius: 50%;
+        box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.4);
+        animation: availability-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+        .theme-contrasted & {
+          background: color(secondary);
+          box-shadow: 0 0 0 0 rgba(22, 0, 0, 0.3);
+        }
+      }
+    }
+
+    @keyframes availability-pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(244, 12, 63, 0);
+      }
+      50% {
+        box-shadow: 0 0 20px 2px rgba(244, 12, 63, 0.12);
+      }
+    }
+
+    @keyframes availability-dot {
+      0% {
+        box-shadow: 0 0 0 0 rgba(244, 12, 63, 0.5);
+      }
+      70% {
+        box-shadow: 0 0 0 8px rgba(244, 12, 63, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(244, 12, 63, 0);
       }
     }
 
