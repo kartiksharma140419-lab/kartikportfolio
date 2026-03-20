@@ -170,9 +170,16 @@ const key = Math.random().toString(36).slice(2, 6) + '-' + index + '/' + total
       aspect-ratio: 1082 / 636;
       border-radius: 2px;
 
+      @include mq(tablet) {
+        width: 100vw;
+        max-width: none;
+        max-height: none;
+      }
+
       @include mq(phone) {
-        max-width: 80vw;
-        max-height: 80vh;
+        width: 130vw;
+        max-width: none;
+        max-height: none;
       }
     }
 
