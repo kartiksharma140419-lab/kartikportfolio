@@ -331,6 +331,8 @@ import '../styles/global.scss'
   </body>
 
   <script>
+    import { driver } from 'driver.js'
+    import 'driver.js/dist/driver.css'
     import Emitter from '../utils/Emitter'
     import Ticker from '../utils/Ticker'
 
@@ -405,6 +407,7 @@ import '../styles/global.scss'
 
         this.onResize()
         Ticker.nextTick(this.intro, this)
+        this.initTour()
       }
 
       /**
@@ -701,6 +704,35 @@ import '../styles/global.scss'
           5,
           // 0
         )
+      }
+
+      /**
+       * Init Tour
+       */
+      initTour() {
+        document.addEventListener('intro', () => {
+          setTimeout(() => {
+            const driverObj = driver({
+              showProgress: false,
+              allowClose: false,
+              steps: [
+                {
+                  element: window.innerWidth <= 768 ? '.sb-contact-mobile' : '.sb-availability .js-hire-me',
+                  popover: { title: 'Get Your Website', description: 'This button opens the project form.', side: 'bottom', align: 'start', nextBtnText: 'Got it' }
+                },
+                {
+                  element: '.js-contrast',
+                  popover: { title: 'Color Theme', description: 'This is a colour changing button, try it!', side: 'bottom', align: 'start', nextBtnText: 'Got it' }
+                },
+                {
+                  element: '#work',
+                  popover: { title: 'My Work', description: 'Trust me by watching my work.', side: 'top', align: 'start', doneBtnText: 'Got it' }
+                }
+              ]
+            })
+            driverObj.drive()
+          }, 2500)
+        }, { once: true })
       }
     }
 
