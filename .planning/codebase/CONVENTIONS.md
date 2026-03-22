@@ -114,7 +114,7 @@ Available breakpoints: `desktop-xl`, `desktop-lg`, `desktop-md`, `desktop-sm`, `
 - **Scroll animations:** Use `ScrollTrigger` with Lenis integration
 - **Character animations:** `SplitText` for word/char splitting
 - **SVG animations:** `DrawSVGPlugin` for line drawing effects
-- **Easing:** Primarily `expo.inOut`, `expo.out`, `power4.inOut`
+- **Easing:** Primarily `expo.out` (1.2s) for primary animations and `power3.inOut` (0.5s) for transitions/hovers.
 
 ### CSS Animations
 

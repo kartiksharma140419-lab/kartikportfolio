@@ -48,17 +48,17 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | Phase 1 | Pending |
-| AUDIT-02 | Phase 3 | Pending |
-| AUDIT-03 | Phase 3 | Pending |
-| FMT-01 | Phase 1 | Pending |
-| FMT-02 | Phase 1 | Pending |
-| FMT-03 | Phase 3 | Pending |
-| REFACT-01 | Phase 2 | Pending |
-| REFACT-02 | Phase 2 | Pending |
-| REFACT-03 | Phase 2 | Pending |
-| DOCS-01 | Phase 3 | Pending |
-| DOCS-02 | Phase 3 | Pending |
+| AUDIT-01 | Phase 1 | Complete |
+| AUDIT-02 | Phase 3 | Complete |
+| AUDIT-03 | Phase 3 | Complete |
+| FMT-01 | Phase 1 | Complete |
+| FMT-02 | Phase 1 | Complete |
+| FMT-03 | Phase 3 | Complete |
+| REFACT-01 | Phase 2 | Complete |
+| REFACT-02 | Phase 2 | Complete |
+| REFACT-03 | Phase 2 | Complete |
+| DOCS-01 | Phase 3 | Complete |
+| DOCS-02 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 11 total

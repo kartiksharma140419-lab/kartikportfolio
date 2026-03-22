@@ -598,6 +598,7 @@ import '../styles/global.scss'
           background: 'transparent',
         })
 
+        // 1. Enter the vertical lines
         tl.fromTo(
           logoLinesV,
           {
@@ -605,13 +606,14 @@ import '../styles/global.scss'
           },
           {
             scaleY: 1,
-            duration: 1,
-            ease: 'power4.inOut',
+            duration: 1.2,
+            ease: 'expo.out', // Standardized ease
             stagger: 0.15,
           },
           0,
         )
 
+        // 2. Enter horizontal lines
         tl.fromTo(
           logoLinesH,
           {
@@ -619,8 +621,8 @@ import '../styles/global.scss'
           },
           {
             scaleX: 1,
-            duration: 0.4,
-            ease: 'power4.inOut',
+            duration: 0.5,
+            ease: 'expo.out',
             stagger: 0,
           },
           1,
@@ -710,29 +712,54 @@ import '../styles/global.scss'
        * Init Tour
        */
       initTour() {
-        document.addEventListener('intro', () => {
-          setTimeout(() => {
-            const driverObj = driver({
-              showProgress: false,
-              allowClose: false,
-              steps: [
-                {
-                  element: window.innerWidth <= 768 ? '.sb-contact-mobile' : '.sb-availability .js-hire-me',
-                  popover: { title: 'Get Your Website', description: 'This button opens the project form.', side: 'bottom', align: 'start', nextBtnText: 'Got it' }
-                },
-                {
-                  element: '.js-contrast',
-                  popover: { title: 'Color Theme', description: 'This is a colour changing button, try it!', side: 'bottom', align: 'start', nextBtnText: 'Got it' }
-                },
-                {
-                  element: '#work',
-                  popover: { title: 'My Work', description: 'Trust me by watching my work.', side: 'top', align: 'start', doneBtnText: 'Got it' }
-                }
-              ]
-            })
-            driverObj.drive()
-          }, 2500)
-        }, { once: true })
+        document.addEventListener(
+          'intro',
+          () => {
+            setTimeout(() => {
+              const driverObj = driver({
+                showProgress: false,
+                allowClose: false,
+                steps: [
+                  {
+                    element:
+                      window.innerWidth <= 768
+                        ? '.sb-contact-mobile'
+                        : '.sb-availability .js-hire-me',
+                    popover: {
+                      title: 'Get Your Website',
+                      description: 'This button opens the project form.',
+                      side: 'bottom',
+                      align: 'start',
+                      nextBtnText: 'Got it',
+                    },
+                  },
+                  {
+                    element: '.js-contrast',
+                    popover: {
+                      title: 'Color Theme',
+                      description: 'This is a colour changing button, try it!',
+                      side: 'bottom',
+                      align: 'start',
+                      nextBtnText: 'Got it',
+                    },
+                  },
+                  {
+                    element: '#work',
+                    popover: {
+                      title: 'My Work',
+                      description: 'Trust me by watching my work.',
+                      side: 'top',
+                      align: 'start',
+                      doneBtnText: 'Got it',
+                    },
+                  },
+                ],
+              })
+              driverObj.drive()
+            }, 2500)
+          },
+          { once: true },
+        )
       }
     }
 
