@@ -1099,6 +1099,15 @@ for (let i = 0; i < 40; i++) {
 
         will-change: transform;
 
+        @include mq(phone) {
+          transform: rotateY(calc(var(--progress) * -5deg))
+            translate3d(
+              calc(var(--progress) * (100vw + 100%) - 50%),
+              calc(var(--y) * 25% - 50%),
+              0
+            )
+            scale(calc(0.5 + var(--size) * 0.6));
+        }
       }
     }
 
