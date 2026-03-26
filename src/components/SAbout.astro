@@ -730,7 +730,11 @@ const awards = {
     }
 
     @include mq(phone) {
-      --width: 80vw;
+      --width: 85vw;
+    }
+
+    @include mq(phone-sm) {
+      --width: 90vw;
     }
 
     .s__inner {
@@ -770,7 +774,13 @@ const awards = {
       }
 
       @include mq(phone) {
-        padding: 15vw 10vw;
+        padding: 12vw 8vw;
+        font-size: clamp(1.1rem, 4.5vw, 1.5rem);
+      }
+
+      @include mq(phone-sm) {
+        padding: 10vw 6vw;
+        font-size: clamp(1rem, 4.2vw, 1.1rem);
       }
 
       a {

@@ -800,10 +800,9 @@ const lines = [
 
         @include mq(phone) {
           top: calc(50% + var(--size) * 0.28);
-
           padding: 1em;
-
-          font-size: 13px;
+          font-size: clamp(10px, 3.5vw, 13px);
+          white-space: nowrap;
         }
 
         &:before {

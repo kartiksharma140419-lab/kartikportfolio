@@ -195,7 +195,10 @@ const key = Math.random().toString(36).slice(2, 6) + '-' + index + '/' + total
       text-transform: uppercase;
 
       @include mq(phone) {
-        display: none;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.25rem;
+        font-size: 9px;
       }
     }
 

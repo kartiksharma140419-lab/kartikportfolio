@@ -835,6 +835,12 @@ const frames = [
 
     @include mq(phone) {
       --padding: 18rem;
+      --smiley-size: 3.75rem;
+    }
+
+    @include mq(phone-sm) {
+      --padding: 14rem;
+      --smiley-size: 3rem;
     }
 
     @keyframes rotate {
@@ -953,6 +959,14 @@ const frames = [
 
         @include mq(tablet-sm) {
           width: 300px;
+        }
+
+        @include mq(phone) {
+          width: 220px;
+        }
+
+        @include mq(phone-sm) {
+          width: 180px;
         }
 
         .a__inner {

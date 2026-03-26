@@ -137,7 +137,7 @@
             Pro / Bestseller (₹35,000)
           </option>
           <option value="₹50,000" data-original="₹50,000">Scale (₹50,000)</option>
-          <option value="₹80,000" data-original="₹80,000">Enterprise (₹80,000+)</option>
+          <option value="₹90,000" data-original="₹90,000">Enterprise (₹90,000+)</option>
         </select>
         <label for="modal-budget">Estimated Investment</label>
         <div class="hf__field-discount js-hire-discount-display" style="display: none;"></div>
@@ -293,10 +293,11 @@
         .map((char) => char + '\u0336')
         .join('')
 
-    const valMap: Record<string, { price: string; pct: string }> = {
-      '₹20,000': { price: '₹17,999', pct: '10% OFF' },
-      '₹35,000': { price: '₹27,999', pct: '20% OFF' },
-      '₹50,000': { price: '₹39,999', pct: '20% OFF' }
+    const valMap: Record<string, { price: string; pct: string; label: string }> = {
+      '₹20,000': { price: '₹17,999', pct: '10% OFF', label: 'Starter' },
+      '₹35,000': { price: '₹27,999', pct: '20% OFF', label: 'Pro / Bestseller' },
+      '₹50,000': { price: '₹39,999', pct: '20% OFF', label: 'Scale' },
+      '₹90,000': { price: '₹67,500', pct: '25% OFF', label: 'Enterprise' }
     }
 
     let isUnlockedState = false
@@ -355,9 +356,9 @@
         Array.from(budgetSelect.options).forEach((opt) => {
           const orig = opt.getAttribute('data-original')
           if (orig && valMap[orig]) {
-            const strikethroughText = strike(orig)
-            opt.innerHTML = ` ${strikethroughText} → ${valMap[orig].price} (Partner Exclusive)`
-            opt.value = `${orig} (Partner Exclusive: ${valMap[orig].price})`
+            const d = valMap[orig]
+            opt.innerHTML = `${d.label} ${strike(orig)} → ${d.price} (${d.pct})`
+            opt.value = `${orig} → ${d.price} (${d.pct})`
           }
         })
 
@@ -375,11 +376,11 @@
 
         Array.from(budgetSelect.options).forEach((opt) => {
           const orig = opt.getAttribute('data-original')
-          if (orig) {
-            if (orig === '₹20,000') opt.innerHTML = 'Starter (₹20,000)'
-            if (orig === '₹35,000') opt.innerHTML = 'Pro / Bestseller (₹35,000)'
-            if (orig === '₹50,000') opt.innerHTML = 'Scale (₹50,000)'
-            if (orig === '₹80,000') opt.innerHTML = 'Enterprise (₹80,000+)'
+          if (orig && valMap[orig]) {
+            opt.innerHTML = `${valMap[orig].label} (${orig})`
+            opt.value = orig
+          } else if (orig === '₹90,000') {
+            opt.innerHTML = 'Enterprise (₹90,000+)'
             opt.value = orig
           }
         })
@@ -389,10 +390,9 @@
       updateDiscountDisplay()
     })
 
-    // Ensure select color resets if option changes away from discount
     budgetSelect.addEventListener('change', (e) => {
       const val = (e.target as HTMLSelectElement).value
-      if (val.includes('Exclusive')) {
+      if (val.includes('OFF')) {
         budgetSelect.classList.add('has-discount-selected')
       } else {
         budgetSelect.classList.remove('has-discount-selected')
@@ -818,6 +818,20 @@
         }
       }
 
+      @include mq(phone-sm) {
+        input,
+        select,
+        textarea {
+          padding: 1.4rem 0.75rem 0.5rem;
+          font-size: 0.85rem;
+        }
+
+        label {
+          top: 0.8rem;
+          left: 0.75rem;
+        }
+      }
+
       select {
         appearance: none;
         cursor: pointer;
@@ -1133,8 +1147,8 @@
 
   // Gated Pricing Styles
   .js-hire-budget {
-    &.has-discount option[value*='Exclusive'] {
-      color: #fbbf24; // Gold highlighting
+    &.has-discount option[value*='OFF'] {
+      color: #fbbf24;
 
       .theme-contrasted & {
         color: #d97706;

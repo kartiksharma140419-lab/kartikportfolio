@@ -395,6 +395,12 @@ import ASeparator from './ASeparator.astro'
 
       @include mq(phone) {
         padding: 1rem 0.75rem 0;
+        font-size: clamp(1rem, 4.5vw, 1.25rem);
+      }
+
+      @include mq(phone-sm) {
+        padding: 0.75rem 0.5rem 0;
+        font-size: clamp(0.875rem, 4vw, 1rem);
       }
     }
 
@@ -424,6 +430,11 @@ import ASeparator from './ASeparator.astro'
 
       @include mq(phone) {
         font-size: calc(31vw - 0.75rem);
+        padding: 0.75rem 0;
+      }
+
+      @include mq(phone-sm) {
+        font-size: calc(30vw - 0.5rem);
       }
 
       &__word {
@@ -447,10 +458,13 @@ import ASeparator from './ASeparator.astro'
         margin: 0 2rem;
 
         @include mq(tablet) {
-          // display: none;
           margin: 0 0 0 auto;
           width: 0.375em;
           height: auto;
+        }
+
+        @include mq(phone-sm) {
+          width: 0.3em;
         }
       }
 
