@@ -132,14 +132,15 @@
       <div class="hf__field hf__field--select hf__field--full">
         <select name="budget" id="modal-budget" class="js-hire-budget" required>
           <option value="" disabled selected></option>
-          <option value="₹20,000">Starter (₹20,000)</option>
+          <option value="₹20,000" data-original="₹20,000">Starter (₹20,000)</option>
           <option value="₹35,000" data-original="₹35,000">
             Pro / Bestseller (₹35,000)
           </option>
-          <option value="₹50,000">Scale (₹50,000)</option>
-          <option value="₹80,000">Enterprise (₹80,000+)</option>
+          <option value="₹50,000" data-original="₹50,000">Scale (₹50,000)</option>
+          <option value="₹80,000" data-original="₹80,000">Enterprise (₹80,000+)</option>
         </select>
         <label for="modal-budget">Estimated Investment</label>
+        <div class="hf__field-discount js-hire-discount-display" style="display: none;"></div>
       </div>
 
       <div class="hf__field hf__field--full">
@@ -286,74 +287,106 @@
 
   if (codeInput && budgetSelect) {
     const validCodes = ['BHAVYA5', 'BHAVYA24', 'GROW20']
-    const originalText = '₹35,000'
-    const targetValuePrefix = '₹35,000'
-
-    // Helper to generate unicode strikethrough for standard <option> tags
     const strike = (str: string) =>
       str
         .split('')
         .map((char) => char + '\u0336')
         .join('')
-    const strikethroughText = strike(originalText)
-    const discountText = ` ${strikethroughText} → ₹27,999 (Partner Exclusive)`
 
-    // Find the option initially (when value is exactly ₹35,000 or starts with it)
-    const getTargetOption = () =>
-      Array.from(budgetSelect.options).find((opt) =>
-        opt.value.startsWith(targetValuePrefix),
-      )
+    const valMap: Record<string, { price: string; pct: string }> = {
+      '₹20,000': { price: '₹17,999', pct: '10% OFF' },
+      '₹35,000': { price: '₹27,999', pct: '20% OFF' },
+      '₹50,000': { price: '₹39,999', pct: '20% OFF' }
+    }
 
     let isUnlockedState = false
 
-    const hireCodeError = document.querySelector(
-      '.js-hire-code-error',
-    ) as HTMLElement
+    const hireCodeError = document.querySelector('.js-hire-code-error') as HTMLElement
+    const hireDiscountDisplay = document.querySelector('.js-hire-discount-display') as HTMLElement
+
+    const updateDiscountDisplay = () => {
+      const codeVal = codeInput.value.trim().toUpperCase()
+      const selectedOrig =
+        budgetSelect.options[budgetSelect.selectedIndex]?.getAttribute('data-original')
+
+      if (validCodes.includes(codeVal) && selectedOrig && valMap[selectedOrig]) {
+        const data = valMap[selectedOrig]
+        if (hireDiscountDisplay) {
+          hireDiscountDisplay.innerHTML = `
+            <span class="hf__field-discount__old">${selectedOrig}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <span class="hf__field-discount__new">${data.price}</span>
+            <span class="hf__field-discount__pct">(${data.pct})</span>
+          `
+          hireDiscountDisplay.style.display = 'flex'
+          setTimeout(() => hireDiscountDisplay.classList.add('is-visible'), 10)
+        }
+      } else {
+        if (hireDiscountDisplay) {
+          hireDiscountDisplay.classList.remove('is-visible')
+          setTimeout(() => {
+            if (!hireDiscountDisplay.classList.contains('is-visible')) {
+              hireDiscountDisplay.style.display = 'none'
+            }
+          }, 300)
+        }
+      }
+    }
 
     codeInput.addEventListener('input', (e) => {
       const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
-      const targetOption = getTargetOption()
 
-      if (targetOption) {
-        if (validCodes.includes(val)) {
-          if (hireCodeError) hireCodeError.style.display = 'none'
-          if (!isUnlockedState) {
-            isUnlockedState = true
-            confetti({
-              particleCount: 150,
-              spread: 100,
-              origin: { y: 0.5 },
-              colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
-              disableForReducedMotion: true,
-            })
-            card.classList.add('is-unlocked')
-            submitBtn.querySelector('span')!.textContent =
-              'Claim My Exclusive Slot'
-            submitBtn.classList.add('is-unlocked-btn')
-          }
-
-          targetOption.innerHTML = discountText
-          targetOption.value = '₹35,000 (Partner Exclusive: ₹27,999)'
-
-          budgetSelect.classList.add('has-discount')
-        } else {
-          // Show error if user typed something but it's not valid
-          if (hireCodeError) {
-            hireCodeError.style.display = val.length > 0 ? 'block' : 'none'
-          }
-          if (isUnlockedState) {
-            isUnlockedState = false
-            card.classList.remove('is-unlocked')
-            submitBtn.querySelector('span')!.textContent =
-              'Apply for Business Growth'
-            submitBtn.classList.remove('is-unlocked-btn')
-          }
-          targetOption.innerHTML = originalText
-          targetOption.value = originalText
-
-          budgetSelect.classList.remove('has-discount')
+      if (validCodes.includes(val)) {
+        if (hireCodeError) hireCodeError.style.display = 'none'
+        if (!isUnlockedState) {
+          isUnlockedState = true
+          confetti({
+            particleCount: 150,
+            spread: 100,
+            origin: { y: 0.5 },
+            colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
+            disableForReducedMotion: true,
+          })
+          card.classList.add('is-unlocked')
+          submitBtn.querySelector('span')!.textContent = 'Claim My Exclusive Slot'
+          submitBtn.classList.add('is-unlocked-btn')
         }
+
+        Array.from(budgetSelect.options).forEach((opt) => {
+          const orig = opt.getAttribute('data-original')
+          if (orig && valMap[orig]) {
+            const strikethroughText = strike(orig)
+            opt.innerHTML = ` ${strikethroughText} → ${valMap[orig].price} (Partner Exclusive)`
+            opt.value = `${orig} (Partner Exclusive: ${valMap[orig].price})`
+          }
+        })
+
+        budgetSelect.classList.add('has-discount')
+      } else {
+        if (hireCodeError) {
+          hireCodeError.style.display = val.length > 0 ? 'block' : 'none'
+        }
+        if (isUnlockedState) {
+          isUnlockedState = false
+          card.classList.remove('is-unlocked')
+          submitBtn.querySelector('span')!.textContent = 'Apply for Business Growth'
+          submitBtn.classList.remove('is-unlocked-btn')
+        }
+
+        Array.from(budgetSelect.options).forEach((opt) => {
+          const orig = opt.getAttribute('data-original')
+          if (orig) {
+            if (orig === '₹20,000') opt.innerHTML = 'Starter (₹20,000)'
+            if (orig === '₹35,000') opt.innerHTML = 'Pro / Bestseller (₹35,000)'
+            if (orig === '₹50,000') opt.innerHTML = 'Scale (₹50,000)'
+            if (orig === '₹80,000') opt.innerHTML = 'Enterprise (₹80,000+)'
+            opt.value = orig
+          }
+        })
+
+        budgetSelect.classList.remove('has-discount')
       }
+      updateDiscountDisplay()
     })
 
     // Ensure select color resets if option changes away from discount
@@ -364,6 +397,7 @@
       } else {
         budgetSelect.classList.remove('has-discount-selected')
       }
+      updateDiscountDisplay()
     })
   }
 
@@ -818,6 +852,57 @@
         resize: vertical;
         min-height: 5rem;
       }
+
+      &-discount {
+      margin-top: 1rem;
+      padding: 0.85rem 1.15rem;
+      background: rgba(16, 185, 129, 0.08); /* Success green tint */
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 0.5rem;
+      font: 400 1rem / 1 font-family(fraktion);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      
+      opacity: 0;
+      transform: translateY(-5px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+
+      .theme-contrasted & {
+        background: rgba(16, 185, 129, 0.05);
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+
+      &.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      &__old {
+        color: #ef4444;
+        text-decoration: line-through;
+        opacity: 0.85;
+      }
+      &__new {
+        color: #10b981;
+        font-weight: 700;
+        font-size: 1.05em;
+      }
+      &__pct {
+        font-size: 0.85em;
+        font-weight: 700;
+        color: rgba(255, 242, 237, 0.9);
+        background: rgba(255, 242, 237, 0.12);
+        padding: 3px 8px;
+        border-radius: 6px;
+        margin-left: 0.25rem;
+
+        .theme-contrasted & {
+          color: rgba(22, 0, 0, 0.9);
+          background: rgba(22, 0, 0, 0.08);
+        }
+      }
+    }
 
       &-error {
         position: absolute;
