@@ -466,7 +466,7 @@
         premium-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
         pulse-glow 3s infinite 0.6s;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         border-color: rgba(251, 191, 36, 0.5);
       }
     }
@@ -610,7 +610,7 @@
         width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
         background-color 0.4s ease;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         background: color(secondary);
       }
     }
@@ -624,7 +624,7 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: rgba(22, 0, 0, 0.6);
       }
 
@@ -632,7 +632,7 @@
         font-weight: 700;
         color: rgba(255, 242, 237, 0.9);
 
-        .theme-contrasted & {
+        :global(.theme-contrasted) & {
           color: rgba(22, 0, 0, 0.9);
         }
       }
@@ -667,7 +667,7 @@
       box-shadow: 0 0 0 rgba(244, 12, 63, 0.4);
       animation: pulse-dot 2s infinite;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         background: color(secondary);
         box-shadow: 0 0 0 rgba(22, 0, 0, 0.4);
       }
@@ -718,7 +718,7 @@
         transform 0.25s cubic-bezier(0.25, 1, 0.5, 1),
         color 0.25s ease;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: rgba(22, 0, 0, 0.45);
       }
     }
@@ -742,7 +742,7 @@
         border-color 0.3s ease,
         box-shadow 0.3s ease;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         background: rgba(22, 0, 0, 0.04);
         border-color: rgba(22, 0, 0, 0.15);
         color: rgba(22, 0, 0, 0.9);
@@ -752,7 +752,7 @@
         border-color: var(--color-primary);
         box-shadow: 0 0 0 3px rgba(244, 12, 63, 0.15);
 
-        .theme-contrasted & {
+        :global(.theme-contrasted) & {
           border-color: color(secondary);
           box-shadow: 0 0 0 3px rgba(22, 0, 0, 0.1);
         }
@@ -764,7 +764,7 @@
       transform: translateY(-0.55rem) scale(0.75);
       color: var(--color-primary);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: color(secondary);
       }
     }
@@ -793,7 +793,7 @@
       background-repeat: no-repeat;
       background-position: right 1rem center;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23160000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       }
     }
@@ -809,7 +809,7 @@
       background: color(secondary);
       color: rgba(255, 242, 237, 0.95);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         background: #fff;
         color: color(secondary);
       }
@@ -835,7 +835,7 @@
       transform: translateY(-5px);
       transition: opacity 0.3s ease, transform 0.3s ease;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         background: rgba(16, 185, 129, 0.05);
         border-color: rgba(16, 185, 129, 0.2);
       }
@@ -864,7 +864,7 @@
         border-radius: 6px;
         margin-left: 0.25rem;
 
-        .theme-contrasted & {
+        :global(.theme-contrasted) & {
           color: rgba(22, 0, 0, 0.9);
           background: rgba(22, 0, 0, 0.08);
         }
@@ -880,7 +880,7 @@
       color: #ef4444;
       letter-spacing: 0.03em;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: #dc2626;
       }
     }
@@ -893,7 +893,7 @@
       font: 400 0.75rem / 1 font-family(fraktion);
       color: rgba(255, 242, 237, 0.5);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: rgba(22, 0, 0, 0.55);
       }
 
@@ -902,7 +902,7 @@
         font-weight: 700;
         letter-spacing: 0.05em;
 
-        .theme-contrasted & {
+        :global(.theme-contrasted) & {
           color: color(secondary);
         }
       }
@@ -946,7 +946,7 @@
         0 0 64px 8px rgba(0, 0, 0, 0.2);
       transform: translateY(-2px);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         box-shadow:
           0 0 24px 4px rgba(22, 0, 0, 0.25),
           0 0 64px 8px rgba(22, 0, 0, 0.1);
@@ -967,7 +967,7 @@
         transform: translateY(-3px) scale(1.02);
       }
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: #000;
       }
     }
@@ -1016,7 +1016,7 @@
       color: var(--color-primary);
       animation: success-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: color(secondary);
       }
     }
@@ -1027,7 +1027,7 @@
       color: rgba(255, 242, 237, 0.95);
       font: 700 clamp(1.5rem, 2.5vw, 2.25rem) / 1.2 font-family(editorial);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: color(secondary);
       }
     }
@@ -1038,7 +1038,7 @@
       color: rgba(255, 242, 237, 0.6);
       font: 400 clamp(0.875rem, 1.15vw, 1rem) / 1.5 font-family(editorial);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: rgba(22, 0, 0, 0.6);
       }
     }
@@ -1108,7 +1108,7 @@
     &.has-discount option[value*='OFF'] {
       color: #fbbf24;
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: #d97706;
       }
     }
@@ -1117,7 +1117,7 @@
       color: #fbbf24 !important;
       text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 
-      .theme-contrasted & {
+      :global(.theme-contrasted) & {
         color: #d97706 !important;
         text-shadow: none;
       }
