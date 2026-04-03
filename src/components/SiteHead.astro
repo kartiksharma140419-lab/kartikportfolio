@@ -91,110 +91,50 @@ const menu = [
 
 <script>
   import Emitter from '../utils/Emitter'
+  import BaseSection from '../utils/BaseSection'
   import Ticker from '../utils/Ticker'
 
   import { gsap } from 'gsap'
 
-  class Section {
-    el: HTMLElement
+  class Section extends BaseSection {
     contrastButton: HTMLElement
     contrastMask: HTMLElement
     links: NodeListOf<HTMLElement>
 
-    isPaused: boolean
-
-    /**
-     * Constructor
-     */
     constructor() {
-      // Elements
-      this.el = document.querySelector('.site-head')
+      super('.site-head')
+
       this.contrastButton = document.querySelector('.js-contrast')
       this.contrastMask = document.querySelector('.js-contrast-mask')
       this.links = this.el.querySelectorAll('.js-menu-link')
-
-      // Properties
-      this.isPaused = true
-
-      // Init
-      Ticker.nextTick(this.init, this)
     }
 
-    /**
-     * Init
-     */
     init() {
-      this.bindEvents()
+      super.init()
     }
 
-    /**
-     * Bind events
-     */
-    bindEvents() {
-      this.contrastButton.addEventListener(
-        'click',
-        this.toggleContrast.bind(this),
-        { passive: true },
-      )
+    bindBaseEvents() {
+      super.bindBaseEvents()
+      this.contrastButton?.addEventListener('click', () => this.toggleContrast(), { passive: true })
 
       this.links.forEach((link) => {
-        link.addEventListener('click', this.moveToSection.bind(this))
+        link.addEventListener('click', (e) => this.moveToSection(e))
       })
 
-      document.addEventListener('intro', this.intro.bind(this), { once: true })
-
-      this.el.addEventListener('intersect', this.onIntersect.bind(this), {
-        passive: true,
-      })
+      document.addEventListener('intro', () => this.intro(), { once: true })
     }
 
-    /**
-     * Intersect handler
-     */
-    onIntersect(e) {
-      this.isPaused = !e.detail.isIntersecting
-    }
-
-    /**
-     * Intro
-     */
     intro() {
       const logo = this.el.querySelector('.js-logo')
       const menuItems = this.el.querySelectorAll('.js-menu-item')
-
-      const items = [logo, ...menuItems]
-
+      const items = [logo, ...Array.from(menuItems)]
       const tl = gsap.timeline()
 
-      tl.set(this.el, {
-        opacity: 1,
-      })
-
-      tl.from(
-        this.el,
-        {
-          y: '-100%',
-          duration: 1.2,
-          ease: 'expo.inOut',
-        },
-        1,
-      )
-
-      tl.from(
-        items,
-        {
-          y: '-100%',
-          duration: 1.2,
-          ease: 'expo.out',
-          stagger: 0.1,
-        },
-        1.5,
-      )
+      tl.set(this.el, { opacity: 1 })
+      tl.from(this.el, { y: '-100%', duration: 1.2, ease: 'expo.inOut' }, 1)
+      tl.from(items, { y: '-100%', duration: 1.2, ease: 'expo.out', stagger: 0.1 }, 1.5)
     }
 
-    /**
-     * Toggle contrast
-     */
     toggleContrast() {
       let fromX = '0'
       let toX = '-100%'
@@ -204,112 +144,34 @@ const menu = [
         toX = '0'
       }
 
-      gsap.fromTo(
-        this.contrastMask,
-        {
-          x: fromX,
+      gsap.fromTo(this.contrastMask, { x: fromX }, {
+        x: toX,
+        duration: 1,
+        ease: 'expo.inOut',
+        onComplete: () => {
+          this.contrastMask.style.transform = ''
+          if (toX === '0') {
+            document.documentElement.classList.remove('theme-contrasted')
+          } else {
+            document.documentElement.classList.add('theme-contrasted')
+          }
+
+          Emitter.emit('contrastchange', document.documentElement.classList.contains('theme-contrasted') ? 'contrasted' : 'default')
         },
-        {
-          x: toX,
-          duration: 1,
-          ease: 'expo.inOut',
-          onComplete: () => {
-            this.contrastMask.style.transform = ''
+      })
 
-            if (toX === '0') {
-              document.documentElement.classList.remove('theme-contrasted')
-            } else {
-              document.documentElement.classList.add('theme-contrasted')
-            }
-
-            Emitter.emit(
-              'contrastchange',
-              document.documentElement.classList.contains('theme-contrasted')
-                ? 'contrasted'
-                : 'default',
-            )
-          },
-        },
-      )
-
-      if (toX !== '0') {
-        document.documentElement.classList.add('theme-contrasted')
-      }
+      if (toX !== '0') document.documentElement.classList.add('theme-contrasted')
     }
 
-    /**
-     * Move to section
-     */
     moveToSection(e) {
       e.preventDefault()
-
       const id = e.currentTarget.getAttribute('href')
-
       window.lenis.scrollTo(id, {
         duration: 1.5,
-        easing: (t) =>
-          t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
+        easing: (t) => t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t,
       })
     }
 
-    /**
-     * Onboarding Tour
-     */
-    initTour() {
-      if (localStorage.getItem('ks_tour_seen')) return
-
-      const tourEl = this.el.querySelector('.js-tour') as HTMLElement | null
-      if (!tourEl) return
-
-      const tourText = tourEl.querySelector('.js-tour-text') as HTMLElement
-      const tourNext = tourEl.querySelector('.js-tour-next') as HTMLElement
-      const tourPointer = tourEl.querySelector(
-        '.js-tour-pointer',
-      ) as HTMLElement
-      let step = 1
-
-      const isMobile = window.innerWidth <= 768
-
-      setTimeout(() => {
-        tourEl.classList.add('is-active')
-        tourPointer.style.right = isMobile ? '50%' : '5rem'
-        gsap.fromTo(
-          tourEl,
-          { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.5 },
-        )
-      }, 2800)
-
-      tourNext.addEventListener('click', () => {
-        if (step === 1) {
-          step = 2
-          gsap.to(tourEl, {
-            opacity: 0,
-            y: 10,
-            duration: 0.2,
-            onComplete: () => {
-              tourText.textContent = 'This is a colour changing button, try it!'
-              tourNext.textContent = 'Got it!'
-              tourPointer.style.right = '1.25rem' // Point to contrast button
-              gsap.fromTo(
-                tourEl,
-                { opacity: 0, y: -5 },
-                { opacity: 1, y: 0, duration: 0.3 },
-              )
-            },
-          })
-        } else {
-          gsap.to(tourEl, {
-            opacity: 0,
-            duration: 0.3,
-            onComplete: () => {
-              tourEl.style.display = 'none'
-              localStorage.setItem('ks_tour_seen', 'true')
-            },
-          })
-        }
-      })
-    }
   }
 
   new Section()

@@ -110,21 +110,20 @@ const lines = [
 
 <script>
   import Emitter from '../utils/Emitter'
+  import BaseSection from '../utils/BaseSection'
   import Ticker from '../utils/Ticker'
 
   import { gsap } from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
   gsap.registerPlugin(ScrollTrigger)
 
-  class Section {
-    el: HTMLElement
+  class Section extends BaseSection {
     container: HTMLElement
     hover: HTMLElement
     button: HTMLElement
     cta: HTMLElement
 
     bounding: DOMRect
-
     ctaMaxSize: number
 
     grid: {
@@ -152,21 +151,16 @@ const lines = [
     }
 
     buttonIsHovered: boolean
-    isPaused: boolean
     tl: gsap.core.Timeline
 
-    /**
-     * Constructor
-     */
     constructor() {
-      // Elements
-      this.el = document.querySelector('.s-cta')
-      this.container = this.el.querySelector('.js-container')
-      this.hover = this.el.querySelector('.js-hover')
-      this.button = this.el.querySelector('.js-button')
-      this.cta = this.el.querySelector('.js-cta')
+      super('.s-cta')
 
-      // Properties
+      this.container = this.el.querySelector('.js-container') as HTMLElement
+      this.hover = this.el.querySelector('.js-hover') as HTMLElement
+      this.button = this.el.querySelector('.js-button') as HTMLElement
+      this.cta = this.el.querySelector('.js-cta') as HTMLElement
+
       this.grid = {
         bounding: new DOMRect(),
         width: 0,
@@ -177,9 +171,9 @@ const lines = [
         gapY: 0,
         lines: [],
         points: [],
-        el: this.el.querySelector('.js-grid'),
-        svg: this.el.querySelector('.js-grid-svg'),
-        path: this.el.querySelector('.js-grid-path'),
+        el: this.el.querySelector('.js-grid') as HTMLElement,
+        svg: this.el.querySelector('.js-grid-svg') as HTMLElement,
+        path: this.el.querySelector('.js-grid-path') as HTMLElement,
       }
 
       this.wave = {
@@ -192,85 +186,36 @@ const lines = [
       }
 
       this.buttonIsHovered = false
-      this.isPaused = true
-
-      // Init
-      if (document.readyState === 'complete') {
-        Ticker.nextTick(this.init, this)
-      } else {
-        Emitter.once('siteLoaded', this.init, this)
-      }
     }
 
-    /**
-     * Init
-     */
     init() {
       this.setSize()
       this.setGrid()
-
       this.createPulseTimeline()
-
-      this.bindEvents()
+      super.init()
     }
 
-    /**
-     * Bind events
-     */
-    bindEvents() {
-      Emitter.on('resize', this.onResize, this)
-
-      this.hover.addEventListener('mouseenter', this.onHover.bind(this))
-      this.hover.addEventListener('touchstart', this.onHover.bind(this))
-
-      this.hover.addEventListener('mouseleave', this.onOut.bind(this), {
-        passive: true,
-      })
-      this.el.addEventListener('touchstart', this.onOut.bind(this), {
-        passive: true,
-      })
-
-      this.el.addEventListener('intersect', this.onIntersect.bind(this), {
-        passive: true,
-      })
+    bindBaseEvents() {
+      super.bindBaseEvents()
+      this.hover?.addEventListener('mouseenter', (e) => this.onHover(e))
+      this.hover?.addEventListener('touchstart', (e) => this.onHover(e))
+      this.hover?.addEventListener('mouseleave', (e) => this.onOut(e), { passive: true })
+      this.el?.addEventListener('touchstart', (e) => this.onOut(e), { passive: true })
     }
 
-    /**
-     * Resize handler
-     */
     onResize() {
+      super.onResize()
       this.setSize()
       this.setGrid()
     }
 
-    /**
-     * Intersect handler
-     */
-    onIntersect(e) {
-      this.isPaused = !e.detail.isIntersecting
-
-      if (this.isPaused) {
-        Emitter.off('tick', this.tick, this)
-      } else {
-        Emitter.on('tick', this.tick, this)
-      }
-    }
-
-    /**
-     * Hover handler
-     */
-    onHover(e) {
+    onHover(e: MouseEvent | TouchEvent) {
       if (this.buttonIsHovered) return
-
       this.buttonIsHovered = true
       this.hover.classList.add('is-active')
-
-      this.tl.pause()
-
+      this.tl?.pause()
       clearTimeout(this.wave.timeout)
-      this.wave.timeout = window.setTimeout(() => {
-        this.waveShock()
-      }, 600)
+      this.wave.timeout = window.setTimeout(() => this.waveShock(), 600)
 
       gsap.to(this.wave, {
         op: 1,
@@ -283,26 +228,17 @@ const lines = [
       e.stopPropagation()
     }
 
-    /**
-     * Out handler
-     */
-    onOut(e) {
-      const target = e.target as HTMLAnchorElement
-
+    onOut(e: MouseEvent | TouchEvent) {
+      const target = e.target as HTMLElement
       if (target.tagName === 'A') {
-        window.location.href = target.href
-
+        window.location.href = (target as HTMLAnchorElement).href
         return
       }
-
       if (!this.buttonIsHovered) return
-
       clearTimeout(this.wave.timeout)
-
       this.buttonIsHovered = false
       this.hover.classList.remove('is-active')
-
-      this.tl.play(0)
+      this.tl?.play(0)
 
       gsap.to(this.wave, {
         op: 0,
@@ -312,43 +248,30 @@ const lines = [
       })
     }
 
-    /**
-     * Set size
-     */
     setSize() {
       this.grid.bounding = this.grid.el.getBoundingClientRect()
       this.bounding = this.container.getBoundingClientRect()
-
       this.ctaMaxSize = Math.min(this.bounding.width, this.bounding.height) - 32
       this.cta.style.setProperty('--size', this.ctaMaxSize + 'px')
     }
 
-    /**
-     * Set grid
-     */
     setGrid() {
       const { grid } = this
-
       const width = this.grid.bounding.width
       const height = this.grid.bounding.height
 
       grid.width = width
       grid.height = height
-
       grid.svg.style.width = width + 'px'
       grid.svg.style.height = height + 'px'
 
-      // Points
       grid.points = []
-
       grid.vLines = window.safeWidth > 767 ? 12 : 8
       grid.gapX = width / grid.vLines
-
       grid.gapY = this.bounding.height / 8
       grid.hLines = Math.floor(height / grid.gapY)
 
       const offsetY = height - grid.gapY * grid.hLines
-
       const center = {
         x: width / 2,
         y: height - this.bounding.height / 2,
@@ -356,179 +279,94 @@ const lines = [
 
       for (let i = 0; i <= grid.vLines; i++) {
         const row = []
-
         for (let j = 0; j <= grid.hLines; j++) {
           const point = {
             x: grid.gapX * i,
             y: grid.gapY * j + (j !== 0 ? offsetY : 0),
-            ax: 0, // Acceleration
-            ay: 0,
-            vx: 0, // Velocity
-            vy: 0,
-            wx: 0, // Wave
-            wy: 0,
-            mx: 0, // Movement
-            my: 0,
-            ox: 0, // Offset
-            oy: 0,
-            dx: 0, // Distance
-            dy: 0,
-            dist: 0,
+            ax: 0, ay: 0, vx: 0, vy: 0, wx: 0, wy: 0, mx: 0, my: 0, ox: 0, oy: 0, dx: 0, dy: 0, dist: 0,
           }
-
           const dx = point.x - center.x
           const dy = point.y - center.y
           const angle = Math.atan2(dy, dx)
-
           point.dist = Math.hypot(dx, dy)
           if (point.dist === 0) {
-            point.dx = 0
-            point.dy = 0
+            point.dx = 0; point.dy = 0
           } else {
             point.dx = Math.cos(angle) * (width / 2 / point.dist) * 5
             point.dy = Math.sin(angle) * (width / 2 / point.dist) * 5
           }
-
           row.push(point)
         }
-
         grid.points.push(row)
       }
     }
 
-    /**
-     * Create pulse timeline
-     */
     createPulseTimeline() {
       const text = this.container.querySelector('.js-button-text')
-
-      this.tl = gsap.timeline({
-        repeat: -1,
-        repeatDelay: 0.5,
-      })
-
-      this.tl.call(() => {
-        this.wave.state = 'pulse'
-      })
-
-      this.tl.fromTo(
-        text,
-        {
-          scale: 0.85,
-        },
-        {
-          scale: 1.05,
-          duration: 2.7,
-          ease: 'power2.in',
-        },
-      )
-
-      this.tl.call(this.wavePulse.bind(this), [])
-
-      this.tl.to(text, {
-        scale: 0.85,
-        duration: 0.15,
-        ease: 'power4.out',
-      })
+      this.tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 })
+      this.tl.call(() => { this.wave.state = 'pulse' })
+      this.tl.fromTo(text, { scale: 0.85 }, { scale: 1.05, duration: 2.7, ease: 'power2.in' })
+      this.tl.call(() => this.wavePulse(), [])
+      this.tl.to(text, { scale: 0.85, duration: 0.15, ease: 'power4.out' })
     }
 
-    /**
-     * Move points
-     */
     movePoints(time) {
       const { grid, wave } = this
-
       grid.points.forEach((col, x) => {
         col.forEach((point, y) => {
           if (y === 0 || point.dist === 0) return
-
           const d = Math.abs(point.dist - wave.progress)
           const l = 30
-
           if (d < l) {
             const s = 1 - d / l
             const a = Math.atan2(point.dy, point.dx)
             const f = Math.cos(d * 0.01) * s
-
             point.vx += Math.cos(a) * f * l * 0.5 * wave.strength
             point.vy += Math.sin(a) * f * l * 0.5 * wave.strength
           }
-
-          point.vx += (0 - point.wx) * 0.001 // String tension
+          point.vx += (0 - point.wx) * 0.001
           point.vy += (0 - point.wy) * 0.001
-
-          point.vx *= 0.9 // Friction or duration
+          point.vx *= 0.9
           point.vy *= 0.9
-
-          point.wx += point.vx * 3 // Strength
+          point.wx += point.vx * 3
           point.wy += point.vy * 3
-
           point.wx *= 0.9
           point.wy *= 0.9
-
           point.mx = point.wx * 0.1
           point.my = point.wy * 0.1
-
           point.ox = point.dx / Math.hypot(window.safeHeight, window.safeWidth)
           point.oy = point.dy / Math.hypot(window.safeHeight, window.safeWidth)
-
           point.ox = this.easeOut(point.ox)
           point.oy = this.easeOut(point.oy)
-
           point.ox *= grid.gapX * 75 * (point.dist / this.ctaMaxSize)
           point.oy *= grid.gapY * 75 * (point.dist / this.ctaMaxSize)
         })
       })
     }
 
-    /**
-     * Ease out
-     */
     easeOut(t) {
       return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
     }
 
-    /**
-     * Draw lines
-     */
     drawLines() {
       const { grid } = this
-
       let d = ''
-
-      // Vertical lines
       grid.points.forEach((col) => {
         col.forEach((point, i) => {
           const p = this.movedPoint(point)
-
-          if (i === 0) {
-            d += `M ${p.x} ${p.y} `
-          } else {
-            d += `L ${p.x} ${p.y} `
-          }
+          d += (i === 0 ? 'M ' : 'L ') + `${p.x} ${p.y} `
         })
       })
-
-      // Horizontal lines
       for (let y = 0; y < grid.hLines; y++) {
         grid.points.forEach((col, x) => {
           const point = col[y]
           const p = this.movedPoint(point)
-
-          if (x === 0) {
-            d += `M ${p.x} ${p.y} `
-          } else {
-            d += `L ${p.x} ${p.y} `
-          }
+          d += (x === 0 ? 'M ' : 'L ') + `${p.x} ${p.y} `
         })
       }
-
       grid.path.setAttribute('d', d)
     }
 
-    /**
-     * Get point coordinates with movement added
-     */
     movedPoint(point) {
       return {
         x: point.x + point.mx + point.ox * this.wave.op,
@@ -536,46 +374,27 @@ const lines = [
       }
     }
 
-    /**
-     * Wave pulse
-     */
     wavePulse() {
       if (this.buttonIsHovered) return
-
-      const { wave } = this
-
-      wave.progress = 0
-      wave.state = 'pulse'
-      wave.speed = window.safeWidth > 767 ? 15 : 10
-      wave.strength = window.safeWidth > 767 ? 1 : 0.35
+      this.wave.progress = 0
+      this.wave.state = 'pulse'
+      this.wave.speed = window.safeWidth > 767 ? 15 : 10
+      this.wave.strength = window.safeWidth > 767 ? 1 : 0.35
     }
 
-    /**
-     * Wave shock
-     */
     waveShock() {
-      const { wave } = this
-
-      if (!this.buttonIsHovered || wave.state === 'shock') return
-
-      wave.progress = 0
-      wave.state = 'shock'
-      wave.speed = 30
-      wave.strength = 5
+      if (!this.buttonIsHovered || this.wave.state === 'shock') return
+      this.wave.progress = 0
+      this.wave.state = 'shock'
+      this.wave.speed = 30
+      this.wave.strength = 5
     }
 
-    /**
-     * Tick
-     */
     tick(time) {
       const { wave } = this
-
-      if (wave.progress < this.grid.height) {
-        if (wave.state !== 'paused') {
-          wave.progress += wave.speed
-        }
+      if (wave.progress < this.grid.height && wave.state !== 'paused') {
+        wave.progress += wave.speed
       }
-
       this.movePoints(time)
       this.drawLines()
     }

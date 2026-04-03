@@ -1,0 +1,30 @@
+{
+  "pricing": {
+    "validCodes": ["BHAVYA5", "BHAVYA24", "GROW20"],
+    "tiers": {
+      "₹20,000": {
+        "price": "₹17,999",
+        "pct": "10% OFF",
+        "label": "Starter"
+      },
+      "₹35,000": {
+        "price": "₹27,999",
+        "pct": "20% OFF",
+        "label": "Pro / Bestseller"
+      },
+      "₹50,000": {
+        "price": "₹39,999",
+        "pct": "20% OFF",
+        "label": "Scale"
+      },
+      "₹90,000": {
+        "price": "₹67,500",
+        "pct": "25% OFF",
+        "label": "Enterprise"
+      }
+    }
+  },
+  "urgency": {
+    "countdownSeconds": 86399
+  }
+}

@@ -40,39 +40,24 @@ import ASeparator from './ASeparator.astro'
 
 <script>
   import Emitter from '../utils/Emitter'
-  import Ticker from '../utils/Ticker'
+  import BaseSection from '../utils/BaseSection'
 
   import { gsap } from 'gsap'
   import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
   import { SplitText } from 'gsap/SplitText'
   gsap.registerPlugin(DrawSVGPlugin, SplitText)
 
-  class Section {
-    el: HTMLElement
+  class Section extends BaseSection {
     words: NodeListOf<HTMLElement>
-
-    isPaused: boolean
-    isWaiting: boolean
+    isWaiting: boolean = true
     st: SplitText
 
     /**
      * Constructor
      */
     constructor() {
-      // Elements
-      this.el = document.querySelector('.s-hero')
+      super('.s-hero')
       this.words = this.el.querySelectorAll('.js-word')
-
-      // Properties
-      this.isPaused = true
-      this.isWaiting = true
-
-      // Init
-      if (document.readyState === 'complete') {
-        Ticker.nextTick(this.init, this)
-      } else {
-        Emitter.once('siteLoaded', this.init, this)
-      }
     }
 
     /**
@@ -80,36 +65,16 @@ import ASeparator from './ASeparator.astro'
      */
     init() {
       this.splitWords()
-
-      this.bindEvents()
+      super.init()
     }
 
     /**
      * Bind events
      */
-    bindEvents() {
+    bindBaseEvents() {
+      super.bindBaseEvents()
       Emitter.on('resize', this.onResize, this)
-
       document.addEventListener('intro', this.intro.bind(this), { once: true })
-
-      this.el.addEventListener('intersect', this.onIntersect.bind(this), {
-        passive: true,
-      })
-
-      Emitter.on('tick', this.tick, this)
-    }
-
-    /**
-     * Intersect handler
-     */
-    onIntersect(e) {
-      this.isPaused = !e.detail.isIntersecting
-
-      if (this.isPaused) {
-        Emitter.off('tick', this.tick, this)
-      } else {
-        Emitter.on('tick', this.tick, this)
-      }
     }
 
     /**
@@ -123,7 +88,7 @@ import ASeparator from './ASeparator.astro'
      * Intro
      */
     intro() {
-      const waves = this.el.querySelector('a-waves')
+      const waves = this.el.querySelector('aw-waves') || this.el.querySelector('.s__waves')
       const lines = waves.querySelectorAll('.js-line')
       const content = this.el.querySelector('.js-content')
       const border = this.el.querySelector('.js-border')
@@ -265,14 +230,12 @@ import ASeparator from './ASeparator.astro'
         wordsClass: 'word',
       })
 
-      this.st.chars.forEach((char: HTMLElement, index) => {
+      this.st.chars.forEach((char: HTMLElement) => {
         const letter = char.textContent
-
         char.classList.add('char--' + letter)
 
         const inner = document.createElement('span')
         inner.classList.add('char__inner')
-
         inner.dataset.letter = letter.toUpperCase()
         inner.innerHTML = letter
 
@@ -298,7 +261,6 @@ import ASeparator from './ASeparator.astro'
         return
 
       const direction = Math.floor(Math.random() * 4)
-
       const className = 'to-' + ['bottom', 'left', 'top', 'right'][direction]
 
       char.classList.add(className)

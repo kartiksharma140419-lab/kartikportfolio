@@ -1,0 +1,115 @@
+---
+import reviews from '../data/reviews.json'
+---
+
+<section class="s-review-marquee" data-intersect>
+  <div class="s-review-marquee__track js-marquee-track">
+    {
+      [...reviews, ...reviews].map((review) => (
+        <div class="s-review-marquee__card">
+          <div class="s-review-marquee__stars">
+            &#9733;&#9733;&#9733;&#9733;&#9733;
+          </div>
+          <p class="s-review-marquee__text">&ldquo;{review.text}&rdquo;</p>
+          <footer class="s-review-marquee__source">
+            <span class="s-review-marquee__badge">
+              &#10003; {review.verified ? 'Verified Client' : 'Client'}
+            </span>
+          </footer>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .s-review-marquee {
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
+    padding: 5rem 0;
+
+    @include mq(phone) {
+      padding: 3rem 0;
+    }
+
+    &__track {
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      animation: marquee-scroll 50s linear infinite;
+      will-change: transform;
+      pointer-events: none;
+
+      @include mq(phone) {
+        gap: 1.25rem;
+        animation-duration: 35s;
+      }
+    }
+
+    &__card {
+      flex-shrink: 0;
+      width: 26rem;
+      padding: 2.5rem 2rem;
+
+      border: 1px solid color(secondary);
+      background: color(primary);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+      @include mq(phone) {
+        width: 20rem;
+        padding: 2rem 1.5rem;
+      }
+
+      &:hover {
+        border-color: color(secondary);
+        box-shadow: 0 0 0 1px color(secondary);
+      }
+    }
+
+    &__stars {
+      font-size: 1.25rem;
+      letter-spacing: 0.15em;
+      color: #d4a017;
+      margin-bottom: 1.25rem;
+    }
+
+    &__text {
+      margin: 0 0 1.25rem;
+      font: 200 clamp(0.95rem, 1.5vw, 1.15rem) / 1.7 font-family(editorial);
+      color: color(secondary);
+    }
+
+    &__source {
+      font: 700 11px / 1 font-family(fraktion);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: color(secondary);
+      opacity: 0.55;
+    }
+
+    &__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+  }
+
+  @keyframes marquee-scroll {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+</style>

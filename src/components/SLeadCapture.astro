@@ -217,135 +217,98 @@
 
 <script>
   import confetti from 'canvas-confetti'
+  import BaseSection from '../utils/BaseSection'
+  import config from '../data/config.json'
 
-  const leadCard = document.querySelector('.js-lead-card') as HTMLElement
-  const form = document.querySelector('.js-lead-form') as HTMLFormElement
-  const success = document.querySelector('.js-lead-success') as HTMLElement
-  const submitBtn = document.querySelector(
-    '.js-lead-submit',
-  ) as HTMLButtonElement
+  class Section extends BaseSection {
+    leadCard: HTMLElement
+    form: HTMLFormElement
+    success: HTMLElement
+    submitBtn: HTMLButtonElement
+    inputs: NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    gaugeFill: HTMLElement
+    gaugeText: HTMLElement
+    timerDisplay: HTMLElement
+    codeInput: HTMLInputElement
+    budgetSelect: HTMLSelectElement
+    leadCodeError: HTMLElement
+    leadDiscountDisplay: HTMLElement
 
-  // Gauge Logic
-  const inputs = form?.querySelectorAll(
-    'input[required], select[required], textarea[required]',
-  ) as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  const gaugeFill = document.querySelector('.js-lead-gauge-fill') as HTMLElement
-  const gaugeText = document.querySelector('.js-lead-gauge-text') as HTMLElement
+    timeRemaining: number = config.urgency.countdownSeconds
+    isUnlockedState: boolean = false
+    lastTouch: number = 0
 
-  const updateGauge = () => {
-    if (!inputs.length) return
-    let filled = 0
-    inputs.forEach((input) => {
-      if (input.value.trim() !== '') {
-        filled++
-      }
-    })
-    const percentage = Math.round((filled / inputs.length) * 100)
-    if (gaugeFill) gaugeFill.style.width = `${percentage}%`
-    if (gaugeText) gaugeText.textContent = `${percentage}%`
+    validCodes: string[] = config.pricing.validCodes
+    valMap: Record<string, { price: string; pct: string; label: string }> = config.pricing.tiers
 
-    if (percentage === 100) {
-      gaugeFill.style.background = '#10b981'
-    } else {
-      gaugeFill.style.background = 'var(--color-primary, #f40c3f)'
-    }
-  }
+    constructor() {
+      super('.s-lead')
 
-  if (inputs) {
-    inputs.forEach((input) => {
-      input.addEventListener('input', updateGauge)
-      input.addEventListener('change', updateGauge)
-    })
-  }
-
-  // 24 Hour Countdown Timer Logic
-  const timerDisplay = document.querySelector(
-    '.js-lead-countdown-timer',
-  ) as HTMLElement
-
-  if (timerDisplay) {
-    let timeRemaining = 24 * 60 * 60 - 1
-
-    const updateTimer = () => {
-      const hours = Math.floor(timeRemaining / 3600)
-      const minutes = Math.floor((timeRemaining % 3600) / 60)
-      const seconds = timeRemaining % 60
-
-      const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-      if (timerDisplay) {
-        timerDisplay.textContent = formattedTime
-      }
-
-      if (timeRemaining > 0) {
-        timeRemaining--
-      }
+      this.leadCard = this.el.querySelector('.js-lead-card')
+      this.form = this.el.querySelector('.js-lead-form')
+      this.success = this.el.querySelector('.js-lead-success')
+      this.submitBtn = this.el.querySelector('.js-lead-submit')
+      this.inputs = this.form?.querySelectorAll('input[required], select[required], textarea[required]')
+      this.gaugeFill = this.el.querySelector('.js-lead-gauge-fill')
+      this.gaugeText = this.el.querySelector('.js-lead-gauge-text')
+      this.timerDisplay = this.el.querySelector('.js-lead-countdown-timer')
+      this.codeInput = this.el.querySelector('.js-lead-code')
+      this.budgetSelect = this.el.querySelector('.js-lead-budget')
+      this.leadCodeError = this.el.querySelector('.js-lead-code-error')
+      this.leadDiscountDisplay = this.el.querySelector('.js-lead-discount-display')
     }
 
-    updateTimer()
-    setInterval(updateTimer, 1000)
-  }
-
-  // Gated Pricing Logic
-  const codeInput = document.querySelector('.js-lead-code') as HTMLInputElement
-  const budgetSelect = document.querySelector(
-    '.js-lead-budget',
-  ) as HTMLSelectElement
-
-  if (codeInput && budgetSelect) {
-    const validCodes = ['BHAVYA5', 'BHAVYA24', 'GROW20']
-    const strike = (str: string) =>
-      str
-        .split('')
-        .map((char) => char + '\u0336')
-        .join('')
-
-    const valMap: Record<string, { price: string; pct: string; label: string }> = {
-      '₹20,000': { price: '₹17,999', pct: '10% OFF', label: 'Starter' },
-      '₹35,000': { price: '₹27,999', pct: '20% OFF', label: 'Pro / Bestseller' },
-      '₹50,000': { price: '₹39,999', pct: '20% OFF', label: 'Scale' },
-      '₹90,000': { price: '₹67,500', pct: '25% OFF', label: 'Enterprise' }
+    init() {
+      this.updateTimer()
+      setInterval(() => this.updateTimer(), 1000)
+      super.init()
     }
 
-    let isUnlockedState = false
+    bindBaseEvents() {
+      super.bindBaseEvents()
+      this.inputs?.forEach((input) => {
+        input.addEventListener('input', () => this.updateGauge())
+        input.addEventListener('change', () => this.updateGauge())
+      })
 
-    const leadCodeError = document.querySelector('.js-lead-code-error') as HTMLElement
-    const leadDiscountDisplay = document.querySelector('.js-lead-discount-display') as HTMLElement
+      this.codeInput?.addEventListener('input', (e) => this.onCodeInput(e))
+      this.budgetSelect?.addEventListener('change', (e) => this.onBudgetChange(e))
+      this.form?.addEventListener('submit', (e) => this.onFormSubmit(e))
+    }
 
-    const updateDiscountDisplay = () => {
-      const codeVal = codeInput.value.trim().toUpperCase()
-      const selectedOrig = budgetSelect.options[budgetSelect.selectedIndex]?.getAttribute('data-original')
-      
-      if (validCodes.includes(codeVal) && selectedOrig && valMap[selectedOrig]) {
-        const data = valMap[selectedOrig]
-        if (leadDiscountDisplay) {
-          leadDiscountDisplay.innerHTML = `
-            <span class="hf__field-discount__old">${selectedOrig}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            <span class="hf__field-discount__new">${data.price}</span>
-            <span class="hf__field-discount__pct">(${data.pct})</span>
-          `
-          leadDiscountDisplay.style.display = 'flex'
-          setTimeout(() => leadDiscountDisplay.classList.add('is-visible'), 10)
-        }
-      } else {
-        if (leadDiscountDisplay) {
-          leadDiscountDisplay.classList.remove('is-visible')
-          setTimeout(() => {
-            if (!leadDiscountDisplay.classList.contains('is-visible')) {
-              leadDiscountDisplay.style.display = 'none'
-            }
-          }, 300)
-        }
+    updateGauge() {
+      if (!this.inputs?.length) return
+      let filled = 0
+      this.inputs.forEach((input) => {
+        if (input.value.trim() !== '') filled++
+      })
+      const percentage = Math.round((filled / this.inputs.length) * 100)
+      if (this.gaugeFill) {
+        this.gaugeFill.style.width = `${percentage}%`
+        this.gaugeFill.style.background = percentage === 100 ? '#10b981' : 'var(--color-primary, #f40c3f)'
       }
+      if (this.gaugeText) this.gaugeText.textContent = `${percentage}%`
     }
 
-    codeInput.addEventListener('input', (e) => {
+    updateTimer() {
+      if (!this.timerDisplay) return
+      const hours = Math.floor(this.timeRemaining / 3600)
+      const minutes = Math.floor((this.timeRemaining % 3600) / 60)
+      const seconds = this.timeRemaining % 60
+      this.timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      if (this.timeRemaining > 0) this.timeRemaining--
+    }
+
+    strike(str: string) {
+      return str.split('').map((char) => char + '\u0336').join('')
+    }
+
+    onCodeInput(e: Event) {
       const val = (e.target as HTMLInputElement).value.trim().toUpperCase()
-
-      if (validCodes.includes(val)) {
-        if (leadCodeError) leadCodeError.style.display = 'none'
-        if (!isUnlockedState) {
-          isUnlockedState = true
+      if (this.validCodes.includes(val)) {
+        if (this.leadCodeError) this.leadCodeError.style.display = 'none'
+        if (!this.isUnlockedState) {
+          this.isUnlockedState = true
           confetti({
             particleCount: 150,
             spread: 100,
@@ -353,99 +316,108 @@
             colors: ['#10b981', '#fbbf24', '#ffffff', '#34d399'],
             disableForReducedMotion: true,
           })
-          leadCard.classList.add('is-unlocked')
-          submitBtn.querySelector('span')!.textContent =
-            'Claim My Exclusive Slot'
-          submitBtn.classList.add('is-unlocked-btn')
+          this.leadCard.classList.add('is-unlocked')
+          this.submitBtn.querySelector('span')!.textContent = 'Claim My Exclusive Slot'
+          this.submitBtn.classList.add('is-unlocked-btn')
         }
 
-        Array.from(budgetSelect.options).forEach((opt) => {
+        Array.from(this.budgetSelect.options).forEach((opt) => {
           const orig = opt.getAttribute('data-original')
-          if (orig && valMap[orig]) {
-            const d = valMap[orig]
-            opt.innerHTML = `${d.label} ${strike(orig)} → ${d.price} (${d.pct})`
+          if (orig && this.valMap[orig]) {
+            const d = this.valMap[orig]
+            opt.innerHTML = `${d.label} ${this.strike(orig)} → ${d.price} (${d.pct})`
             opt.value = `${orig} → ${d.price} (${d.pct})`
           }
         })
-
-        budgetSelect.classList.add('has-discount')
+        this.budgetSelect.classList.add('has-discount')
       } else {
-        // Show error if user typed something but it's not valid
-        if (leadCodeError) {
-          leadCodeError.style.display = val.length > 0 ? 'block' : 'none'
-        }
-        if (isUnlockedState) {
-          isUnlockedState = false
-          leadCard.classList.remove('is-unlocked')
-          submitBtn.querySelector('span')!.textContent =
-            'Apply for Business Growth'
-          submitBtn.classList.remove('is-unlocked-btn')
+        if (this.leadCodeError) this.leadCodeError.style.display = val.length > 0 ? 'block' : 'none'
+        if (this.isUnlockedState) {
+          this.isUnlockedState = false
+          this.leadCard.classList.remove('is-unlocked')
+          this.submitBtn.querySelector('span')!.textContent = 'Apply for Business Growth'
+          this.submitBtn.classList.remove('is-unlocked-btn')
         }
 
-        Array.from(budgetSelect.options).forEach((opt) => {
+        Array.from(this.budgetSelect.options).forEach((opt) => {
           const orig = opt.getAttribute('data-original')
-          if (orig && valMap[orig]) {
-            opt.innerHTML = `${valMap[orig].label} (${orig})`
+          if (orig && this.valMap[orig]) {
+            opt.innerHTML = `${this.valMap[orig].label} (${orig})`
             opt.value = orig
           } else if (orig === '₹90,000') {
             opt.innerHTML = 'Enterprise (₹90,000+)'
             opt.value = orig
           }
         })
-
-        budgetSelect.classList.remove('has-discount')
+        this.budgetSelect.classList.remove('has-discount')
       }
-      updateDiscountDisplay()
-    })
+      this.updateDiscountDisplay()
+    }
 
-    budgetSelect.addEventListener('change', (e) => {
+    onBudgetChange(e: Event) {
       const val = (e.target as HTMLSelectElement).value
-      if (val.includes('OFF')) {
-        budgetSelect.classList.add('has-discount-selected')
-      } else {
-        budgetSelect.classList.remove('has-discount-selected')
+      this.budgetSelect.classList.toggle('has-discount-selected', val.includes('OFF'))
+      this.updateDiscountDisplay()
+    }
+
+    updateDiscountDisplay() {
+      const codeVal = this.codeInput.value.trim().toUpperCase()
+      const selectedOrig = this.budgetSelect.options[this.budgetSelect.selectedIndex]?.getAttribute('data-original')
+      
+      if (this.validCodes.includes(codeVal) && selectedOrig && this.valMap[selectedOrig]) {
+        const data = this.valMap[selectedOrig]
+        if (this.leadDiscountDisplay) {
+          this.leadDiscountDisplay.innerHTML = `
+            <span class="hf__field-discount__old">${selectedOrig}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <span class="hf__field-discount__new">${data.price}</span>
+            <span class="hf__field-discount__pct">(${data.pct})</span>
+          `
+          this.leadDiscountDisplay.style.display = 'flex'
+          setTimeout(() => this.leadDiscountDisplay.classList.add('is-visible'), 10)
+        }
+      } else if (this.leadDiscountDisplay) {
+        this.leadDiscountDisplay.classList.remove('is-visible')
+        setTimeout(() => {
+          if (!this.leadDiscountDisplay.classList.contains('is-visible')) {
+            this.leadDiscountDisplay.style.display = 'none'
+          }
+        }, 300)
       }
-      updateDiscountDisplay()
-    })
-  }
+    }
 
-  // Form Submit
-  if (form) {
-    form.addEventListener('submit', async (e) => {
+    async onFormSubmit(e: Event) {
       e.preventDefault()
-
-      submitBtn.disabled = true
-      submitBtn.classList.add('is-loading')
-      submitBtn.querySelector('span')!.textContent = 'Sending...'
+      this.submitBtn.disabled = true
+      this.submitBtn.classList.add('is-loading')
+      this.submitBtn.querySelector('span')!.textContent = 'Sending...'
 
       try {
-        const formData = new FormData(form)
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-        })
-
+        const formData = new FormData(this.form)
+        const res = await fetch(this.form.action, { method: 'POST', body: formData })
         const data = await res.json()
 
         if (data.success) {
-          form.style.display = 'none'
-          success.style.display = 'flex'
+          this.form.style.display = 'none'
+          this.success.style.display = 'flex'
         } else {
-          submitBtn.disabled = false
-          submitBtn.classList.remove('is-loading')
-          submitBtn.querySelector('span')!.textContent =
-            'Apply for Business Growth'
+          this.resetSubmitBtn()
           alert('Something went wrong. Please try again.')
         }
       } catch (err) {
-        submitBtn.disabled = false
-        submitBtn.classList.remove('is-loading')
-        submitBtn.querySelector('span')!.textContent =
-          'Apply for Business Growth '
+        this.resetSubmitBtn()
         alert('Network error. Please check your connection and try again.')
       }
-    })
+    }
+
+    resetSubmitBtn() {
+      this.submitBtn.disabled = false
+      this.submitBtn.classList.remove('is-loading')
+      this.submitBtn.querySelector('span')!.textContent = this.isUnlockedState ? 'Claim My Exclusive Slot' : 'Apply for Business Growth'
+    }
   }
+
+  new Section()
 </script>
 
 <style lang="scss">

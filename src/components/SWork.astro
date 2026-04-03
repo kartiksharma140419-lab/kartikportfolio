@@ -1,67 +1,11 @@
 ---
 import AWork from './AWork.astro'
-
-const imageProjects = [
-  {
-    caption:
-      'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
-    site: '#',
-    src: '/videos/works/mr-school.mp4',
-  },
-  {
-    caption:
-      'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
-    site: '#',
-    src: '/videos/works/rishika-realestate.mp4',
-  },
-  {
-    caption:
-      'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
-    site: '#',
-    src: '/videos/works/vanyra.mp4',
-  },
-  {
-    caption:
-      'Garhwal Bakery — Interactive digital menu system that drove 20% more foot traffic via Instagram integration.',
-    site: '#',
-    imageSrc: '/images/works/garhwal-bakery.png',
-  },
-  {
-    caption:
-      'Aethelgard Jewellery — Luxury e-commerce experience for high-end heirloom collections with immersive product showcases.',
-    site: '#',
-    src: '/videos/works/jewelry-site.mp4',
-  },
-  {
-    caption:
-      'Precision Agriculture Solutions — Full-stack platform for advanced nutritional solutions, engineered for maximum yield and sustainable soil health.',
-    site: '#',
-    imageSrc: '/images/works/agriculture-site.png',
-  },
-  {
-    caption:
-      'Aether Kitchen — Modern café ordering system with cuisine filtering, nutritional data, and seamless digital menu experience.',
-    site: '#',
-    src: '/videos/works/cafe-site.mp4',
-  },
-  {
-    caption:
-      'MedCare Hospital — Comprehensive healthcare platform with appointment scheduling, doctor profiles, and patient portal for seamless medical service delivery.',
-    site: '#',
-    src: '/videos/works/hospital-site.mp4',
-  },
-  {
-    caption:
-      'Aurelia Jewellery — Exquisite digital boutique showcasing fine, handcrafted jewelry pieces with an elegant and sophisticated user experience.',
-    site: '#',
-    src: '/videos/works/aurelia-jewelry.mp4',
-  },
-]
+import projects from '../data/projects.json'
 
 // Repeat projects in round-robin order so the same image never appears next to itself
 let works = []
-for (let i = 0; i < imageProjects.length * 2; i++) {
-  works.push({ ...imageProjects[i % imageProjects.length] })
+for (let i = 0; i < projects.length * 2; i++) {
+  works.push({ ...projects[i % projects.length] })
 }
 ---
 
@@ -112,15 +56,14 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
 
 <script>
   import Emitter from '../utils/Emitter'
-  import Ticker from '../utils/Ticker'
+  import BaseSection from '../utils/BaseSection'
 
   import { gsap } from 'gsap'
   import { SlowMo } from 'gsap/EasePack'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
   gsap.registerPlugin(ScrollTrigger, SlowMo)
 
-  class Section {
-    el: HTMLElement
+  class Section extends BaseSection {
     container: HTMLElement
     ruler: HTMLElement
     scene: HTMLElement
@@ -152,31 +95,31 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
     points: any[]
 
     tl: gsap.core.Timeline
-    animationProgress: number
-    pointsProgress: number
+    animationProgress: number = 0
+    pointsProgress: number = 0
     last: {
       animationProgress: number
       pointsProgress: number
     }
-    scrollProgress: number
-    smoothScrollProgress: number
-    state: 0
+    scrollProgress: number = 0
+    smoothScrollProgress: number = 0
+    state: number = 0
     speed: number
-    isPaused: boolean
-    loadIsStarted: boolean
+    loadIsStarted: boolean = false
 
     /**
      * Constructor
      */
     constructor() {
+      super('.s-work')
+
       // Elements
-      this.el = document.querySelector('.s-work')
-      this.container = this.el.querySelector('.js-container')
-      this.ruler = this.el.querySelector('.js-ruler')
-      this.scene = this.container.querySelector('.js-scene')
-      this.canvas = this.container.querySelector('.js-canvas')
-      this.ctx = this.canvas.getContext('2d')
-      this.title = this.container.querySelector('.js-title')
+      this.container = this.el.querySelector('.js-container') as HTMLElement
+      this.ruler = this.el.querySelector('.js-ruler') as HTMLElement
+      this.scene = this.container.querySelector('.js-scene') as HTMLElement
+      this.canvas = this.container.querySelector('.js-canvas') as HTMLCanvasElement
+      this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
+      this.title = this.container.querySelector('.js-title') as HTMLElement
       this.videos = this.container.querySelectorAll('video')
 
       // Properties
@@ -185,49 +128,30 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
         height: 0,
         maxScale: 1,
         lines: [],
-        el: this.el.querySelector('.js-mask'),
-        svg: this.el.querySelector('.js-mask-svg'),
-        pathOuter: this.el.querySelector('.js-mask-path-outer'),
-        pathInner: this.el.querySelector('.js-mask-path-inner'),
-        pathLines: this.el.querySelector('.js-mask-path-lines'),
+        el: this.el.querySelector('.js-mask') as HTMLElement,
+        svg: this.el.querySelector('.js-mask-svg') as HTMLElement,
+        pathOuter: this.el.querySelector('.js-mask-path-outer') as HTMLElement,
+        pathInner: this.el.querySelector('.js-mask-path-inner') as HTMLElement,
+        pathLines: this.el.querySelector('.js-mask-path-lines') as HTMLElement,
       }
 
       this.letters = []
       this.title.querySelectorAll('.js-letter').forEach((_letter) => {
-        const letter = {
-          el: _letter,
+        this.letters.push({
+          el: _letter as HTMLElement,
           ghosts: [],
-        }
-
-        this.letters.push(letter)
+        })
       })
 
       this.works = []
       this.container.querySelectorAll('.js-work').forEach((_work) => {
-        const work = {
-          el: _work,
-        }
-
-        this.works.push(work)
+        this.works.push({ el: _work as HTMLElement })
       })
 
       this.points = []
-
-      this.scrollProgress = 0
-      this.smoothScrollProgress = 0
       this.last = {
         animationProgress: 0,
         pointsProgress: 0,
-      }
-
-      this.isPaused = true
-      this.loadIsStarted = false
-
-      // Init
-      if (document.readyState === 'complete') {
-        Ticker.nextTick(this.init, this)
-      } else {
-        Emitter.once('siteLoaded', this.init, this)
       }
     }
 
@@ -243,48 +167,38 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
       this.setWorks()
       this.setTimeline()
 
-      this.bindEvents()
+      super.init()
     }
 
     /**
      * Bind events
      */
-    bindEvents() {
+    bindBaseEvents() {
+      super.bindBaseEvents()
       Emitter.on('contrastchange', this.setCtxStyle, this)
       Emitter.on('resize', this.onResize, this)
-
-      this.el.addEventListener('intersect', this.onIntersect.bind(this), {
-        passive: true,
-      })
     }
 
     /**
      * Resize handler
      */
     onResize(widthChanged) {
-      if (widthChanged) {
-        this.setCtxStyle()
-        this.setSize()
-        this.setMask()
-        this.setPoints()
-        this.setLetters()
-        this.setWorks()
-        this.setTimeline()
-      }
+      if (!widthChanged) return
+      
+      this.setCtxStyle()
+      this.setSize()
+      this.setMask()
+      this.setPoints()
+      this.setLetters()
+      this.setWorks()
+      this.setTimeline()
     }
 
     /**
      * Intersect handler
      */
-    onIntersect(e) {
-      this.isPaused = !e.detail.isIntersecting
-
-      if (this.isPaused) {
-        Emitter.off('tick', this.tick, this)
-      } else {
-        Emitter.on('tick', this.tick, this)
-      }
-
+    onResume() {
+      super.onResume()
       if (!this.loadIsStarted) {
         this.loadNextVideo()
         this.loadIsStarted = true
@@ -295,13 +209,8 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      * Set canvas style
      */
     setCtxStyle() {
-      const color = getComputedStyle(this.el).getPropertyValue(
-        '--color-primary',
-      )
-
-      Ticker.nextTick(() => {
-        this.ctx.strokeStyle = color
-      })
+      const color = getComputedStyle(this.el).getPropertyValue('--color-primary')
+      this.ctx.strokeStyle = color
     }
 
     /**
@@ -311,7 +220,6 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
       this.el.style.setProperty('--height', this.works.length * 30 + 'lvh')
 
       const bounding = this.container.getBoundingClientRect()
-
       this.bounding = {
         left: bounding.left,
         top: bounding.top,
@@ -321,7 +229,6 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
 
       this.canvas.width = this.bounding.width
       this.canvas.height = this.bounding.height
-
       this.speed = Math.hypot(this.bounding.width, this.bounding.height) * 4
     }
 
@@ -359,7 +266,6 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
       }
 
       let size = (corners.tr.x - corners.tl.x) / 2
-
       mask.maxScale = window.safeWidth / size
 
       let dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`
@@ -369,52 +275,31 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
 
       // Mask inner
       const thickness = window.safeWidth > 767 ? 16 : 8
-      corners.tl.x += thickness
-      corners.tl.y += thickness
-
-      corners.tr.x -= thickness
-      corners.tr.y += thickness
-
-      corners.br.x -= thickness
-      corners.br.y -= thickness
-
-      corners.bl.x += thickness
-      corners.bl.y -= thickness
+      corners.tl.x += thickness; corners.tl.y += thickness
+      corners.tr.x -= thickness; corners.tr.y += thickness
+      corners.br.x -= thickness; corners.br.y -= thickness
+      corners.bl.x += thickness; corners.bl.y -= thickness
 
       size = (corners.tr.x - corners.tl.x) / 2
-
       dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`
 
       mask.pathInner.setAttribute('d', `${dOuter} ${dInner}`)
 
       // Lines
       mask.lines = []
-
       const vLines = window.safeWidth > 767 ? 12 : 8
       const gapX = width / vLines
       const gapY = height * 0.1
       const hLines = Math.ceil(height / gapY)
 
       for (let i = 1; i < vLines; i++) {
-        const x = gapX * i
-
-        mask.lines.push({
-          p1: { x, y: 0 },
-          p2: { x, y: height },
-        })
+        mask.lines.push({ p1: { x: gapX * i, y: 0 }, p2: { x: gapX * i, y: height } })
       }
-
       for (let i = 0; i < hLines; i++) {
-        const y = gapY * i
-
-        mask.lines.push({
-          p1: { x: 0, y },
-          p2: { x: width, y },
-        })
+        mask.lines.push({ p1: { x: 0, y: gapY * i }, p2: { x: width, y: gapY * i } })
       }
 
       let dLines = ''
-
       mask.lines.forEach((line) => {
         dLines += `M ${line.p1.x} ${line.p1.y} L ${line.p2.x} ${line.p2.y} `
       })
@@ -430,62 +315,40 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
       const { letters, scene } = this
 
       letters.forEach((letter, j) => {
-        letter.ghosts.forEach((ghost) => {
-          ghost.el.remove()
-        })
+        letter.ghosts.forEach((ghost) => ghost.el.remove())
         letter.ghosts = []
 
-        // Get letter position and size
         const bounding = letter.el.getBoundingClientRect()
-
         letter.width = bounding.width
         letter.height = bounding.height
         letter.top = bounding.top - this.bounding.top
         letter.left = bounding.left
-
         letter.freq = 1 + Math.random()
 
         const multiplier = window.safeWidth > 767 ? 0.75 : 0.5
-
-        // Create ghost letters
-        letter.total =
-          Math.round((this.bounding.width / letter.width) * multiplier) + 2
+        letter.total = Math.round((this.bounding.width / letter.width) * multiplier) + 2
 
         for (let i = 0; i < letter.total; i++) {
           const el = document.createElement('span')
-          el.classList.add('s__scene__letter')
-          el.classList.add('js-letter')
-
+          el.classList.add('s__scene__letter', 'js-letter')
           el.innerText = letter.el.innerText
           el.dataset.letter = letter.el.innerText
-
           scene.appendChild(el)
 
           const ghost = {
             el,
             x: letter.left,
             y: letter.top,
-            z: Math.random() * 100,
             i: i - letter.total * 0.5,
             p: (i / letter.total - 0.5) * 2,
             ap: Math.abs(i / letter.total - 0.5) * 2,
-            mx: 0,
-            my: 0,
           }
 
           el.style.top = ghost.y + 'px'
           el.style.left = ghost.x + 'px'
-
-          el.style.zIndex = String(
-            j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1,
-          )
-
+          el.style.zIndex = String(j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1)
           el.style.setProperty('--ix', String(ghost.i))
-          el.style.setProperty(
-            '--iy',
-            String(((j + 1) / (letters.length + 1) - 0.5) * 2),
-          )
-
+          el.style.setProperty('--iy', String(((j + 1) / (letters.length + 1) - 0.5) * 2))
           el.style.setProperty('--ap', String(ghost.ap))
           el.style.setProperty('--p', String(ghost.p))
 
@@ -498,16 +361,10 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      * Set works
      */
     setWorks() {
-      const { works } = this
-
-      works.forEach((work, i) => {
-        const el = work.el
-
+      this.works.forEach((work, i) => {
+        const el = work.el as HTMLElement
         el.style.setProperty('--size', String(0.5 + Math.random() * 0.5))
-        el.style.setProperty(
-          '--y',
-          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1)),
-        )
+        el.style.setProperty('--y', String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1)))
       })
     }
 
@@ -516,16 +373,11 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      */
     setTimeline() {
       const { el, container, works, scene, mask } = this
-
       const worksEl = works.map((work) => work.el)
 
-      let { tl } = this
+      if (this.tl) this.tl.kill()
 
-      if (tl) {
-        tl.kill()
-      }
-
-      tl = gsap.timeline({
+      this.tl = gsap.timeline({
         scrollTrigger: {
           trigger: el,
           start: 'top 25%',
@@ -537,201 +389,51 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
         },
       })
 
-      tl.fromTo(
-        mask.el,
-        {
-          scale: 1,
-        },
-        {
-          scale: mask.maxScale,
-          duration: 1.0,
-          ease: 'power3.out',
-        },
-        0,
+      this.tl.fromTo(mask.el, { scale: 1 }, { scale: mask.maxScale, duration: 1.0, ease: 'power3.out' }, 0)
+      this.tl.fromTo(scene, { scale: 0.75 }, { scale: 1, duration: 0.75, ease: 'power3.in' }, 0)
+      this.tl.fromTo(container, { clipPath: 'inset(0 1rem)' }, { clipPath: 'inset(0 0rem)', duration: 0.75, ease: 'power3.in' }, 0)
+      this.tl.fromTo(this, { pointsProgress: 0 }, { pointsProgress: 1, duration: 1, ease: 'power4.inOut' }, 0)
+      this.tl.fromTo(this, { state: 0 }, { state: 1, duration: 1.0, ease: 'power3.out' }, 0)
+
+      this.tl.fromTo(worksEl, 
+        { attr: { progress: 1 } }, 
+        { attr: { progress: -1 }, ease: 'slow(0.15, 0.6)', stagger: 0.25 }, 
+        0.75
       )
 
-      tl.fromTo(
-        scene,
-        {
-          scale: 0.75,
-        },
-        {
-          scale: 1,
-          duration: 0.75,
-          ease: 'power3.in',
-        },
-        0,
+      this.tl.fromTo(this, 
+        { animationProgress: 0 }, 
+        { animationProgress: 10000, duration: this.tl.totalDuration(), ease: 'power1.out' }, 
+        0.75
       )
 
-      tl.fromTo(
-        container,
-        {
-          clipPath: 'inset(0 1rem)',
-        },
-        {
-          clipPath: 'inset(0 0rem)',
-          duration: 0.75,
-          ease: 'power3.in',
-        },
-        0,
-      )
-
-      tl.fromTo(
-        this,
-        {
-          pointsProgress: 0,
-        },
-        {
-          pointsProgress: 1,
-          duration: 1,
-          ease: 'power4.inOut',
-        },
-        0,
-      )
-
-      tl.fromTo(
-        this,
-        {
-          state: 0,
-        },
-        {
-          state: 1,
-          duration: 1.0,
-          ease: 'power3.out',
-        },
-        0,
-      )
-
-      tl.fromTo(
-        worksEl,
-        {
-          attr: {
-            progress: 1,
-          },
-        },
-        {
-          attr: {
-            progress: -1,
-          },
-          ease: 'slow(0.15, 0.6)',
-          stagger: 0.25,
-        },
-        0.75,
-      )
-
-      tl.fromTo(
-        this,
-        {
-          animationProgress: 0,
-        },
-        {
-          animationProgress: 10000,
-          duration: tl.totalDuration(),
-          ease: 'power1.out',
-        },
-        0.75,
-      )
-
-      tl.fromTo(
-        this,
-        {
-          state: 1,
-        },
-        {
-          state: 0,
-          duration: 1.0,
-          ease: 'power3.out',
-          immediateRender: false,
-        },
-        '-=1',
-      )
-
-      tl.fromTo(
-        mask.el,
-        {
-          scale: mask.maxScale,
-        },
-        {
-          scale: 1,
-          duration: 1.0,
-          ease: 'power3.out',
-          immediateRender: false,
-        },
-        '-=1',
-      )
-
-      tl.fromTo(
-        scene,
-        {
-          scale: 1,
-        },
-        {
-          scale: 0.75,
-          duration: 0.5,
-          ease: 'power3.inOut',
-          immediateRender: false,
-        },
-        '-=1',
-      )
-
-      tl.fromTo(
-        container,
-        {
-          clipPath: 'inset(0 0rem)',
-        },
-        {
-          clipPath: 'inset(0 1rem)',
-          duration: 0.5,
-          ease: 'power3.inOut',
-          immediateRender: false,
-        },
-        '-=1',
-      )
-
-      tl.fromTo(
-        this,
-        {
-          pointsProgress: 1,
-        },
-        {
-          pointsProgress: 0,
-          duration: 1,
-          ease: 'power4.inOut',
-        },
-        '-=1',
-      )
+      this.tl.fromTo(this, { state: 1 }, { state: 0, duration: 1.0, ease: 'power3.out', immediateRender: false }, '-=1')
+      this.tl.fromTo(mask.el, { scale: mask.maxScale }, { scale: 1, duration: 1.0, ease: 'power3.out', immediateRender: false }, '-=1')
+      this.tl.fromTo(scene, { scale: 1 }, { scale: 0.75, duration: 0.5, ease: 'power3.inOut', immediateRender: false }, '-=1')
+      this.tl.fromTo(container, { clipPath: 'inset(0 0rem)' }, { clipPath: 'inset(0 1rem)', duration: 0.5, ease: 'power3.inOut', immediateRender: false }, '-=1')
+      this.tl.fromTo(this, { pointsProgress: 1 }, { pointsProgress: 0, duration: 1, ease: 'power4.inOut' }, '-=1')
     }
 
     /**
      * Load next video
      */
     loadNextVideo() {
-      const video = Array.from(this.videos).find(
-        (video) => !video.classList.contains('is-loaded'),
-      )
+      const video = Array.from(this.videos).find(v => !v.classList.contains('is-loaded'))
+      if (!video) return
 
-      if (video) {
-        if (video.readyState >= 3) {
-          this.videoLoaded(video)
-        } else {
-          video.addEventListener(
-            'canplaythrough',
-            () => {
-              this.videoLoaded(video)
-            },
-            { once: true },
-          )
-
-          video.setAttribute('src', video.getAttribute('data-src'))
-          video.load()
-        }
+      if (video.readyState >= 3) {
+        this.videoLoaded(video)
+      } else {
+        video.addEventListener('canplaythrough', () => this.videoLoaded(video), { once: true })
+        video.setAttribute('src', video.getAttribute('data-src') || '')
+        video.load()
       }
     }
 
     /**
      * Video loaded
      */
-    videoLoaded(video) {
+    videoLoaded(video: HTMLVideoElement) {
       video.classList.add('is-loaded')
       this.loadNextVideo()
     }
@@ -741,17 +443,10 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      */
     moveLetters() {
       const { speed, letters, animationProgress } = this
-
-      letters.forEach((letter, i) => {
+      letters.forEach((letter) => {
         const letterSpeed = speed * letter.freq
         letter.ghosts.forEach((ghost, index) => {
-          let progress =
-            (((animationProgress % letterSpeed) / letterSpeed +
-              index / letter.total) %
-              1) /
-              0.7 -
-            0.15
-
+          let progress = (((animationProgress % letterSpeed) / letterSpeed + index / letter.total) % 1) / 0.7 - 0.15
           ghost.el.style.setProperty('--progress', String(progress))
         })
       })
@@ -762,16 +457,12 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      */
     setPoints() {
       const { bounding } = this
-
       this.points = []
-
       const gap = 24
       const cols = Math.ceil((bounding.width * 1.2) / gap)
       const rows = Math.ceil((bounding.height * 1.2) / gap)
-
       const offsetX = (bounding.width - cols * gap) * 0.5
       const offsetY = (bounding.height - rows * gap) * 0.5
-
       const hWidth = bounding.width * 0.5
       const hHeight = bounding.height * 0.5
 
@@ -779,18 +470,7 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
         for (let j = 0; j < rows; j++) {
           const x = i * gap + offsetX
           const y = j * gap + offsetY
-
-          const dx = hWidth - x
-          const dy = hHeight - y
-
-          this.points.push({
-            x,
-            y,
-            dx,
-            dy,
-            m: Math.random(),
-            flowX: 0,
-          })
+          this.points.push({ x, y, dx: hWidth - x, dy: hHeight - y, flowX: 0 })
         }
       }
     }
@@ -799,41 +479,26 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      * Move points
      */
     movePoints() {
-      const { points, animationProgress } = this
-
-      points.forEach((p) => {
-        // Flow
-        p.flowX = (animationProgress * -0.05) % 24
-      })
+      this.points.forEach(p => p.flowX = (this.animationProgress * -0.05) % 24)
     }
 
     /**
      * Draw points
      */
     drawPoints() {
-      const { bounding, ctx, points, animationProgress, pointsProgress, last } =
-        this
-
+      const { bounding, ctx, points, animationProgress, pointsProgress, last } = this
       const rAnimationProgress = Math.round(animationProgress * 100) / 100
       const rPointsProgress = Math.round(pointsProgress * 100) / 100
 
-      if (
-        rPointsProgress === last.pointsProgress &&
-        rAnimationProgress === last.animationProgress
-      )
-        return
+      if (rPointsProgress === last.pointsProgress && rAnimationProgress === last.animationProgress) return
 
       ctx.clearRect(0, 0, bounding.width, bounding.height)
-
       ctx.beginPath()
-
       points.forEach((point) => {
         const x = point.x + point.dx * (1 - pointsProgress) * 0.2 + point.flowX
         const y = point.y + point.dy * (1 - pointsProgress) * 0.2
-
         ctx.rect(x, y, 0.5, 0.5)
       })
-
       ctx.stroke()
 
       last.pointsProgress = rPointsProgress
@@ -844,31 +509,12 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
      * Tick
      */
     tick() {
-      // Calculate scroll progress
-      this.scrollProgress =
-        Math.max(
-          Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')),
-          0,
-        ) *
-          -1 +
-        (1 -
-          Math.max(
-            Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')),
-            0,
-          ))
-      this.smoothScrollProgress +=
-        (this.scrollProgress - this.smoothScrollProgress) * 0.1
+      this.scrollProgress = Math.max(Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')), 0) * -1 + (1 - Math.max(Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')), 0))
+      this.smoothScrollProgress += (this.scrollProgress - this.smoothScrollProgress) * 0.1
+      this.el.style.setProperty('--scroll-progress', String(this.scrollProgress))
 
-      this.el.style.setProperty(
-        '--scroll-progress',
-        String(this.scrollProgress),
-      )
-
-      // Movement
       this.movePoints()
       this.moveLetters()
-
-      // Draw
       this.drawPoints()
     }
   }
