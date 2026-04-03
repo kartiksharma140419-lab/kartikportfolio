@@ -718,7 +718,23 @@ import '../styles/global.scss'
             setTimeout(() => {
               const driverObj = driver({
                 showProgress: false,
-                allowClose: false,
+                allowClose: true,
+                prevBtnText: 'Skip',
+                onPrevClick: () => {
+                  driverObj.destroy()
+                },
+                onRender: (popover, { driver }) => {
+                  const footer = popover.querySelector('.driver-popover-footer')
+                  if (footer && !footer.querySelector('.driver-popover-prev-btn')) {
+                    const skipBtn = document.createElement('button')
+                    skipBtn.innerText = 'Skip'
+                    skipBtn.classList.add('driver-popover-prev-btn')
+                    skipBtn.onclick = () => {
+                      driver.destroy()
+                    }
+                    footer.prepend(skipBtn)
+                  }
+                },
                 steps: [
                   {
                     element:
