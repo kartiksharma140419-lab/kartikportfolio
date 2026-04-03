@@ -60,7 +60,7 @@ const imageProjects = [
 
 // Repeat projects in round-robin order so the same image never appears next to itself
 let works = []
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < imageProjects.length * 2; i++) {
   works.push({ ...imageProjects[i % imageProjects.length] })
 }
 ---
@@ -308,7 +308,7 @@ for (let i = 0; i < 40; i++) {
      * Set size
      */
     setSize() {
-      this.el.style.setProperty('--height', this.works.length * 50 + 'lvh')
+      this.el.style.setProperty('--height', this.works.length * 30 + 'lvh')
 
       const bounding = this.container.getBoundingClientRect()
 
