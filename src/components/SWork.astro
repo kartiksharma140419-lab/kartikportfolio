@@ -209,8 +209,8 @@ for (let i = 0; i < projects.length * 2; i++) {
      * Set canvas style
      */
     setCtxStyle() {
-      const color = getComputedStyle(this.el).getPropertyValue('--color-primary')
-      this.ctx.strokeStyle = color
+      const color = window.getComputedStyle(this.el).getPropertyValue('--color-primary').trim()
+      this.ctx.fillStyle = color || '#fff2ed'
     }
 
     /**
@@ -493,13 +493,16 @@ for (let i = 0; i < projects.length * 2; i++) {
       if (rPointsProgress === last.pointsProgress && rAnimationProgress === last.animationProgress) return
 
       ctx.clearRect(0, 0, bounding.width, bounding.height)
-      ctx.beginPath()
+
+      const color = window.getComputedStyle(this.container).getPropertyValue('--color-primary').trim()
+      ctx.fillStyle = color || '#fff2ed'
+      ctx.globalAlpha = 1
+      
       points.forEach((point) => {
         const x = point.x + point.dx * (1 - pointsProgress) * 0.2 + point.flowX
         const y = point.y + point.dy * (1 - pointsProgress) * 0.2
-        ctx.rect(x, y, 0.5, 0.5)
+        ctx.fillRect(x, y, 1.5, 1.5)
       })
-      ctx.stroke()
 
       last.pointsProgress = rPointsProgress
       last.animationProgress = rAnimationProgress

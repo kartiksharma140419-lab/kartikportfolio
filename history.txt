@@ -1,0 +1,2804 @@
+commit d0fb5916111c8b632c01be05352406720028d23c
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Fri Apr 3 15:35:03 2026 +0530
+
+    debugged and responsive
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 9630944..ec418b3 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -1,67 +1,11 @@
+ ---
+ import AWork from './AWork.astro'
+-
+-const imageProjects = [
+-  {
+-    caption:
+-      'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
+-    site: '#',
+-    src: '/videos/works/mr-school.mp4',
+-  },
+-  {
+-    caption:
+-      'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
+-    site: '#',
+-    src: '/videos/works/rishika-realestate.mp4',
+-  },
+-  {
+-    caption:
+-      'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
+-    site: '#',
+-    src: '/videos/works/vanyra.mp4',
+-  },
+-  {
+-    caption:
+-      'Garhwal Bakery — Interactive digital menu system that drove 20% more foot traffic via Instagram integration.',
+-    site: '#',
+-    imageSrc: '/images/works/garhwal-bakery.png',
+-  },
+-  {
+-    caption:
+-      'Aethelgard Jewellery — Luxury e-commerce experience for high-end heirloom collections with immersive product showcases.',
+-    site: '#',
+-    src: '/videos/works/jewelry-site.mp4',
+-  },
+-  {
+-    caption:
+-      'Precision Agriculture Solutions — Full-stack platform for advanced nutritional solutions, engineered for maximum yield and sustainable soil health.',
+-    site: '#',
+-    imageSrc: '/images/works/agriculture-site.png',
+-  },
+-  {
+-    caption:
+-      'Aether Kitchen — Modern café ordering system with cuisine filtering, nutritional data, and seamless digital menu experience.',
+-    site: '#',
+-    src: '/videos/works/cafe-site.mp4',
+-  },
+-  {
+-    caption:
+-      'MedCare Hospital — Comprehensive healthcare platform with appointment scheduling, doctor profiles, and patient portal for seamless medical service delivery.',
+-    site: '#',
+-    src: '/videos/works/hospital-site.mp4',
+-  },
+-  {
+-    caption:
+-      'Aurelia Jewellery — Exquisite digital boutique showcasing fine, handcrafted jewelry pieces with an elegant and sophisticated user experience.',
+-    site: '#',
+-    src: '/videos/works/aurelia-jewelry.mp4',
+-  },
+-]
++import projects from '../data/projects.json'
+ 
+ // Repeat projects in round-robin order so the same image never appears next to itself
+ let works = []
+-for (let i = 0; i < imageProjects.length * 2; i++) {
+-  works.push({ ...imageProjects[i % imageProjects.length] })
++for (let i = 0; i < projects.length * 2; i++) {
++  works.push({ ...projects[i % projects.length] })
+ }
+ ---
+ 
+@@ -112,15 +56,14 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+ 
+ <script>
+   import Emitter from '../utils/Emitter'
+-  import Ticker from '../utils/Ticker'
++  import BaseSection from '../utils/BaseSection'
+ 
+   import { gsap } from 'gsap'
+   import { SlowMo } from 'gsap/EasePack'
+   import { ScrollTrigger } from 'gsap/ScrollTrigger'
+   gsap.registerPlugin(ScrollTrigger, SlowMo)
+ 
+-  class Section {
+-    el: HTMLElement
++  class Section extends BaseSection {
+     container: HTMLElement
+     ruler: HTMLElement
+     scene: HTMLElement
+@@ -152,31 +95,31 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+     points: any[]
+ 
+     tl: gsap.core.Timeline
+-    animationProgress: number
+-    pointsProgress: number
++    animationProgress: number = 0
++    pointsProgress: number = 0
+     last: {
+       animationProgress: number
+       pointsProgress: number
+     }
+-    scrollProgress: number
+-    smoothScrollProgress: number
+-    state: 0
++    scrollProgress: number = 0
++    smoothScrollProgress: number = 0
++    state: number = 0
+     speed: number
+-    isPaused: boolean
+-    loadIsStarted: boolean
++    loadIsStarted: boolean = false
+ 
+     /**
+      * Constructor
+      */
+     constructor() {
++      super('.s-work')
++
+       // Elements
+-      this.el = document.querySelector('.s-work')
+-      this.container = this.el.querySelector('.js-container')
+-      this.ruler = this.el.querySelector('.js-ruler')
+-      this.scene = this.container.querySelector('.js-scene')
+-      this.canvas = this.container.querySelector('.js-canvas')
+-      this.ctx = this.canvas.getContext('2d')
+-      this.title = this.container.querySelector('.js-title')
++      this.container = this.el.querySelector('.js-container') as HTMLElement
++      this.ruler = this.el.querySelector('.js-ruler') as HTMLElement
++      this.scene = this.container.querySelector('.js-scene') as HTMLElement
++      this.canvas = this.container.querySelector('.js-canvas') as HTMLCanvasElement
++      this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
++      this.title = this.container.querySelector('.js-title') as HTMLElement
+       this.videos = this.container.querySelectorAll('video')
+ 
+       // Properties
+@@ -185,50 +128,31 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+         height: 0,
+         maxScale: 1,
+         lines: [],
+-        el: this.el.querySelector('.js-mask'),
+-        svg: this.el.querySelector('.js-mask-svg'),
+-        pathOuter: this.el.querySelector('.js-mask-path-outer'),
+-        pathInner: this.el.querySelector('.js-mask-path-inner'),
+-        pathLines: this.el.querySelector('.js-mask-path-lines'),
++        el: this.el.querySelector('.js-mask') as HTMLElement,
++        svg: this.el.querySelector('.js-mask-svg') as HTMLElement,
++        pathOuter: this.el.querySelector('.js-mask-path-outer') as HTMLElement,
++        pathInner: this.el.querySelector('.js-mask-path-inner') as HTMLElement,
++        pathLines: this.el.querySelector('.js-mask-path-lines') as HTMLElement,
+       }
+ 
+       this.letters = []
+       this.title.querySelectorAll('.js-letter').forEach((_letter) => {
+-        const letter = {
+-          el: _letter,
++        this.letters.push({
++          el: _letter as HTMLElement,
+           ghosts: [],
+-        }
+-
+-        this.letters.push(letter)
++        })
+       })
+ 
+       this.works = []
+       this.container.querySelectorAll('.js-work').forEach((_work) => {
+-        const work = {
+-          el: _work,
+-        }
+-
+-        this.works.push(work)
++        this.works.push({ el: _work as HTMLElement })
+       })
+ 
+       this.points = []
+-
+-      this.scrollProgress = 0
+-      this.smoothScrollProgress = 0
+       this.last = {
+         animationProgress: 0,
+         pointsProgress: 0,
+       }
+-
+-      this.isPaused = true
+-      this.loadIsStarted = false
+-
+-      // Init
+-      if (document.readyState === 'complete') {
+-        Ticker.nextTick(this.init, this)
+-      } else {
+-        Emitter.once('siteLoaded', this.init, this)
+-      }
+     }
+ 
+     /**
+@@ -243,48 +167,38 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+       this.setWorks()
+       this.setTimeline()
+ 
+-      this.bindEvents()
++      super.init()
+     }
+ 
+     /**
+      * Bind events
+      */
+-    bindEvents() {
++    bindBaseEvents() {
++      super.bindBaseEvents()
+       Emitter.on('contrastchange', this.setCtxStyle, this)
+       Emitter.on('resize', this.onResize, this)
+-
+-      this.el.addEventListener('intersect', this.onIntersect.bind(this), {
+-        passive: true,
+-      })
+     }
+ 
+     /**
+      * Resize handler
+      */
+     onResize(widthChanged) {
+-      if (widthChanged) {
+-        this.setCtxStyle()
+-        this.setSize()
+-        this.setMask()
+-        this.setPoints()
+-        this.setLetters()
+-        this.setWorks()
+-        this.setTimeline()
+-      }
++      if (!widthChanged) return
++      
++      this.setCtxStyle()
++      this.setSize()
++      this.setMask()
++      this.setPoints()
++      this.setLetters()
++      this.setWorks()
++      this.setTimeline()
+     }
+ 
+     /**
+      * Intersect handler
+      */
+-    onIntersect(e) {
+-      this.isPaused = !e.detail.isIntersecting
+-
+-      if (this.isPaused) {
+-        Emitter.off('tick', this.tick, this)
+-      } else {
+-        Emitter.on('tick', this.tick, this)
+-      }
+-
++    onResume() {
++      super.onResume()
+       if (!this.loadIsStarted) {
+         this.loadNextVideo()
+         this.loadIsStarted = true
+@@ -295,13 +209,8 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      * Set canvas style
+      */
+     setCtxStyle() {
+-      const color = getComputedStyle(this.el).getPropertyValue(
+-        '--color-primary',
+-      )
+-
+-      Ticker.nextTick(() => {
+-        this.ctx.strokeStyle = color
+-      })
++      const color = getComputedStyle(this.el).getPropertyValue('--color-primary')
++      this.ctx.strokeStyle = color
+     }
+ 
+     /**
+@@ -311,7 +220,6 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+       this.el.style.setProperty('--height', this.works.length * 30 + 'lvh')
+ 
+       const bounding = this.container.getBoundingClientRect()
+-
+       this.bounding = {
+         left: bounding.left,
+         top: bounding.top,
+@@ -321,7 +229,6 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+ 
+       this.canvas.width = this.bounding.width
+       this.canvas.height = this.bounding.height
+-
+       this.speed = Math.hypot(this.bounding.width, this.bounding.height) * 4
+     }
+ 
+@@ -359,7 +266,6 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+       }
+ 
+       let size = (corners.tr.x - corners.tl.x) / 2
+-
+       mask.maxScale = window.safeWidth / size
+ 
+       let dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`
+@@ -369,52 +275,31 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+ 
+       // Mask inner
+       const thickness = window.safeWidth > 767 ? 16 : 8
+-      corners.tl.x += thickness
+-      corners.tl.y += thickness
+-
+-      corners.tr.x -= thickness
+-      corners.tr.y += thickness
+-
+-      corners.br.x -= thickness
+-      corners.br.y -= thickness
+-
+-      corners.bl.x += thickness
+-      corners.bl.y -= thickness
++      corners.tl.x += thickness; corners.tl.y += thickness
++      corners.tr.x -= thickness; corners.tr.y += thickness
++      corners.br.x -= thickness; corners.br.y -= thickness
++      corners.bl.x += thickness; corners.bl.y -= thickness
+ 
+       size = (corners.tr.x - corners.tl.x) / 2
+-
+       dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`
+ 
+       mask.pathInner.setAttribute('d', `${dOuter} ${dInner}`)
+ 
+       // Lines
+       mask.lines = []
+-
+       const vLines = window.safeWidth > 767 ? 12 : 8
+       const gapX = width / vLines
+       const gapY = height * 0.1
+       const hLines = Math.ceil(height / gapY)
+ 
+       for (let i = 1; i < vLines; i++) {
+-        const x = gapX * i
+-
+-        mask.lines.push({
+-          p1: { x, y: 0 },
+-          p2: { x, y: height },
+-        })
++        mask.lines.push({ p1: { x: gapX * i, y: 0 }, p2: { x: gapX * i, y: height } })
+       }
+-
+       for (let i = 0; i < hLines; i++) {
+-        const y = gapY * i
+-
+-        mask.lines.push({
+-          p1: { x: 0, y },
+-          p2: { x: width, y },
+-        })
++        mask.lines.push({ p1: { x: 0, y: gapY * i }, p2: { x: width, y: gapY * i } })
+       }
+ 
+       let dLines = ''
+-
+       mask.lines.forEach((line) => {
+         dLines += `M ${line.p1.x} ${line.p1.y} L ${line.p2.x} ${line.p2.y} `
+       })
+@@ -430,62 +315,40 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+       const { letters, scene } = this
+ 
+       letters.forEach((letter, j) => {
+-        letter.ghosts.forEach((ghost) => {
+-          ghost.el.remove()
+-        })
++        letter.ghosts.forEach((ghost) => ghost.el.remove())
+         letter.ghosts = []
+ 
+-        // Get letter position and size
+         const bounding = letter.el.getBoundingClientRect()
+-
+         letter.width = bounding.width
+         letter.height = bounding.height
+         letter.top = bounding.top - this.bounding.top
+         letter.left = bounding.left
+-
+         letter.freq = 1 + Math.random()
+ 
+         const multiplier = window.safeWidth > 767 ? 0.75 : 0.5
+-
+-        // Create ghost letters
+-        letter.total =
+-          Math.round((this.bounding.width / letter.width) * multiplier) + 2
++        letter.total = Math.round((this.bounding.width / letter.width) * multiplier) + 2
+ 
+         for (let i = 0; i < letter.total; i++) {
+           const el = document.createElement('span')
+-          el.classList.add('s__scene__letter')
+-          el.classList.add('js-letter')
+-
++          el.classList.add('s__scene__letter', 'js-letter')
+           el.innerText = letter.el.innerText
+           el.dataset.letter = letter.el.innerText
+-
+           scene.appendChild(el)
+ 
+           const ghost = {
+             el,
+             x: letter.left,
+             y: letter.top,
+-            z: Math.random() * 100,
+             i: i - letter.total * 0.5,
+             p: (i / letter.total - 0.5) * 2,
+             ap: Math.abs(i / letter.total - 0.5) * 2,
+-            mx: 0,
+-            my: 0,
+           }
+ 
+           el.style.top = ghost.y + 'px'
+           el.style.left = ghost.x + 'px'
+-
+-          el.style.zIndex = String(
+-            j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1,
+-          )
+-
++          el.style.zIndex = String(j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1)
+           el.style.setProperty('--ix', String(ghost.i))
+-          el.style.setProperty(
+-            '--iy',
+-            String(((j + 1) / (letters.length + 1) - 0.5) * 2),
+-          )
+-
++          el.style.setProperty('--iy', String(((j + 1) / (letters.length + 1) - 0.5) * 2))
+           el.style.setProperty('--ap', String(ghost.ap))
+           el.style.setProperty('--p', String(ghost.p))
+ 
+@@ -498,16 +361,10 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      * Set works
+      */
+     setWorks() {
+-      const { works } = this
+-
+-      works.forEach((work, i) => {
+-        const el = work.el
+-
++      this.works.forEach((work, i) => {
++        const el = work.el as HTMLElement
+         el.style.setProperty('--size', String(0.5 + Math.random() * 0.5))
+-        el.style.setProperty(
+-          '--y',
+-          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1)),
+-        )
++        el.style.setProperty('--y', String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1)))
+       })
+     }
+ 
+@@ -516,16 +373,11 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      */
+     setTimeline() {
+       const { el, container, works, scene, mask } = this
+-
+       const worksEl = works.map((work) => work.el)
+ 
+-      let { tl } = this
++      if (this.tl) this.tl.kill()
+ 
+-      if (tl) {
+-        tl.kill()
+-      }
+-
+-      tl = gsap.timeline({
++      this.tl = gsap.timeline({
+         scrollTrigger: {
+           trigger: el,
+           start: 'top 25%',
+@@ -537,201 +389,51 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+         },
+       })
+ 
+-      tl.fromTo(
+-        mask.el,
+-        {
+-          scale: 1,
+-        },
+-        {
+-          scale: mask.maxScale,
+-          duration: 1.0,
+-          ease: 'power3.out',
+-        },
+-        0,
+-      )
++      this.tl.fromTo(mask.el, { scale: 1 }, { scale: mask.maxScale, duration: 1.0, ease: 'power3.out' }, 0)
++      this.tl.fromTo(scene, { scale: 0.75 }, { scale: 1, duration: 0.75, ease: 'power3.in' }, 0)
++      this.tl.fromTo(container, { clipPath: 'inset(0 1rem)' }, { clipPath: 'inset(0 0rem)', duration: 0.75, ease: 'power3.in' }, 0)
++      this.tl.fromTo(this, { pointsProgress: 0 }, { pointsProgress: 1, duration: 1, ease: 'power4.inOut' }, 0)
++      this.tl.fromTo(this, { state: 0 }, { state: 1, duration: 1.0, ease: 'power3.out' }, 0)
+ 
+-      tl.fromTo(
+-        scene,
+-        {
+-          scale: 0.75,
+-        },
+-        {
+-          scale: 1,
+-          duration: 0.75,
+-          ease: 'power3.in',
+-        },
+-        0,
++      this.tl.fromTo(worksEl, 
++        { attr: { progress: 1 } }, 
++        { attr: { progress: -1 }, ease: 'slow(0.15, 0.6)', stagger: 0.25 }, 
++        0.75
+       )
+ 
+-      tl.fromTo(
+-        container,
+-        {
+-          clipPath: 'inset(0 1rem)',
+-        },
+-        {
+-          clipPath: 'inset(0 0rem)',
+-          duration: 0.75,
+-          ease: 'power3.in',
+-        },
+-        0,
++      this.tl.fromTo(this, 
++        { animationProgress: 0 }, 
++        { animationProgress: 10000, duration: this.tl.totalDuration(), ease: 'power1.out' }, 
++        0.75
+       )
+ 
+-      tl.fromTo(
+-        this,
+-        {
+-          pointsProgress: 0,
+-        },
+-        {
+-          pointsProgress: 1,
+-          duration: 1,
+-          ease: 'power4.inOut',
+-        },
+-        0,
+-      )
+-
+-      tl.fromTo(
+-        this,
+-        {
+-          state: 0,
+-        },
+-        {
+-          state: 1,
+-          duration: 1.0,
+-          ease: 'power3.out',
+-        },
+-        0,
+-      )
+-
+-      tl.fromTo(
+-        worksEl,
+-        {
+-          attr: {
+-            progress: 1,
+-          },
+-        },
+-        {
+-          attr: {
+-            progress: -1,
+-          },
+-          ease: 'slow(0.15, 0.6)',
+-          stagger: 0.25,
+-        },
+-        0.75,
+-      )
+-
+-      tl.fromTo(
+-        this,
+-        {
+-          animationProgress: 0,
+-        },
+-        {
+-          animationProgress: 10000,
+-          duration: tl.totalDuration(),
+-          ease: 'power1.out',
+-        },
+-        0.75,
+-      )
+-
+-      tl.fromTo(
+-        this,
+-        {
+-          state: 1,
+-        },
+-        {
+-          state: 0,
+-          duration: 1.0,
+-          ease: 'power3.out',
+-          immediateRender: false,
+-        },
+-        '-=1',
+-      )
+-
+-      tl.fromTo(
+-        mask.el,
+-        {
+-          scale: mask.maxScale,
+-        },
+-        {
+-          scale: 1,
+-          duration: 1.0,
+-          ease: 'power3.out',
+-          immediateRender: false,
+-        },
+-        '-=1',
+-      )
+-
+-      tl.fromTo(
+-        scene,
+-        {
+-          scale: 1,
+-        },
+-        {
+-          scale: 0.75,
+-          duration: 0.5,
+-          ease: 'power3.inOut',
+-          immediateRender: false,
+-        },
+-        '-=1',
+-      )
+-
+-      tl.fromTo(
+-        container,
+-        {
+-          clipPath: 'inset(0 0rem)',
+-        },
+-        {
+-          clipPath: 'inset(0 1rem)',
+-          duration: 0.5,
+-          ease: 'power3.inOut',
+-          immediateRender: false,
+-        },
+-        '-=1',
+-      )
+-
+-      tl.fromTo(
+-        this,
+-        {
+-          pointsProgress: 1,
+-        },
+-        {
+-          pointsProgress: 0,
+-          duration: 1,
+-          ease: 'power4.inOut',
+-        },
+-        '-=1',
+-      )
++      this.tl.fromTo(this, { state: 1 }, { state: 0, duration: 1.0, ease: 'power3.out', immediateRender: false }, '-=1')
++      this.tl.fromTo(mask.el, { scale: mask.maxScale }, { scale: 1, duration: 1.0, ease: 'power3.out', immediateRender: false }, '-=1')
++      this.tl.fromTo(scene, { scale: 1 }, { scale: 0.75, duration: 0.5, ease: 'power3.inOut', immediateRender: false }, '-=1')
++      this.tl.fromTo(container, { clipPath: 'inset(0 0rem)' }, { clipPath: 'inset(0 1rem)', duration: 0.5, ease: 'power3.inOut', immediateRender: false }, '-=1')
++      this.tl.fromTo(this, { pointsProgress: 1 }, { pointsProgress: 0, duration: 1, ease: 'power4.inOut' }, '-=1')
+     }
+ 
+     /**
+      * Load next video
+      */
+     loadNextVideo() {
+-      const video = Array.from(this.videos).find(
+-        (video) => !video.classList.contains('is-loaded'),
+-      )
++      const video = Array.from(this.videos).find(v => !v.classList.contains('is-loaded'))
++      if (!video) return
+ 
+-      if (video) {
+-        if (video.readyState >= 3) {
+-          this.videoLoaded(video)
+-        } else {
+-          video.addEventListener(
+-            'canplaythrough',
+-            () => {
+-              this.videoLoaded(video)
+-            },
+-            { once: true },
+-          )
+-
+-          video.setAttribute('src', video.getAttribute('data-src'))
+-          video.load()
+-        }
++      if (video.readyState >= 3) {
++        this.videoLoaded(video)
++      } else {
++        video.addEventListener('canplaythrough', () => this.videoLoaded(video), { once: true })
++        video.setAttribute('src', video.getAttribute('data-src') || '')
++        video.load()
+       }
+     }
+ 
+     /**
+      * Video loaded
+      */
+-    videoLoaded(video) {
++    videoLoaded(video: HTMLVideoElement) {
+       video.classList.add('is-loaded')
+       this.loadNextVideo()
+     }
+@@ -741,17 +443,10 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      */
+     moveLetters() {
+       const { speed, letters, animationProgress } = this
+-
+-      letters.forEach((letter, i) => {
++      letters.forEach((letter) => {
+         const letterSpeed = speed * letter.freq
+         letter.ghosts.forEach((ghost, index) => {
+-          let progress =
+-            (((animationProgress % letterSpeed) / letterSpeed +
+-              index / letter.total) %
+-              1) /
+-              0.7 -
+-            0.15
+-
++          let progress = (((animationProgress % letterSpeed) / letterSpeed + index / letter.total) % 1) / 0.7 - 0.15
+           ghost.el.style.setProperty('--progress', String(progress))
+         })
+       })
+@@ -762,16 +457,12 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      */
+     setPoints() {
+       const { bounding } = this
+-
+       this.points = []
+-
+       const gap = 24
+       const cols = Math.ceil((bounding.width * 1.2) / gap)
+       const rows = Math.ceil((bounding.height * 1.2) / gap)
+-
+       const offsetX = (bounding.width - cols * gap) * 0.5
+       const offsetY = (bounding.height - rows * gap) * 0.5
+-
+       const hWidth = bounding.width * 0.5
+       const hHeight = bounding.height * 0.5
+ 
+@@ -779,18 +470,7 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+         for (let j = 0; j < rows; j++) {
+           const x = i * gap + offsetX
+           const y = j * gap + offsetY
+-
+-          const dx = hWidth - x
+-          const dy = hHeight - y
+-
+-          this.points.push({
+-            x,
+-            y,
+-            dx,
+-            dy,
+-            m: Math.random(),
+-            flowX: 0,
+-          })
++          this.points.push({ x, y, dx: hWidth - x, dy: hHeight - y, flowX: 0 })
+         }
+       }
+     }
+@@ -799,41 +479,26 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      * Move points
+      */
+     movePoints() {
+-      const { points, animationProgress } = this
+-
+-      points.forEach((p) => {
+-        // Flow
+-        p.flowX = (animationProgress * -0.05) % 24
+-      })
++      this.points.forEach(p => p.flowX = (this.animationProgress * -0.05) % 24)
+     }
+ 
+     /**
+      * Draw points
+      */
+     drawPoints() {
+-      const { bounding, ctx, points, animationProgress, pointsProgress, last } =
+-        this
+-
++      const { bounding, ctx, points, animationProgress, pointsProgress, last } = this
+       const rAnimationProgress = Math.round(animationProgress * 100) / 100
+       const rPointsProgress = Math.round(pointsProgress * 100) / 100
+ 
+-      if (
+-        rPointsProgress === last.pointsProgress &&
+-        rAnimationProgress === last.animationProgress
+-      )
+-        return
++      if (rPointsProgress === last.pointsProgress && rAnimationProgress === last.animationProgress) return
+ 
+       ctx.clearRect(0, 0, bounding.width, bounding.height)
+-
+       ctx.beginPath()
+-
+       points.forEach((point) => {
+         const x = point.x + point.dx * (1 - pointsProgress) * 0.2 + point.flowX
+         const y = point.y + point.dy * (1 - pointsProgress) * 0.2
+-
+         ctx.rect(x, y, 0.5, 0.5)
+       })
+-
+       ctx.stroke()
+ 
+       last.pointsProgress = rPointsProgress
+@@ -844,31 +509,12 @@ for (let i = 0; i < imageProjects.length * 2; i++) {
+      * Tick
+      */
+     tick() {
+-      // Calculate scroll progress
+-      this.scrollProgress =
+-        Math.max(
+-          Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')),
+-          0,
+-        ) *
+-          -1 +
+-        (1 -
+-          Math.max(
+-            Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')),
+-            0,
+-          ))
+-      this.smoothScrollProgress +=
+-        (this.scrollProgress - this.smoothScrollProgress) * 0.1
+-
+-      this.el.style.setProperty(
+-        '--scroll-progress',
+-        String(this.scrollProgress),
+-      )
++      this.scrollProgress = Math.max(Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')), 0) * -1 + (1 - Math.max(Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')), 0))
++      this.smoothScrollProgress += (this.scrollProgress - this.smoothScrollProgress) * 0.1
++      this.el.style.setProperty('--scroll-progress', String(this.scrollProgress))
+ 
+-      // Movement
+       this.movePoints()
+       this.moveLetters()
+-
+-      // Draw
+       this.drawPoints()
+     }
+   }
+
+commit 26331f341d81dd6931ee59019972e4353db2c9f3
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Fri Apr 3 14:51:38 2026 +0530
+
+    work section short
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 052fed3..9630944 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -60,7 +60,7 @@ const imageProjects = [
+ 
+ // Repeat projects in round-robin order so the same image never appears next to itself
+ let works = []
+-for (let i = 0; i < 40; i++) {
++for (let i = 0; i < imageProjects.length * 2; i++) {
+   works.push({ ...imageProjects[i % imageProjects.length] })
+ }
+ ---
+@@ -308,7 +308,7 @@ for (let i = 0; i < 40; i++) {
+      * Set size
+      */
+     setSize() {
+-      this.el.style.setProperty('--height', this.works.length * 50 + 'lvh')
++      this.el.style.setProperty('--height', this.works.length * 30 + 'lvh')
+ 
+       const bounding = this.container.getBoundingClientRect()
+ 
+
+commit e46608dfac775a0f952dcc0990c11859da7066a4
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Fri Apr 3 14:40:58 2026 +0530
+
+    work changed into video
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index e3a4e85..052fed3 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -6,19 +6,19 @@ const imageProjects = [
+     caption:
+       'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
+     site: '#',
+-    imageSrc: '/images/works/mr-school.png',
++    src: '/videos/works/mr-school.mp4',
+   },
+   {
+     caption:
+       'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
+     site: '#',
+-    imageSrc: '/images/works/rishika-realestate.png',
++    src: '/videos/works/rishika-realestate.mp4',
+   },
+   {
+     caption:
+       'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
+     site: '#',
+-    imageSrc: '/images/works/vanyra.png',
++    src: '/videos/works/vanyra.mp4',
+   },
+   {
+     caption:
+@@ -30,7 +30,7 @@ const imageProjects = [
+     caption:
+       'Aethelgard Jewellery — Luxury e-commerce experience for high-end heirloom collections with immersive product showcases.',
+     site: '#',
+-    imageSrc: '/images/works/jewelry-site.png',
++    src: '/videos/works/jewelry-site.mp4',
+   },
+   {
+     caption:
+@@ -42,7 +42,19 @@ const imageProjects = [
+     caption:
+       'Aether Kitchen — Modern café ordering system with cuisine filtering, nutritional data, and seamless digital menu experience.',
+     site: '#',
+-    imageSrc: '/images/works/cafe-site.png',
++    src: '/videos/works/cafe-site.mp4',
++  },
++  {
++    caption:
++      'MedCare Hospital — Comprehensive healthcare platform with appointment scheduling, doctor profiles, and patient portal for seamless medical service delivery.',
++    site: '#',
++    src: '/videos/works/hospital-site.mp4',
++  },
++  {
++    caption:
++      'Aurelia Jewellery — Exquisite digital boutique showcasing fine, handcrafted jewelry pieces with an elegant and sophisticated user experience.',
++    site: '#',
++    src: '/videos/works/aurelia-jewelry.mp4',
+   },
+ ]
+ 
+
+commit 7a37abdb8c8997f1328fb9f3a6e06e4ed538282d
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Mon Mar 23 00:02:08 2026 +0530
+
+    GSD converstion
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 4779a49..e3a4e85 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -532,8 +532,8 @@ for (let i = 0; i < 40; i++) {
+         },
+         {
+           scale: mask.maxScale,
+-          duration: 0.75,
+-          ease: 'power4.in',
++          duration: 1.0,
++          ease: 'power3.out',
+         },
+         0,
+       )
+@@ -584,8 +584,8 @@ for (let i = 0; i < 40; i++) {
+         },
+         {
+           state: 1,
+-          duration: 0.75,
+-          ease: 'power4.in',
++          duration: 1.0,
++          ease: 'power3.out',
+         },
+         0,
+       )
+@@ -627,8 +627,8 @@ for (let i = 0; i < 40; i++) {
+         },
+         {
+           state: 0,
+-          duration: 0.75,
+-          ease: 'power4.inOut',
++          duration: 1.0,
++          ease: 'power3.out',
+           immediateRender: false,
+         },
+         '-=1',
+@@ -641,8 +641,8 @@ for (let i = 0; i < 40; i++) {
+         },
+         {
+           scale: 1,
+-          duration: 0.75,
+-          ease: 'power4.inOut',
++          duration: 1.0,
++          ease: 'power3.out',
+           immediateRender: false,
+         },
+         '-=1',
+@@ -655,7 +655,7 @@ for (let i = 0; i < 40; i++) {
+         },
+         {
+           scale: 0.75,
+-          duration: 0.75,
++          duration: 0.5,
+           ease: 'power3.inOut',
+           immediateRender: false,
+         },
+@@ -669,7 +669,7 @@ for (let i = 0; i < 40; i++) {
+         },
+         {
+           clipPath: 'inset(0 1rem)',
+-          duration: 0.75,
++          duration: 0.5,
+           ease: 'power3.inOut',
+           immediateRender: false,
+         },
+
+commit 617ba9e0695b81cb56ed1c770a29b5a3e1422d68
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Sun Mar 22 15:46:20 2026 +0530
+
+    update
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 8770965..4779a49 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -1099,6 +1099,15 @@ for (let i = 0; i < 40; i++) {
+ 
+         will-change: transform;
+ 
++        @include mq(phone) {
++          transform: rotateY(calc(var(--progress) * -5deg))
++            translate3d(
++              calc(var(--progress) * (100vw + 100%) - 50%),
++              calc(var(--y) * 25% - 50%),
++              0
++            )
++            scale(calc(0.5 + var(--size) * 0.6));
++        }
+       }
+     }
+ 
+
+commit 5afebdfaa9c65982c314c022186ab191f7ab1967
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Sat Mar 21 02:21:52 2026 +0530
+
+    update
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 5f6dc12..8770965 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -1099,23 +1099,6 @@ for (let i = 0; i < 40; i++) {
+ 
+         will-change: transform;
+ 
+-        @include mq(tablet) {
+-          transform: rotateY(calc(var(--progress) * -20deg))
+-            translate3d(
+-              calc(var(--progress) * (50vw + 100%) - 50%),
+-              calc(var(--y) * 50% - 50%),
+-              calc(var(--progress) * var(--progress) * -5rem)
+-            );
+-        }
+-
+-        @include mq(phone) {
+-          transform: rotateY(calc(var(--progress) * -20deg))
+-            translate3d(
+-              calc(var(--progress) * (50vw + 100%) - 50%),
+-              calc(var(--y) * 100% - 50%),
+-              calc(var(--progress) * var(--progress) * -5rem)
+-            );
+-        }
+       }
+     }
+ 
+
+commit 992ede407013a5e828e080eb3876bb40b67d9b91
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Thu Mar 19 03:09:09 2026 +0530
+
+    feat: added 3 new projects (Jewelry, Agriculture, Cafe) to work section to reduce repetition
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 8c1d8d1..5f6dc12 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -26,6 +26,24 @@ const imageProjects = [
+     site: '#',
+     imageSrc: '/images/works/garhwal-bakery.png',
+   },
++  {
++    caption:
++      'Aethelgard Jewellery — Luxury e-commerce experience for high-end heirloom collections with immersive product showcases.',
++    site: '#',
++    imageSrc: '/images/works/jewelry-site.png',
++  },
++  {
++    caption:
++      'Precision Agriculture Solutions — Full-stack platform for advanced nutritional solutions, engineered for maximum yield and sustainable soil health.',
++    site: '#',
++    imageSrc: '/images/works/agriculture-site.png',
++  },
++  {
++    caption:
++      'Aether Kitchen — Modern café ordering system with cuisine filtering, nutritional data, and seamless digital menu experience.',
++    site: '#',
++    imageSrc: '/images/works/cafe-site.png',
++  },
+ ]
+ 
+ // Repeat projects in round-robin order so the same image never appears next to itself
+
+commit 91d360964878ca43092ebe55891b235a90fd44d3
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Tue Mar 17 04:14:01 2026 +0530
+
+    perf: fix mobile lag by optimizing backdrop-filters and format codebase
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 996303f..8c1d8d1 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -3,22 +3,26 @@ import AWork from './AWork.astro'
+ 
+ const imageProjects = [
+   {
+-    caption: 'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
++    caption:
++      'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
+     site: '#',
+     imageSrc: '/images/works/mr-school.png',
+   },
+   {
+-    caption: 'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
++    caption:
++      'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
+     site: '#',
+     imageSrc: '/images/works/rishika-realestate.png',
+   },
+   {
+-    caption: 'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
++    caption:
++      'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
+     site: '#',
+     imageSrc: '/images/works/vanyra.png',
+   },
+   {
+-    caption: 'Garhwal Bakery — Interactive digital menu system that drove 20% more foot traffic via Instagram integration.',
++    caption:
++      'Garhwal Bakery — Interactive digital menu system that drove 20% more foot traffic via Instagram integration.',
+     site: '#',
+     imageSrc: '/images/works/garhwal-bakery.png',
+   },
+
+commit 312db8c3a70fbb9c88d373cde799d7e84d62b8d5
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Mon Mar 16 16:55:14 2026 +0530
+
+    chore: format codebase with Prettier & update portfolio copy with ROI-focused descriptions
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 8a83fe4..996303f 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -3,22 +3,22 @@ import AWork from './AWork.astro'
+ 
+ const imageProjects = [
+   {
+-    caption: 'M.R. Sr. Sec. School',
++    caption: 'M.R. Sr. Sec. School — A 3D Educational Ecosystem designed to increase student admissions and automate parent inquiries.',
+     site: '#',
+     imageSrc: '/images/works/mr-school.png',
+   },
+   {
+-    caption: 'Rishika Bahalgarh – Real Estate',
++    caption: 'Rishika Bahalgarh – High-conversion landing page with automated lead filtering—saving the agent 5+ hours of manual follow-ups per week.',
+     site: '#',
+     imageSrc: '/images/works/rishika-realestate.png',
+   },
+   {
+-    caption: 'Vanyra – Premium Food Brand',
++    caption: 'Vanyra – Strategic digital storefront for wholesale onion powder, optimized for B2B lead generation.',
+     site: '#',
+     imageSrc: '/images/works/vanyra.png',
+   },
+   {
+-    caption: 'Garhwal Bakery',
++    caption: 'Garhwal Bakery — Interactive digital menu system that drove 20% more foot traffic via Instagram integration.',
+     site: '#',
+     imageSrc: '/images/works/garhwal-bakery.png',
+   },
+@@ -262,7 +262,7 @@ for (let i = 0; i < 40; i++) {
+      */
+     setCtxStyle() {
+       const color = getComputedStyle(this.el).getPropertyValue(
+-        '--color-primary'
++        '--color-primary',
+       )
+ 
+       Ticker.nextTick(() => {
+@@ -442,12 +442,14 @@ for (let i = 0; i < 40; i++) {
+           el.style.top = ghost.y + 'px'
+           el.style.left = ghost.x + 'px'
+ 
+-          el.style.zIndex = String(j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1)
++          el.style.zIndex = String(
++            j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1,
++          )
+ 
+           el.style.setProperty('--ix', String(ghost.i))
+           el.style.setProperty(
+             '--iy',
+-            String(((j + 1) / (letters.length + 1) - 0.5) * 2)
++            String(((j + 1) / (letters.length + 1) - 0.5) * 2),
+           )
+ 
+           el.style.setProperty('--ap', String(ghost.ap))
+@@ -470,7 +472,7 @@ for (let i = 0; i < 40; i++) {
+         el.style.setProperty('--size', String(0.5 + Math.random() * 0.5))
+         el.style.setProperty(
+           '--y',
+-          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1))
++          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1)),
+         )
+       })
+     }
+@@ -511,7 +513,7 @@ for (let i = 0; i < 40; i++) {
+           duration: 0.75,
+           ease: 'power4.in',
+         },
+-        0
++        0,
+       )
+ 
+       tl.fromTo(
+@@ -524,7 +526,7 @@ for (let i = 0; i < 40; i++) {
+           duration: 0.75,
+           ease: 'power3.in',
+         },
+-        0
++        0,
+       )
+ 
+       tl.fromTo(
+@@ -537,7 +539,7 @@ for (let i = 0; i < 40; i++) {
+           duration: 0.75,
+           ease: 'power3.in',
+         },
+-        0
++        0,
+       )
+ 
+       tl.fromTo(
+@@ -550,7 +552,7 @@ for (let i = 0; i < 40; i++) {
+           duration: 1,
+           ease: 'power4.inOut',
+         },
+-        0
++        0,
+       )
+ 
+       tl.fromTo(
+@@ -563,7 +565,7 @@ for (let i = 0; i < 40; i++) {
+           duration: 0.75,
+           ease: 'power4.in',
+         },
+-        0
++        0,
+       )
+ 
+       tl.fromTo(
+@@ -580,7 +582,7 @@ for (let i = 0; i < 40; i++) {
+           ease: 'slow(0.15, 0.6)',
+           stagger: 0.25,
+         },
+-        0.75
++        0.75,
+       )
+ 
+       tl.fromTo(
+@@ -593,7 +595,7 @@ for (let i = 0; i < 40; i++) {
+           duration: tl.totalDuration(),
+           ease: 'power1.out',
+         },
+-        0.75
++        0.75,
+       )
+ 
+       tl.fromTo(
+@@ -607,7 +609,7 @@ for (let i = 0; i < 40; i++) {
+           ease: 'power4.inOut',
+           immediateRender: false,
+         },
+-        '-=1'
++        '-=1',
+       )
+ 
+       tl.fromTo(
+@@ -621,7 +623,7 @@ for (let i = 0; i < 40; i++) {
+           ease: 'power4.inOut',
+           immediateRender: false,
+         },
+-        '-=1'
++        '-=1',
+       )
+ 
+       tl.fromTo(
+@@ -635,7 +637,7 @@ for (let i = 0; i < 40; i++) {
+           ease: 'power3.inOut',
+           immediateRender: false,
+         },
+-        '-=1'
++        '-=1',
+       )
+ 
+       tl.fromTo(
+@@ -649,7 +651,7 @@ for (let i = 0; i < 40; i++) {
+           ease: 'power3.inOut',
+           immediateRender: false,
+         },
+-        '-=1'
++        '-=1',
+       )
+ 
+       tl.fromTo(
+@@ -662,7 +664,7 @@ for (let i = 0; i < 40; i++) {
+           duration: 1,
+           ease: 'power4.inOut',
+         },
+-        '-=1'
++        '-=1',
+       )
+     }
+ 
+@@ -671,7 +673,7 @@ for (let i = 0; i < 40; i++) {
+      */
+     loadNextVideo() {
+       const video = Array.from(this.videos).find(
+-        (video) => !video.classList.contains('is-loaded')
++        (video) => !video.classList.contains('is-loaded'),
+       )
+ 
+       if (video) {
+@@ -683,7 +685,7 @@ for (let i = 0; i < 40; i++) {
+             () => {
+               this.videoLoaded(video)
+             },
+-            { once: true }
++            { once: true },
+           )
+ 
+           video.setAttribute('src', video.getAttribute('data-src'))
+@@ -812,20 +814,20 @@ for (let i = 0; i < 40; i++) {
+       this.scrollProgress =
+         Math.max(
+           Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')),
+-          0
++          0,
+         ) *
+           -1 +
+         (1 -
+           Math.max(
+             Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')),
+-            0
++            0,
+           ))
+       this.smoothScrollProgress +=
+         (this.scrollProgress - this.smoothScrollProgress) * 0.1
+ 
+       this.el.style.setProperty(
+         '--scroll-progress',
+-        String(this.scrollProgress)
++        String(this.scrollProgress),
+       )
+ 
+       // Movement
+@@ -1044,10 +1046,8 @@ for (let i = 0; i < 40; i++) {
+ 
+           color: color(shadow);
+ 
+-          opacity: min(calc( var(--state) * 2 ), 1);
+-          transform: scale(
+-              1.05, 1.02
+-            )
++          opacity: min(calc(var(--state) * 2), 1);
++          transform: scale(1.05, 1.02)
+             translate3d(
+               calc(var(--head) * 0.1rem * var(--state) * var(--state)),
+               0,
+
+commit 8fdf1df69078f87ba94f5a8454a71f135b599f85
+Author: Kartik <kartiksharma140419@gmail.com>
+Date:   Thu Mar 12 15:51:31 2026 +0530
+
+    Final polish: add work images, update branding, fix meta tags, improve responsiveness
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index 97d6883..8a83fe4 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -1,130 +1,33 @@
+ ---
+ import AWork from './AWork.astro'
+-import dummyVideo from '/src/assets/works/Dummy.mp4'
+ 
+-const videos = await Astro.glob<{ default: any }>('/src/assets/works/*.mp4')
+-
+-// Yeah, this should probably be in a CMS or content file.
+-// But it’s my site, and editing it in code is faster than setting up yet another headless something.
+-// Sometimes "quick and dirty" wins. Don’t @ me.
+-const info = {
+-  Pen: {
+-    title: 'CodePen',
+-    site: 'https://codepen.io/wodniack',
+-  },
+-  Dummy1: {
+-    title: 'Dummy Project 1',
+-    site: 'https://wodniack.dev',
+-  },
+-  Dummy2: {
+-    title: 'Dummy Project 2',
+-    site: 'https://wodniack.dev',
+-  },
+-  Dummy3: {
+-    title: 'Dummy Project 3',
+-    site: 'https://wodniack.dev',
+-  },
+-  Dummy4: {
+-    title: 'Dummy Project 4',
+-    site: 'https://wodniack.dev',
++const imageProjects = [
++  {
++    caption: 'M.R. Sr. Sec. School',
++    site: '#',
++    imageSrc: '/images/works/mr-school.png',
+   },
+-  Dummy5: {
+-    title: 'Dummy Project 5',
+-    site: 'https://wodniack.dev',
++  {
++    caption: 'Rishika Bahalgarh – Real Estate',
++    site: '#',
++    imageSrc: '/images/works/rishika-realestate.png',
+   },
+-  Dummy6: {
+-    title: 'Dummy Project 6',
+-    site: 'https://wodniack.dev',
++  {
++    caption: 'Vanyra – Premium Food Brand',
++    site: '#',
++    imageSrc: '/images/works/vanyra.png',
+   },
+-  Dummy7: {
+-    title: 'Dummy Project 7',
+-    site: 'https://wodniack.dev',
++  {
++    caption: 'Garhwal Bakery',
++    site: '#',
++    imageSrc: '/images/works/garhwal-bakery.png',
+   },
+-  Dummy8: {
+-    title: 'Dummy Project 8',
+-    site: 'https://wodniack.dev',
+-  },
+-  Dummy9: {
+-    title: 'Dummy Project 9',
+-    site: 'https://wodniack.dev',
+-  },
+-  Dummy10: {
+-    title: 'Dummy Project 10',
+-    site: 'https://wodniack.dev',
+-  }
+-}
++]
+ 
+-let projects = []
+-let pens = []
+-
+-// I removed the video loops to keep the repo lightweight.
+-// But this is where I normally fetch and assign the videos for each project in the portfolio.
+-videos.forEach((video, index) => {
+-  const src = video.default
+-
+-  const key = src.split('-')[0].split('/').pop()
+-  const project = info[key]
+-  if (!project) return
+-  const caption = project.title
+-  const site = project.site
+-
+-  if (key === 'Pen') {
+-    pens.push({
+-      caption,
+-      site,
+-      src,
+-    })
+-  } else {
+-    projects.push({
+-      caption,
+-      site,
+-      src,
+-    })
+-  }
+-})
+-
+-// Create dummy projects with 3 videos each
+-for (let i = 1; i <= 14; i++) {
+-  const key = `Dummy${i}`
+-  const project = info[key]
+-  if (!project) continue
+-
+-  for (let j = 0; j < 4; j++) {
+-    projects.push({
+-      caption: `${project.title} - Video ${j + 1}`,
+-      site: project.site,
+-      src: dummyVideo
+-    })
+-  }
+-}
+-
+-function shuffle(array) {
+-  let currentIndex = array.length
+-
+-  while (currentIndex != 0) {
+-    let randomIndex = Math.floor(Math.random() * currentIndex)
+-    currentIndex--
+-    ;[array[currentIndex], array[randomIndex]] = [
+-      array[randomIndex],
+-      array[currentIndex],
+-    ]
+-  }
+-}
+-
+-shuffle(projects)
+-
+-// Add pens in between projects regularly
++// Repeat projects in round-robin order so the same image never appears next to itself
+ let works = []
+-let chunkSize = Math.floor(projects.length / pens.length)
+-let i = 0
+-let j = 0
+-while (i < projects.length) {
+-  works.push(projects[i])
+-  if (j < pens.length && (i + 1) % chunkSize === 0) {
+-    works.push(pens[j])
+-    j++
+-  }
+-  i++
++for (let i = 0; i < 40; i++) {
++  works.push({ ...imageProjects[i % imageProjects.length] })
+ }
+ ---
+ 
+@@ -148,6 +51,7 @@ while (i < projects.length) {
+               caption={work.caption}
+               site={work.site}
+               src={work.src}
++              imageSrc={work.imageSrc}
+               index={String(index).padStart(4, '0')}
+               total={String(works.length).padStart(2, '0')}
+             />
+
+commit 196efb0a87bfcc15182245fa113858a1a2c51a86
+Author: Antoine Wodniack <hello@wodniack.dev>
+Date:   Mon May 19 15:40:07 2025 +0200
+
+    Fix dummyVideo path
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+index a3d79a5..97d6883 100644
+--- a/src/components/SWork.astro
++++ b/src/components/SWork.astro
+@@ -1,5 +1,6 @@
+ ---
+ import AWork from './AWork.astro'
++import dummyVideo from '/src/assets/works/Dummy.mp4'
+ 
+ const videos = await Astro.glob<{ default: any }>('/src/assets/works/*.mp4')
+ 
+@@ -92,7 +93,7 @@ for (let i = 1; i <= 14; i++) {
+     projects.push({
+       caption: `${project.title} - Video ${j + 1}`,
+       site: project.site,
+-      src: `/src/assets/works/Dummy.mp4`,
++      src: dummyVideo
+     })
+   }
+ }
+
+commit 98865278947f8b694715cfdba2bf676c8f6d7a15
+Author: Antoine Wodniack <hello@wodniack.dev>
+Date:   Mon May 19 15:31:29 2025 +0200
+
+    Initial commit ❤️
+
+diff --git a/src/components/SWork.astro b/src/components/SWork.astro
+new file mode 100644
+index 0000000..a3d79a5
+--- /dev/null
++++ b/src/components/SWork.astro
+@@ -0,0 +1,1211 @@
++---
++import AWork from './AWork.astro'
++
++const videos = await Astro.glob<{ default: any }>('/src/assets/works/*.mp4')
++
++// Yeah, this should probably be in a CMS or content file.
++// But it’s my site, and editing it in code is faster than setting up yet another headless something.
++// Sometimes "quick and dirty" wins. Don’t @ me.
++const info = {
++  Pen: {
++    title: 'CodePen',
++    site: 'https://codepen.io/wodniack',
++  },
++  Dummy1: {
++    title: 'Dummy Project 1',
++    site: 'https://wodniack.dev',
++  },
++  Dummy2: {
++    title: 'Dummy Project 2',
++    site: 'https://wodniack.dev',
++  },
++  Dummy3: {
++    title: 'Dummy Project 3',
++    site: 'https://wodniack.dev',
++  },
++  Dummy4: {
++    title: 'Dummy Project 4',
++    site: 'https://wodniack.dev',
++  },
++  Dummy5: {
++    title: 'Dummy Project 5',
++    site: 'https://wodniack.dev',
++  },
++  Dummy6: {
++    title: 'Dummy Project 6',
++    site: 'https://wodniack.dev',
++  },
++  Dummy7: {
++    title: 'Dummy Project 7',
++    site: 'https://wodniack.dev',
++  },
++  Dummy8: {
++    title: 'Dummy Project 8',
++    site: 'https://wodniack.dev',
++  },
++  Dummy9: {
++    title: 'Dummy Project 9',
++    site: 'https://wodniack.dev',
++  },
++  Dummy10: {
++    title: 'Dummy Project 10',
++    site: 'https://wodniack.dev',
++  }
++}
++
++let projects = []
++let pens = []
++
++// I removed the video loops to keep the repo lightweight.
++// But this is where I normally fetch and assign the videos for each project in the portfolio.
++videos.forEach((video, index) => {
++  const src = video.default
++
++  const key = src.split('-')[0].split('/').pop()
++  const project = info[key]
++  if (!project) return
++  const caption = project.title
++  const site = project.site
++
++  if (key === 'Pen') {
++    pens.push({
++      caption,
++      site,
++      src,
++    })
++  } else {
++    projects.push({
++      caption,
++      site,
++      src,
++    })
++  }
++})
++
++// Create dummy projects with 3 videos each
++for (let i = 1; i <= 14; i++) {
++  const key = `Dummy${i}`
++  const project = info[key]
++  if (!project) continue
++
++  for (let j = 0; j < 4; j++) {
++    projects.push({
++      caption: `${project.title} - Video ${j + 1}`,
++      site: project.site,
++      src: `/src/assets/works/Dummy.mp4`,
++    })
++  }
++}
++
++function shuffle(array) {
++  let currentIndex = array.length
++
++  while (currentIndex != 0) {
++    let randomIndex = Math.floor(Math.random() * currentIndex)
++    currentIndex--
++    ;[array[currentIndex], array[randomIndex]] = [
++      array[randomIndex],
++      array[currentIndex],
++    ]
++  }
++}
++
++shuffle(projects)
++
++// Add pens in between projects regularly
++let works = []
++let chunkSize = Math.floor(projects.length / pens.length)
++let i = 0
++let j = 0
++while (i < projects.length) {
++  works.push(projects[i])
++  if (j < pens.length && (i + 1) % chunkSize === 0) {
++    works.push(pens[j])
++    j++
++  }
++  i++
++}
++---
++
++<section id="work" class="s-work" data-intersect>
++  <div class="s__outer">
++    <div class="s__inner js-container">
++      <h2 class="s__title">
++        <span class="s__title__inner js-title">
++          <span class="s__title__letter js-letter">W</span>
++          <span class="s__title__letter js-letter">O</span>
++          <span class="s__title__letter js-letter">R</span>
++          <span class="s__title__letter js-letter">K</span>
++        </span>
++      </h2>
++
++      <div class="s__scene js-scene">
++        {
++          works.map((work, index) => (
++            <AWork
++              cssClass="s__scene__work s__scene__work--video js-work"
++              caption={work.caption}
++              site={work.site}
++              src={work.src}
++              index={String(index).padStart(4, '0')}
++              total={String(works.length).padStart(2, '0')}
++            />
++          ))
++        }
++      </div><!-- .s__scene -->
++
++      <canvas class="s__canvas js-canvas"></canvas>
++    </div><!-- .s__inner -->
++
++    <div class="s__mask-outer">
++      <div class="s__mask js-mask">
++        <svg class="s__mask__svg js-mask-svg">
++          <path class="s__mask__path-inner js-mask-path-inner" d=""></path>
++          <path class="s__mask__path-outer js-mask-path-outer" d=""></path>
++          <path class="s__mask__path-lines js-mask-path-lines" d=""></path>
++        </svg>
++      </div><!-- .s__mask -->
++    </div><!-- .s__mask-outer -->
++
++    <div class="s__ruler js-ruler"></div>
++  </div><!-- .s__outer -->
++</section>
++
++<script>
++  import Emitter from '../utils/Emitter'
++  import Ticker from '../utils/Ticker'
++
++  import { gsap } from 'gsap'
++  import { SlowMo } from 'gsap/EasePack'
++  import { ScrollTrigger } from 'gsap/ScrollTrigger'
++  gsap.registerPlugin(ScrollTrigger, SlowMo)
++
++  class Section {
++    el: HTMLElement
++    container: HTMLElement
++    ruler: HTMLElement
++    scene: HTMLElement
++    canvas: HTMLCanvasElement
++    ctx: CanvasRenderingContext2D
++    title: HTMLElement
++    videos: NodeListOf<HTMLVideoElement>
++
++    mask: {
++      width: number
++      height: number
++      maxScale: number
++      lines: any[]
++      el: HTMLElement
++      svg: HTMLElement
++      pathOuter: HTMLElement
++      pathInner: HTMLElement
++      pathLines: HTMLElement
++    }
++
++    bounding: {
++      left: number
++      top: number
++      width: number
++      height: number
++    }
++    letters: any[]
++    works: any[]
++    points: any[]
++
++    tl: gsap.core.Timeline
++    animationProgress: number
++    pointsProgress: number
++    last: {
++      animationProgress: number
++      pointsProgress: number
++    }
++    scrollProgress: number
++    smoothScrollProgress: number
++    state: 0
++    speed: number
++    isPaused: boolean
++    loadIsStarted: boolean
++
++    /**
++     * Constructor
++     */
++    constructor() {
++      // Elements
++      this.el = document.querySelector('.s-work')
++      this.container = this.el.querySelector('.js-container')
++      this.ruler = this.el.querySelector('.js-ruler')
++      this.scene = this.container.querySelector('.js-scene')
++      this.canvas = this.container.querySelector('.js-canvas')
++      this.ctx = this.canvas.getContext('2d')
++      this.title = this.container.querySelector('.js-title')
++      this.videos = this.container.querySelectorAll('video')
++
++      // Properties
++      this.mask = {
++        width: 0,
++        height: 0,
++        maxScale: 1,
++        lines: [],
++        el: this.el.querySelector('.js-mask'),
++        svg: this.el.querySelector('.js-mask-svg'),
++        pathOuter: this.el.querySelector('.js-mask-path-outer'),
++        pathInner: this.el.querySelector('.js-mask-path-inner'),
++        pathLines: this.el.querySelector('.js-mask-path-lines'),
++      }
++
++      this.letters = []
++      this.title.querySelectorAll('.js-letter').forEach((_letter) => {
++        const letter = {
++          el: _letter,
++          ghosts: [],
++        }
++
++        this.letters.push(letter)
++      })
++
++      this.works = []
++      this.container.querySelectorAll('.js-work').forEach((_work) => {
++        const work = {
++          el: _work,
++        }
++
++        this.works.push(work)
++      })
++
++      this.points = []
++
++      this.scrollProgress = 0
++      this.smoothScrollProgress = 0
++      this.last = {
++        animationProgress: 0,
++        pointsProgress: 0,
++      }
++
++      this.isPaused = true
++      this.loadIsStarted = false
++
++      // Init
++      if (document.readyState === 'complete') {
++        Ticker.nextTick(this.init, this)
++      } else {
++        Emitter.once('siteLoaded', this.init, this)
++      }
++    }
++
++    /**
++     * Init
++     */
++    init() {
++      this.setCtxStyle()
++      this.setSize()
++      this.setMask()
++      this.setPoints()
++      this.setLetters()
++      this.setWorks()
++      this.setTimeline()
++
++      this.bindEvents()
++    }
++
++    /**
++     * Bind events
++     */
++    bindEvents() {
++      Emitter.on('contrastchange', this.setCtxStyle, this)
++      Emitter.on('resize', this.onResize, this)
++
++      this.el.addEventListener('intersect', this.onIntersect.bind(this), {
++        passive: true,
++      })
++    }
++
++    /**
++     * Resize handler
++     */
++    onResize(widthChanged) {
++      if (widthChanged) {
++        this.setCtxStyle()
++        this.setSize()
++        this.setMask()
++        this.setPoints()
++        this.setLetters()
++        this.setWorks()
++        this.setTimeline()
++      }
++    }
++
++    /**
++     * Intersect handler
++     */
++    onIntersect(e) {
++      this.isPaused = !e.detail.isIntersecting
++
++      if (this.isPaused) {
++        Emitter.off('tick', this.tick, this)
++      } else {
++        Emitter.on('tick', this.tick, this)
++      }
++
++      if (!this.loadIsStarted) {
++        this.loadNextVideo()
++        this.loadIsStarted = true
++      }
++    }
++
++    /**
++     * Set canvas style
++     */
++    setCtxStyle() {
++      const color = getComputedStyle(this.el).getPropertyValue(
++        '--color-primary'
++      )
++
++      Ticker.nextTick(() => {
++        this.ctx.strokeStyle = color
++      })
++    }
++
++    /**
++     * Set size
++     */
++    setSize() {
++      this.el.style.setProperty('--height', this.works.length * 50 + 'lvh')
++
++      const bounding = this.container.getBoundingClientRect()
++
++      this.bounding = {
++        left: bounding.left,
++        top: bounding.top,
++        width: window.safeWidth,
++        height: window.safeHeight,
++      }
++
++      this.canvas.width = this.bounding.width
++      this.canvas.height = this.bounding.height
++
++      this.speed = Math.hypot(this.bounding.width, this.bounding.height) * 4
++    }
++
++    /**
++     * Set mask
++     */
++    setMask() {
++      const { mask } = this
++
++      const width = mask.el.clientWidth
++      const height = mask.el.clientHeight
++
++      mask.width = width
++      mask.height = height
++
++      mask.svg.style.width = mask.width + 'px'
++      mask.svg.style.height = mask.height + 'px'
++
++      const elBounding = this.el.getBoundingClientRect()
++      const rulerBounding = this.ruler.getBoundingClientRect()
++      const rulerWidth = rulerBounding.width
++      const rulerHeight = rulerBounding.height
++      const offsetX = rulerBounding.left - elBounding.left
++      const offsetY = rulerBounding.top - elBounding.top
++
++      // Shape
++      const dOuter = `M -1 0 L ${width + 2} 0 L ${width + 2} ${height} L -1 ${height} Z`
++
++      // Mask outer
++      const corners = {
++        tl: { x: offsetX, y: offsetY },
++        tr: { x: offsetX + rulerWidth, y: offsetY },
++        br: { x: offsetX + rulerWidth, y: offsetY + rulerHeight },
++        bl: { x: offsetX, y: offsetY + rulerHeight },
++      }
++
++      let size = (corners.tr.x - corners.tl.x) / 2
++
++      mask.maxScale = window.safeWidth / size
++
++      let dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`
++      const linesClip = `${dOuter} ${dInner}`
++
++      mask.pathOuter.setAttribute('d', `${dOuter} ${dInner}`)
++
++      // Mask inner
++      const thickness = window.safeWidth > 767 ? 16 : 8
++      corners.tl.x += thickness
++      corners.tl.y += thickness
++
++      corners.tr.x -= thickness
++      corners.tr.y += thickness
++
++      corners.br.x -= thickness
++      corners.br.y -= thickness
++
++      corners.bl.x += thickness
++      corners.bl.y -= thickness
++
++      size = (corners.tr.x - corners.tl.x) / 2
++
++      dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`
++
++      mask.pathInner.setAttribute('d', `${dOuter} ${dInner}`)
++
++      // Lines
++      mask.lines = []
++
++      const vLines = window.safeWidth > 767 ? 12 : 8
++      const gapX = width / vLines
++      const gapY = height * 0.1
++      const hLines = Math.ceil(height / gapY)
++
++      for (let i = 1; i < vLines; i++) {
++        const x = gapX * i
++
++        mask.lines.push({
++          p1: { x, y: 0 },
++          p2: { x, y: height },
++        })
++      }
++
++      for (let i = 0; i < hLines; i++) {
++        const y = gapY * i
++
++        mask.lines.push({
++          p1: { x: 0, y },
++          p2: { x: width, y },
++        })
++      }
++
++      let dLines = ''
++
++      mask.lines.forEach((line) => {
++        dLines += `M ${line.p1.x} ${line.p1.y} L ${line.p2.x} ${line.p2.y} `
++      })
++
++      mask.pathLines.setAttribute('d', dLines)
++      mask.pathLines.style.clipPath = `path(evenodd, '${linesClip}')`
++    }
++
++    /**
++     * Set letters
++     */
++    setLetters() {
++      const { letters, scene } = this
++
++      letters.forEach((letter, j) => {
++        letter.ghosts.forEach((ghost) => {
++          ghost.el.remove()
++        })
++        letter.ghosts = []
++
++        // Get letter position and size
++        const bounding = letter.el.getBoundingClientRect()
++
++        letter.width = bounding.width
++        letter.height = bounding.height
++        letter.top = bounding.top - this.bounding.top
++        letter.left = bounding.left
++
++        letter.freq = 1 + Math.random()
++
++        const multiplier = window.safeWidth > 767 ? 0.75 : 0.5
++
++        // Create ghost letters
++        letter.total =
++          Math.round((this.bounding.width / letter.width) * multiplier) + 2
++
++        for (let i = 0; i < letter.total; i++) {
++          const el = document.createElement('span')
++          el.classList.add('s__scene__letter')
++          el.classList.add('js-letter')
++
++          el.innerText = letter.el.innerText
++          el.dataset.letter = letter.el.innerText
++
++          scene.appendChild(el)
++
++          const ghost = {
++            el,
++            x: letter.left,
++            y: letter.top,
++            z: Math.random() * 100,
++            i: i - letter.total * 0.5,
++            p: (i / letter.total - 0.5) * 2,
++            ap: Math.abs(i / letter.total - 0.5) * 2,
++            mx: 0,
++            my: 0,
++          }
++
++          el.style.top = ghost.y + 'px'
++          el.style.left = ghost.x + 'px'
++
++          el.style.zIndex = String(j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1)
++
++          el.style.setProperty('--ix', String(ghost.i))
++          el.style.setProperty(
++            '--iy',
++            String(((j + 1) / (letters.length + 1) - 0.5) * 2)
++          )
++
++          el.style.setProperty('--ap', String(ghost.ap))
++          el.style.setProperty('--p', String(ghost.p))
++
++          letter.ghosts.push(ghost)
++        }
++      })
++    }
++
++    /**
++     * Set works
++     */
++    setWorks() {
++      const { works } = this
++
++      works.forEach((work, i) => {
++        const el = work.el
++
++        el.style.setProperty('--size', String(0.5 + Math.random() * 0.5))
++        el.style.setProperty(
++          '--y',
++          String((0.5 + Math.random() * 0.5) * (i % 2 ? -1 : 1))
++        )
++      })
++    }
++
++    /**
++     * Set timeline
++     */
++    setTimeline() {
++      const { el, container, works, scene, mask } = this
++
++      const worksEl = works.map((work) => work.el)
++
++      let { tl } = this
++
++      if (tl) {
++        tl.kill()
++      }
++
++      tl = gsap.timeline({
++        scrollTrigger: {
++          trigger: el,
++          start: 'top 25%',
++          end: 'bottom 75%',
++          scrub: 1,
++        },
++        onUpdate: () => {
++          scene.style.setProperty('--state', String(this.state))
++        },
++      })
++
++      tl.fromTo(
++        mask.el,
++        {
++          scale: 1,
++        },
++        {
++          scale: mask.maxScale,
++          duration: 0.75,
++          ease: 'power4.in',
++        },
++        0
++      )
++
++      tl.fromTo(
++        scene,
++        {
++          scale: 0.75,
++        },
++        {
++          scale: 1,
++          duration: 0.75,
++          ease: 'power3.in',
++        },
++        0
++      )
++
++      tl.fromTo(
++        container,
++        {
++          clipPath: 'inset(0 1rem)',
++        },
++        {
++          clipPath: 'inset(0 0rem)',
++          duration: 0.75,
++          ease: 'power3.in',
++        },
++        0
++      )
++
++      tl.fromTo(
++        this,
++        {
++          pointsProgress: 0,
++        },
++        {
++          pointsProgress: 1,
++          duration: 1,
++          ease: 'power4.inOut',
++        },
++        0
++      )
++
++      tl.fromTo(
++        this,
++        {
++          state: 0,
++        },
++        {
++          state: 1,
++          duration: 0.75,
++          ease: 'power4.in',
++        },
++        0
++      )
++
++      tl.fromTo(
++        worksEl,
++        {
++          attr: {
++            progress: 1,
++          },
++        },
++        {
++          attr: {
++            progress: -1,
++          },
++          ease: 'slow(0.15, 0.6)',
++          stagger: 0.25,
++        },
++        0.75
++      )
++
++      tl.fromTo(
++        this,
++        {
++          animationProgress: 0,
++        },
++        {
++          animationProgress: 10000,
++          duration: tl.totalDuration(),
++          ease: 'power1.out',
++        },
++        0.75
++      )
++
++      tl.fromTo(
++        this,
++        {
++          state: 1,
++        },
++        {
++          state: 0,
++          duration: 0.75,
++          ease: 'power4.inOut',
++          immediateRender: false,
++        },
++        '-=1'
++      )
++
++      tl.fromTo(
++        mask.el,
++        {
++          scale: mask.maxScale,
++        },
++        {
++          scale: 1,
++          duration: 0.75,
++          ease: 'power4.inOut',
++          immediateRender: false,
++        },
++        '-=1'
++      )
++
++      tl.fromTo(
++        scene,
++        {
++          scale: 1,
++        },
++        {
++          scale: 0.75,
++          duration: 0.75,
++          ease: 'power3.inOut',
++          immediateRender: false,
++        },
++        '-=1'
++      )
++
++      tl.fromTo(
++        container,
++        {
++          clipPath: 'inset(0 0rem)',
++        },
++        {
++          clipPath: 'inset(0 1rem)',
++          duration: 0.75,
++          ease: 'power3.inOut',
++          immediateRender: false,
++        },
++        '-=1'
++      )
++
++      tl.fromTo(
++        this,
++        {
++          pointsProgress: 1,
++        },
++        {
++          pointsProgress: 0,
++          duration: 1,
++          ease: 'power4.inOut',
++        },
++        '-=1'
++      )
++    }
++
++    /**
++     * Load next video
++     */
++    loadNextVideo() {
++      const video = Array.from(this.videos).find(
++        (video) => !video.classList.contains('is-loaded')
++      )
++
++      if (video) {
++        if (video.readyState >= 3) {
++          this.videoLoaded(video)
++        } else {
++          video.addEventListener(
++            'canplaythrough',
++            () => {
++              this.videoLoaded(video)
++            },
++            { once: true }
++          )
++
++          video.setAttribute('src', video.getAttribute('data-src'))
++          video.load()
++        }
++      }
++    }
++
++    /**
++     * Video loaded
++     */
++    videoLoaded(video) {
++      video.classList.add('is-loaded')
++      this.loadNextVideo()
++    }
++
++    /**
++     * Move letters
++     */
++    moveLetters() {
++      const { speed, letters, animationProgress } = this
++
++      letters.forEach((letter, i) => {
++        const letterSpeed = speed * letter.freq
++        letter.ghosts.forEach((ghost, index) => {
++          let progress =
++            (((animationProgress % letterSpeed) / letterSpeed +
++              index / letter.total) %
++              1) /
++              0.7 -
++            0.15
++
++          ghost.el.style.setProperty('--progress', String(progress))
++        })
++      })
++    }
++
++    /**
++     * Set points
++     */
++    setPoints() {
++      const { bounding } = this
++
++      this.points = []
++
++      const gap = 24
++      const cols = Math.ceil((bounding.width * 1.2) / gap)
++      const rows = Math.ceil((bounding.height * 1.2) / gap)
++
++      const offsetX = (bounding.width - cols * gap) * 0.5
++      const offsetY = (bounding.height - rows * gap) * 0.5
++
++      const hWidth = bounding.width * 0.5
++      const hHeight = bounding.height * 0.5
++
++      for (let i = 0; i < cols; i++) {
++        for (let j = 0; j < rows; j++) {
++          const x = i * gap + offsetX
++          const y = j * gap + offsetY
++
++          const dx = hWidth - x
++          const dy = hHeight - y
++
++          this.points.push({
++            x,
++            y,
++            dx,
++            dy,
++            m: Math.random(),
++            flowX: 0,
++          })
++        }
++      }
++    }
++
++    /**
++     * Move points
++     */
++    movePoints() {
++      const { points, animationProgress } = this
++
++      points.forEach((p) => {
++        // Flow
++        p.flowX = (animationProgress * -0.05) % 24
++      })
++    }
++
++    /**
++     * Draw points
++     */
++    drawPoints() {
++      const { bounding, ctx, points, animationProgress, pointsProgress, last } =
++        this
++
++      const rAnimationProgress = Math.round(animationProgress * 100) / 100
++      const rPointsProgress = Math.round(pointsProgress * 100) / 100
++
++      if (
++        rPointsProgress === last.pointsProgress &&
++        rAnimationProgress === last.animationProgress
++      )
++        return
++
++      ctx.clearRect(0, 0, bounding.width, bounding.height)
++
++      ctx.beginPath()
++
++      points.forEach((point) => {
++        const x = point.x + point.dx * (1 - pointsProgress) * 0.2 + point.flowX
++        const y = point.y + point.dy * (1 - pointsProgress) * 0.2
++
++        ctx.rect(x, y, 0.5, 0.5)
++      })
++
++      ctx.stroke()
++
++      last.pointsProgress = rPointsProgress
++      last.animationProgress = rAnimationProgress
++    }
++
++    /**
++     * Tick
++     */
++    tick() {
++      // Calculate scroll progress
++      this.scrollProgress =
++        Math.max(
++          Math.min(1, ScrollTrigger.positionInViewport(this.el, 'top')),
++          0
++        ) *
++          -1 +
++        (1 -
++          Math.max(
++            Math.min(1, ScrollTrigger.positionInViewport(this.el, 'bottom')),
++            0
++          ))
++      this.smoothScrollProgress +=
++        (this.scrollProgress - this.smoothScrollProgress) * 0.1
++
++      this.el.style.setProperty(
++        '--scroll-progress',
++        String(this.scrollProgress)
++      )
++
++      // Movement
++      this.movePoints()
++      this.moveLetters()
++
++      // Draw
++      this.drawPoints()
++    }
++  }
++
++  new Section()
++</script>
++
++<style lang="scss">
++  .s-work {
++    --height: 100lvh;
++
++    position: relative;
++    z-index: 2;
++
++    height: var(--height);
++
++    background: color(primary);
++
++    &:before {
++      position: absolute;
++      top: 0;
++      left: 0;
++      z-index: 2;
++
++      width: 100%;
++      height: 1px;
++
++      background: color(secondary);
++
++      content: '';
++    }
++
++    .s__mask-outer {
++      position: sticky;
++      top: 0;
++      left: 0;
++
++      width: 100%;
++      height: 100lvh;
++
++      overflow: hidden;
++      pointer-events: none;
++    }
++
++    .s__mask {
++      position: absolute;
++      top: 0;
++      left: 0;
++
++      width: 100%;
++      height: 100%;
++
++      will-change: scale, transform;
++
++      &__svg {
++        position: absolute;
++        top: 0;
++        left: 0;
++        width: 100%;
++        height: 100%;
++
++        // transform: translate3d(0, 0, 0);
++      }
++
++      &__path-outer {
++        fill: color(primary);
++        fill-rule: evenodd;
++        stroke: color(secondary);
++        stroke-width: 1px;
++      }
++
++      &__path-inner {
++        fill: color(primary);
++        fill-rule: evenodd;
++        stroke: color(secondary);
++        stroke-width: 1px;
++
++        transform: translate3d(0, calc(var(--scroll-progress) * 48px), 0);
++
++        will-change: transform;
++      }
++
++      &__path-lines {
++        fill: none;
++        stroke: color(secondary);
++        stroke-width: 1px;
++      }
++    }
++
++    .s__outer {
++      position: relative;
++
++      height: var(--height);
++
++      clip-path: inset(0 -1rem);
++    }
++
++    .s__inner {
++      @include flex(column, center, center);
++
++      position: fixed;
++      top: 0;
++      left: 0;
++
++      width: 100%;
++      height: 100%;
++
++      background: color(secondary);
++      transform: translate3d(0, calc(var(--scroll-progress) * -15%), 0);
++
++      color: color(primary);
++
++      will-change: clip-path, transform;
++
++      @include mq(phone) {
++        transform: none;
++      }
++    }
++
++    .s__ruler {
++      --width: min(16.6667%, 19.625rem);
++
++      position: absolute;
++      top: 10lvh;
++      left: calc(50% - var(--width) / 2);
++
++      width: var(--width);
++      height: 80lvh;
++
++      // background: #0f03;
++      pointer-events: none;
++
++      @include mq(tablet) {
++        --width: 33.3333%;
++      }
++
++      @include mq(phone) {
++        --width: 50%;
++      }
++    }
++
++    .s__title,
++    .s__scene {
++      font: 700 min(18.75rem, 25lvh) / 1 font-family(bigger);
++      text-align: center;
++      text-transform: uppercase;
++    }
++
++    .s__title__inner,
++    :global(.s__scene__letter) {
++      line-height: 0.85;
++    }
++
++    .s__title {
++      width: 0.7em;
++
++      opacity: 0;
++      word-break: break-all;
++
++      &__inner {
++        @include flex(column, center, center);
++
++        margin: 0.075em 0 -0.125em;
++      }
++    }
++
++    .s__scene {
++      --shadow: #{color(shadow)};
++      --progress: 0.5;
++      --state: 0;
++
++      position: absolute;
++      top: 0;
++      left: 0;
++      z-index: 2;
++
++      width: 100%;
++      height: 100%;
++
++      perspective: 40rem;
++
++      will-change: transform;
++
++      :global(.s__scene__letter) {
++        --head: calc((var(--progress) - 0.5) * -2);
++        --ahead: calc(var(--head) * var(--head));
++
++        position: absolute;
++        top: 0;
++        left: 0;
++
++        display: block;
++
++        transform: rotateY(calc(var(--head) * -10deg * var(--state)))
++          translate3d(
++            calc(var(--head) * 50vw * var(--state)),
++            calc(var(--iy) * 50% * var(--ahead) * var(--state)),
++            0
++          );
++
++        pointer-events: none;
++        will-change: transform;
++
++        &:before {
++          position: absolute;
++          top: 0;
++          left: 0;
++          z-index: -1;
++
++          color: color(shadow);
++
++          opacity: min(calc( var(--state) * 2 ), 1);
++          transform: scale(
++              1.05, 1.02
++            )
++            translate3d(
++              calc(var(--head) * 0.1rem * var(--state) * var(--state)),
++              0,
++              0
++            );
++          transform-origin: calc(50% - var(--head) * 50%) -50%;
++
++          will-change: opacity, transform;
++
++          content: attr(data-letter);
++        }
++      }
++
++      :global(.s__scene__work) {
++        position: absolute;
++        top: 50%;
++        left: 50%;
++        z-index: 2;
++
++        transform: rotateY(calc(var(--progress) * -20deg))
++          translate3d(
++            calc(var(--progress) * (50vw + 100%) - 50%),
++            calc(var(--y) * 50% - 50%),
++            calc(var(--progress) * var(--progress) * -5rem)
++          )
++          scale(var(--size));
++
++        will-change: transform;
++
++        @include mq(tablet) {
++          transform: rotateY(calc(var(--progress) * -20deg))
++            translate3d(
++              calc(var(--progress) * (50vw + 100%) - 50%),
++              calc(var(--y) * 50% - 50%),
++              calc(var(--progress) * var(--progress) * -5rem)
++            );
++        }
++
++        @include mq(phone) {
++          transform: rotateY(calc(var(--progress) * -20deg))
++            translate3d(
++              calc(var(--progress) * (50vw + 100%) - 50%),
++              calc(var(--y) * 100% - 50%),
++              calc(var(--progress) * var(--progress) * -5rem)
++            );
++        }
++      }
++    }
++
++    .s__canvas {
++      position: absolute;
++      top: 0;
++      left: 0;
++      z-index: 1;
++
++      width: 100%;
++      height: 100%;
++
++      transform: translate3d(0, calc(var(--scroll-progress) * -5%), 0);
++
++      @include mq(phone) {
++        transform: none;
++      }
++    }
++  }
++</style>
